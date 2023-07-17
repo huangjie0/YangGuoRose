@@ -7,7 +7,14 @@
             </div>
         
         </el-col>
-        <el-col :span="8" style="background:white">右边</el-col>
+        <el-col :span="8" style="background:white">
+            <h2>欢迎回来</h2>
+            <div>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </el-col>
     </el-row>
 </template>
 <script setup>
