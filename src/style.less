@@ -1,39 +1,73 @@
-//公共的样式
 :root{
-
-
-
-    
+    //白色
+    --rose-w:#FFFFFF;
+    //主题紫色
+    --rose-p:rgb(167, 129, 238);
 }
+
+//公共的样式
+* {
+  margin: 0;
+  padding: 0;
+}
+
 //flex居中
-.rose-f-c{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.rose-f-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 //flex方向确定
-.rose-f-row{
-    display: flex;
-    flex-direction: row;
+.rose-f-row {
+  display: flex;
+  flex-direction: row;
 }
-.rose-f-column{
-    display: flex;
-    flex-direction: column;
+
+.rose-f-column {
+  display: flex;
+  flex-direction: column;
 }
-.rose-f-1{
-    flex: 1;
+
+.rose-f-1 {
+  flex: 1;
 }
-.rose-w-h-100{
-    width: 100%;
-    height: 100%;
+
+.rose-w-h-100 {
+  width: 100%;
+  height: 100%;
 }
-.rose-f1{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+.rose-f1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.rose-f2{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+
+.rose-f2 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rose-vh{
+    height: 100vh;
+}
+
+//公共颜色封装
+.rose-bg-w{
+    background-color: #FFFFFF;;
+}
+
+.rose-bg-p{
+    background-color: rgb(167, 129, 238);
+}
+
+//字体的粗细封装
+.rose-font-w1{
+    font-weight: 500;
+}
+
+.rose-font-w2{
+    font-weight: 550;
 }
