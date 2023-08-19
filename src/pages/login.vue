@@ -13,12 +13,24 @@
                 <span>账号密码登录</span>
                 <span class="line"></span>
             </div>
-            <el-form :model="form">
-                <el-form-item>
-                    <el-input v-model="form.userName" placeholder="请输入用户名"/>
+            <el-form :model="form" :rules="rules" ref="loginRef">
+                <el-form-item prop="userName">
+                    <el-input v-model="form.userName" placeholder="请输入用户名">
+                        <template #prefix>
+                            <el-icon class="el-input__icon">
+                                <UserFilled />
+                            </el-icon>
+                        </template>
+                    </el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-input v-model="form.passWord" placeholder="请输入密码"/>
+                <el-form-item prop="passWord">
+                    <el-input v-model="form.passWord" placeholder="请输入密码" type="password" show-password>
+                        <template #prefix>
+                            <el-icon class="el-input__icon">
+                                <Platform />
+                            </el-icon>
+                        </template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button round type="primary" color="#a781ee" @click="onSubmit" class="btn-w">登录</el-button>
@@ -28,37 +40,76 @@
     </el-row>
 </template>
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { login } from '@/api/manager.js'
+import { ElNotification } from 'element-plus'
+const loginRef = ref(null)
 
-// do not use same name with ref
 const form = reactive({
     userName: '',
     passWord: '',
 })
 
+const rules = {
+    userName: [{
+        required: true,
+        message: '用户名不能为空！',
+        trigger: 'blur'
+    },
+    ],
+    passWord: [{
+        required: true,
+        message: '密码不能为空！',
+        trigger: 'blur'
+    }]
+}
+
 const onSubmit = () => {
-    console.log('submit!')
+    loginRef.value.validate((vaild) => {
+        if (!vaild) {
+            return false
+        }
+        console.log('通过');
+        login(form.userName, form.passWord).
+            then((res) => {
+                console.log(res.data.data);
+                //提示成功
+                //存储用户token
+                //跳转到首页
+            }).catch((err) => {
+                console.log(err.response.data.msg);
+                ElNotification({
+                    message: err.response.data.msg || '请求失败',
+                    type: 'error',
+                    duration:3000
+                })
+            })
+    })
 }
 
 </script>
 <style scoped lang="less">
-.el-button{
+.el-button {
     color: var(--rose-w);
 }
-.btn-w{
+
+.btn-w {
     width: 250px;
 }
-.login-title{
+
+.login-title {
     margin: 25px 0;
     color: var(--rose-g1);
     font-size: 15px;
-    .line{
+
+    .line {
         height: 1px;
         width: 50px;
         background-color: var(--rose-g1);
         margin: 0 5px;
     }
 }
+
 .left {
     color: var(--rose-w);
 
