@@ -33,7 +33,8 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button round type="primary" color="#a781ee" @click="onSubmit" class="btn-w">登录</el-button>
+                    <el-button round type="primary" color="#a781ee" @click="onSubmit" class="btn-w"
+                        :loading="loading">登录</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -41,9 +42,16 @@
 </template>
 <script setup>
 import { reactive, ref } from 'vue'
-import { login } from '@/api/manager.js'
-import { ElNotification } from 'element-plus'
+import { login, getInfo } from '@/api/manager.js'
+import {toast} from '@/composables/util.js'
+import {setToken} from '@/composables/auth.js'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
+const router = useRouter()
+const store = useStore()
 const loginRef = ref(null)
+const loading = ref(false)
 
 const form = reactive({
     userName: '',
@@ -69,20 +77,21 @@ const onSubmit = () => {
         if (!vaild) {
             return false
         }
-        console.log('通过');
+        loading.value = true
         login(form.userName, form.passWord).
-            then((res) => {
-                console.log(res.data.data);
-                //提示成功
+            then((res) => {  
+                 //提示成功
+                toast('登录成功！')            
                 //存储用户token
-                //跳转到首页
-            }).catch((err) => {
-                console.log(err.response.data.msg);
-                ElNotification({
-                    message: err.response.data.msg || '请求失败',
-                    type: 'error',
-                    duration:3000
+                setToken(res.token)
+                //获取用户相关信息
+                getInfo().then((res2) => {
+                    store.commit('SET_USERINFO',res2)
                 })
+                //跳转到首页
+                router.push('/')
+            }).finally(() => {
+                loading.value = false
             })
     })
 }
