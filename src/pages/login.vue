@@ -41,10 +41,8 @@
     </el-row>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
-import { login, getInfo } from '@/api/manager.js'
+import { reactive, ref ,onMounted , onBeforeUnmount} from 'vue'
 import {toast} from '@/composables/util.js'
-import {setToken} from '@/composables/auth.js'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -78,23 +76,23 @@ const onSubmit = () => {
             return false
         }
         loading.value = true
-        login(form.userName, form.passWord).
-            then((res) => {  
-                 //提示成功
-                toast('登录成功！')            
-                //存储用户token
-                setToken(res.token)
-                //获取用户相关信息
-                getInfo().then((res2) => {
-                    store.commit('SET_USERINFO',res2)
-                })
-                //跳转到首页
-                router.push('/')
-            }).finally(() => {
-                loading.value = false
-            })
+        store.dispatch('login',form).then((res)=>{
+            toast('登录成功！')
+            router.push('/')
+        }).finally(()=>{
+            loading.value = false
+        })
     })
 }
+onMounted(()=>{
+    document.addEventListener('keyup',onKeyUp)
+})
+onBeforeUnmount(()=>{
+    document.removeEventListener('keyup',onKeyUp)
+})
+const onKeyUp = (e)=>{
+    if(e.key == 'Enter') onSubmit()
+} 
 
 </script>
 <style scoped lang="less">
