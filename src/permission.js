@@ -2,9 +2,11 @@ import router from '@/router'
 import {getToken} from '@/composables/auth.js'
 import {toast} from '@/composables/util.js'
 import store from './store'
-
+import {showFullLoading,hideFullLoading} from '@/composables/util'
 //全局前置守卫
 router.beforeEach(async (to, from, next) => {
+    //显示loading
+    showFullLoading()
     const token = getToken()
     //没有登录强制跳转登录页
     if(!token && to.path != '/login'){
@@ -22,4 +24,9 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch('getinfo')
     }
     next()
+})
+
+//全局后置钩子
+router.afterEach(() => {
+    hideFullLoading()
 })
