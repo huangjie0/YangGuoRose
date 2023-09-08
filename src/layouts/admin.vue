@@ -1,11 +1,15 @@
 <template>
     <el-container>
-        <el-header>头部</el-header>
+        <el-header>
+            <Fheader></Fheader>
+        </el-header>
         <el-container>
-            <el-aside width="200px">Aside</el-aside>
+            <el-aside width="200px">
+                <Fmenu></Fmenu>
+            </el-aside>
             <el-main>
                 <!-- 标签导航部分 -->
-
+                <Ftaglist></Ftaglist>
                 <!-- 主要内容部分 -->
                 <router-view></router-view>
             </el-main>
@@ -13,11 +17,11 @@
     </el-container>
 </template>
 <script setup>
-
+import Fheader from './components/Fheader.vue';
+import Fmenu from './components/Fmenu.vue';
+import Ftaglist from './components/Ftaglist.vue';
 
 </script>
 
 <style lang="less" scoped>
-
-
 </style>
