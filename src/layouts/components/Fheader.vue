@@ -1,6 +1,6 @@
 <template>
     <div class="rose-bg-p fheader rose-f-row">
-        <span class="logo rose-f-c rose-font-w3">
+        <span class="logo rose-f-c rose-font-w3 rose-font-s2">
             <el-icon class="title-logo">
                 <ElemeFilled />
             </el-icon>
@@ -14,18 +14,16 @@
                 <Refresh />
             </el-icon>
         </el-tooltip>
-        <div class="lft-auto">
+        <div class="lft-auto rose-f-c">
             <el-tooltip effect="dark" content="全屏" placement="bottom">
-                <div class="fullScreen">
-                    <el-icon @click="toggle">
-                        <FullScreen v-if="!isFullscreen" />
-                        <Aim v-else/>
-                    </el-icon>
-                </div>
+                <el-icon @click="toggle">
+                    <FullScreen v-if="!isFullscreen" />
+                    <Aim v-else/>
+                </el-icon>
             </el-tooltip>
-            <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link">
-                    <el-avatar :size="25" :src="$store.state.user.avatar" />
+            <el-dropdown @command="handleCommand" class="dropdown rose-f-c">
+                <span class="el-dropdown-link rose-f-row">
+                    <el-avatar :size="25" :src="$store.state.user.avatar" class="avatar"/>
                     {{ $store.state.user.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
@@ -91,12 +89,10 @@ const handleRefresh = ()=>{
     .icon-btn {
         width: 42px;
         height: 64px;
-        cursor: pointer;
     }
 
     .logo {
         width: 250px;
-        font-size: 20px;
 
         .title-logo {
             margin-right: 10px;
@@ -106,23 +102,18 @@ const handleRefresh = ()=>{
     .lft-auto {
         margin-left: auto;
         padding-right: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .el-dropdown{
-            display: flex;
-            align-items: center;
-        }
-        .fullScreen{
-            width: 50px;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            cursor: pointer;
+
+        .dropdown{
+            height: 64px;
+            margin: 0 10px;
+            color: var(--rose-w);
         }
 
         .el-dropdown-link{
-            color: var(--rose-w);
+            align-items: center;
+            .avatar{
+                margin: 0 8px;
+            }
         }
     }
 }
