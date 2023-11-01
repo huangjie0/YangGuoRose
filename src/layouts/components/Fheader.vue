@@ -18,12 +18,12 @@
             <el-tooltip effect="dark" content="全屏" placement="bottom">
                 <el-icon @click="toggle">
                     <FullScreen v-if="!isFullscreen" />
-                    <Aim v-else/>
+                    <Aim v-else />
                 </el-icon>
             </el-tooltip>
             <el-dropdown @command="handleCommand" class="dropdown rose-f-c">
                 <span class="el-dropdown-link rose-f-row">
-                    <el-avatar :size="25" :src="$store.state.user.avatar" class="avatar"/>
+                    <el-avatar :size="25" :src="$store.state.user.avatar" class="avatar" />
                     {{ $store.state.user.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
@@ -38,17 +38,23 @@
             </el-dropdown>
         </div>
     </div>
+    <el-drawer v-model="showDrawer" title="修改密码" :size="'45%'" :close-on-click-modal="false">
+        <span>Hi, there!</span>
+    </el-drawer>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { showModal, toast } from '@/composables/util.js'
 import { logOut } from '@/api/manager.js'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { useFullscreen } from '@vueuse/core'
 
+const showDrawer = ref(false)
 const router = useRouter()
 const store = useStore()
-const { toggle , isFullscreen } = useFullscreen()
+const { toggle, isFullscreen } = useFullscreen()
+
 const handleLogout = () => {
     showModal('是否要退出登录？').then((res) => {
         logOut().finally(() => {
@@ -64,13 +70,15 @@ const handleCommand = (c) => {
     switch (c) {
         case 'rePassword':
             console.log(1111);
+            showDrawer.value = true
             break;
         case 'logout':
             handleLogout()
             break;
     }
 }
-const handleRefresh = ()=>{
+
+const handleRefresh = () => {
     window.location.reload()
 }
 
@@ -103,18 +111,22 @@ const handleRefresh = ()=>{
         margin-left: auto;
         padding-right: 20px;
 
-        .dropdown{
+        .dropdown {
             height: 64px;
             margin: 0 10px;
             color: var(--rose-w);
         }
 
-        .el-dropdown-link{
+        .el-dropdown-link {
             align-items: center;
-            .avatar{
+
+            .avatar {
                 margin: 0 8px;
             }
         }
     }
+}
+:deep(.el-drawer__title){
+    font-size: 10px !important;
 }
 </style>
