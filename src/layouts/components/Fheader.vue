@@ -66,6 +66,7 @@ const handleLogout = () => {
         })
     })
 }
+
 const handleCommand = (c) => {
     switch (c) {
         case 'rePassword':
