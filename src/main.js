@@ -5,8 +5,8 @@ import "element-plus/dist/index.css";
 import router from "./router";
 import store from '@/store'
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import "lib-flexible-computer";
 import "./style.less";
+import "./elementui.less"
 import 'nprogress/nprogress.css'
 
 const app = createApp(App);
