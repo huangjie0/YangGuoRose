@@ -1,7 +1,7 @@
 <template>
   <div class="f-menu">
     <el-scrollbar>
-      <el-menu default-active="2">
+      <el-menu default-active="2" @select="handleSelect">
         <template v-for="(item,index) in asideMenus" :key="index">
           <el-sub-menu :index="item.name" v-if="item.child && item.child.length > 0">
             <template #title>
@@ -23,6 +23,9 @@
   </div>
 </template>
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const asideMenus = [
   {
     name: "后台面板",
@@ -47,9 +50,16 @@ const asideMenus = [
     ],
   },
 ];
+
+const handleSelect = (e)=>{
+  console.log(e);
+  router.push(e)
+}
+
 </script>
 
 <style lang="less" scoped>
+
 .f-menu {
   width: 250px;
   top: 64px;
@@ -58,4 +68,5 @@ const asideMenus = [
   position: fixed;
   background: var(--rose-g2);
 }
+
 </style>
