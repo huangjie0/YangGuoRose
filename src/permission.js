@@ -1,4 +1,4 @@
-import router from '@/router'
+import { router,addRoutes } from '@/router'
 import {getToken} from '@/composables/auth.js'
 import {toast} from '@/composables/util.js'
 import store from './store'
@@ -21,7 +21,9 @@ router.beforeEach(async (to, from, next) => {
     }
     //如果用户登录了，自动获取用户信息，并存储在vuex中
     if(token){
-        await store.dispatch('getinfo')
+        let { menus } =  await store.dispatch('getinfo')
+        //动态添加路由
+        addRoutes(menus)
     }
     next()
 })

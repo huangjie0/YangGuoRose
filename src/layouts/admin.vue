@@ -4,7 +4,7 @@
             <Fheader></Fheader>
         </el-header>
         <el-container>
-            <el-aside width="200px">
+            <el-aside :width="$store.state.asideWidth">
                 <Fmenu></Fmenu>
             </el-aside>
             <el-main>
@@ -24,4 +24,9 @@ import Ftaglist from './components/Ftaglist.vue';
 </script>
 
 <style lang="less" scoped>
+
+.el-aside{
+    transition:all 0.2s;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="f-menu">
+  <div class="f-menu" :style="{ width:$store.state.asideWidth }">
     <el-scrollbar>
-      <el-menu default-active="2" @select="handleSelect">
+      <el-menu :default-active="defaultActive" :unique-opened="true" default-active="2" @select="handleSelect" :collapse="isCollapse" :collapse-transition="false">
         <template v-for="(item,index) in asideMenus" :key="index">
           <el-sub-menu :index="item.name" v-if="item.child && item.child.length > 0">
             <template #title>
@@ -23,33 +23,20 @@
   </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
+import { computed , ref } from 'vue';
+import { useStore } from 'vuex';
 
 const router = useRouter()
-const asideMenus = [
-  {
-    name: "后台面板",
-    icon: "help",
-    child: [
-      {
-        name: "主控台",
-        icon: "home-filled",
-        frontpath: "/",
-      },
-    ],
-  },
-  {
-    name: "商城管理",
-    icon: "shopping-bag",
-    child: [
-      {
-        name: "商品管理",
-        icon: "shopping-cart-full",
-        frontpath: "/goods/list",
-      },
-    ],
-  },
-];
+const route = useRoute()
+const store = useStore()
+
+//默认激活状态下的路由路劲
+const defaultActive = ref(route.path)  
+
+const isCollapse = computed(()=> !(store.state.asideWidth == '250px'))
+
+const asideMenus = computed(()=> store.state.menus)
 
 const handleSelect = (e)=>{
   console.log(e);
@@ -61,7 +48,9 @@ const handleSelect = (e)=>{
 <style lang="less" scoped>
 
 .f-menu {
-  width: 250px;
+  transition:all 0.2s;
+  overflow-x:hidden;
+  overflow-y:auto;
   top: 64px;
   bottom: 0;
   left: 0;

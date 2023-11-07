@@ -6,8 +6,12 @@
       </el-icon>
       洋果子Rose
     </span>
-    <el-icon class="icon-btn rose-f-c">
-      <Fold />
+    <el-icon
+      class="icon-btn rose-f-c"
+      @click="$store.commit('HANDLE_ASIDE_WIDTH')"
+    >
+      <Fold v-if="$store.state.asideWidth == '250px'" />
+      <Expand v-else />
     </el-icon>
     <el-tooltip effect="dark" content="刷新" placement="bottom">
       <el-icon class="icon-btn rose-f-c" @click="handleRefresh">
@@ -78,16 +82,17 @@
 <script setup>
 import { useFullscreen } from "@vueuse/core";
 import FormDrawer from "@/components/FormDrawer.vue";
-import { useRepassword , useLogOut } from '@/composables/useManage.js'
+import { useRepassword, useLogOut } from "@/composables/useManage.js";
 
 const { toggle, isFullscreen } = useFullscreen();
-const { formDrawerRef,formRef,form,rules,onSubmit,openRepassWordForm } = useRepassword();
+const { formDrawerRef, formRef, form, rules, onSubmit, openRepassWordForm } =
+  useRepassword();
 const { handleLogout } = useLogOut();
 
 const handleCommand = (c) => {
   switch (c) {
     case "rePassword":
-      openRepassWordForm()
+      openRepassWordForm();
       break;
     case "logout":
       handleLogout();
@@ -98,7 +103,6 @@ const handleCommand = (c) => {
 const handleRefresh = () => {
   window.location.reload();
 };
-
 </script>
 
 <style lang="less" scoped>
@@ -114,6 +118,9 @@ const handleRefresh = () => {
   .icon-btn {
     width: 42px;
     height: 64px;
+    &:hover{
+      cursor: pointer;
+    }
   }
 
   .logo {
@@ -127,6 +134,9 @@ const handleRefresh = () => {
   .lft-auto {
     margin-left: auto;
     padding-right: 20px;
+    &:hover{
+      cursor: pointer;
+    }
 
     .dropdown {
       height: 64px;
@@ -143,5 +153,4 @@ const handleRefresh = () => {
     }
   }
 }
-
 </style>

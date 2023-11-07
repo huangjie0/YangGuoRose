@@ -1,6 +1,7 @@
 /*
     对elemtui样式中全局修改
 */
+
 .el-dropdown-menu__item:not(.is-disabled):focus {
     color: var(--rose-p);
 }
@@ -12,4 +13,30 @@
 
 .el-menu{
     border:0;
+}
+
+.el-tabs__header{
+    margin: 0;
+    border: 0;
+}
+
+.el-tabs--card>.el-tabs__header{
+    border-bottom: 0;
+}
+
+.el-tabs__nav-wrap{
+    margin-top: 8px;
+}
+
+.el-tabs__nav{
+    border: 0 !important;
+}
+
+.el-tabs__item{
+    border:0 !important;
+    background:var(--rose-w);
+    margin-left:10px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
 }
