@@ -1,7 +1,7 @@
 <template>
   <div class="f-menu" :style="{ width:$store.state.asideWidth }">
     <el-scrollbar>
-      <el-menu :default-active="defaultActive" :unique-opened="true" default-active="2" @select="handleSelect" :collapse="isCollapse" :collapse-transition="false">
+      <el-menu active-text-color="#a781ee" :default-active="defaultActive" :unique-opened="true" default-active="2" @select="handleSelect" :collapse="isCollapse" :collapse-transition="false">
         <template v-for="(item,index) in asideMenus" :key="index">
           <el-sub-menu :index="item.name" v-if="item.child && item.child.length > 0">
             <template #title>
@@ -25,7 +25,7 @@
 <script setup>
 import { useRouter,useRoute } from 'vue-router';
 import { computed , ref } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from 'vuex'; 
 
 const router = useRouter()
 const route = useRoute()
@@ -39,7 +39,6 @@ const isCollapse = computed(()=> !(store.state.asideWidth == '250px'))
 const asideMenus = computed(()=> store.state.menus)
 
 const handleSelect = (e)=>{
-  console.log(e);
   router.push(e)
 }
 

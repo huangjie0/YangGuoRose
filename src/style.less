@@ -1,4 +1,5 @@
 :root{
+    font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     //白色
     --rose-w:#FFFFFF;
     //灰色
@@ -7,14 +8,22 @@
     --rose-g2:#f2f8f8;
      //浅灰色
      --rose-g3:#faf4f4;
+     //深灰色
+     --rose-g4:#464646;
     //主题紫色
     --rose-p:#a781ee;
+    //浅紫色
+    --rose-p1:#bfa5ee;
 }
 
 //公共的样式
 * {
   margin: 0;
   padding: 0;
+}
+
+body{
+  background-color: var(--rose-g2);
 }
 
 //flex居中
@@ -80,7 +89,11 @@
 
 //公共颜色封装
 .rose-bg-w{
-    background-color: #FFFFFF;;
+    background-color: #FFFFFF;
+}
+
+.rose-bg{
+  color: #A9A9A9;
 }
 
 .rose-bg-p{
@@ -105,6 +118,10 @@
 
 .rose-font-s2{
   font-size: 20px;
+}
+
+.rose-font-s3{
+  font-size: 15px;
 }
 
 //公共圆角设置

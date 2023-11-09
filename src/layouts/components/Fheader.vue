@@ -6,20 +6,22 @@
       </el-icon>
       洋果子Rose
     </span>
-    <el-icon
-      class="icon-btn rose-f-c"
-      @click="$store.commit('HANDLE_ASIDE_WIDTH')"
-    >
-      <Fold v-if="$store.state.asideWidth == '250px'" />
-      <Expand v-else />
-    </el-icon>
-    <el-tooltip effect="dark" content="刷新" placement="bottom">
+    <el-tooltip effect="customized" content="收缩菜单" placement="bottom">
+      <el-icon
+        class="icon-btn rose-f-c"
+        @click="$store.commit('HANDLE_ASIDE_WIDTH')"
+      >
+        <Fold v-if="$store.state.asideWidth == '250px'" />
+        <Expand v-else />
+      </el-icon>
+    </el-tooltip>
+    <el-tooltip effect="customized" content="刷新" placement="bottom">
       <el-icon class="icon-btn rose-f-c" @click="handleRefresh">
         <Refresh />
       </el-icon>
     </el-tooltip>
     <div class="lft-auto rose-f-c">
-      <el-tooltip effect="dark" content="全屏" placement="bottom">
+      <el-tooltip effect="customized" content="全屏" placement="bottom">
         <el-icon @click="toggle">
           <FullScreen v-if="!isFullscreen" />
           <Aim v-else />

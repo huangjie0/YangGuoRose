@@ -1,4 +1,4 @@
-import { router,addRoutes } from '@/router'
+import { router , addRoutes } from '@/router/index.js'
 import {getToken} from '@/composables/auth.js'
 import {toast} from '@/composables/util.js'
 import store from './store'
@@ -17,15 +17,21 @@ router.beforeEach(async (to, from, next) => {
     //防止重复登录
     if(token && to.path == '/login'){
         toast('请勿重复登录！','error')
-        next({path:from.path ? from.path : '/'})
+        return next({path:from.path ? from.path : '/'})
     }
     //如果用户登录了，自动获取用户信息，并存储在vuex中
+    let hasNewRoutes = false
     if(token){
         let { menus } =  await store.dispatch('getinfo')
         //动态添加路由
-        addRoutes(menus)
+        hasNewRoutes = addRoutes(menus)
     }
-    next()
+
+    //设置标题
+    let title = to.meta.title ?  '洋果子Rose' +  to.meta.title : ''
+    document.title = title
+
+    hasNewRoutes ? next(to.fullPath) : next()
 })
 
 //全局后置钩子
