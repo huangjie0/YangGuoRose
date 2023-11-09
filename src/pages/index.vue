@@ -37,7 +37,7 @@
                 </div>
             </template>
             <span class="rose-font-s1 rose-font-w2 count-value">
-                {{ item.value }}
+                <CountTo :value="item.value"></CountTo>
             </span>
             <el-divider />
             <div class="rose-f1 rose-font-s3 rose-bg">
@@ -47,11 +47,14 @@
             </el-card>
         </el-col>
     </el-row>
+    <IndexNavs></IndexNavs>
   </div>
 </template>
 <script setup>
 import { getStatistics1 } from "@/api/index.js";
 import { onMounted, ref } from "vue";
+import CountTo from '@/components/CountTo.vue'
+import IndexNavs from '@/components/IndexNavs.vue'
 
 const panels = ref([]);
 
