@@ -23,7 +23,7 @@
   </div>
 </template>
 <script setup>
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter,useRoute , onBeforeRouteUpdate } from 'vue-router';
 import { computed , ref } from 'vue';
 import { useStore } from 'vuex'; 
 
@@ -40,7 +40,11 @@ const asideMenus = computed(()=> store.state.menus)
 
 const handleSelect = (e)=>{
   router.push(e)
-}
+};
+
+onBeforeRouteUpdate((to, from) => {
+  defaultActive.value = to.path;
+});
 
 </script>
 

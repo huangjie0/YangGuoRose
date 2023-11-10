@@ -16,7 +16,7 @@
       ></el-tab-pane>
     </el-tabs>
     <span class="tag-btn rose-bg-w rose-br-s1 rose-f-c">
-      <el-dropdown>
+      <el-dropdown @command="handleClose">
         <span class="el-dropdown-link">
           <el-icon>
             <arrow-down />
@@ -24,11 +24,8 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>Action 1</el-dropdown-item>
-            <el-dropdown-item>Action 2</el-dropdown-item>
-            <el-dropdown-item>Action 3</el-dropdown-item>
-            <el-dropdown-item disabled>Action 4</el-dropdown-item>
-            <el-dropdown-item divided>Action 5</el-dropdown-item>
+            <el-dropdown-item command="clearOther">关闭其他</el-dropdown-item>
+            <el-dropdown-item command="clearAll">全部关闭</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -37,61 +34,9 @@
   <div class="fill"></div>
 </template>
 <script setup>
-import { ref } from "vue";
-import { useRoute, onBeforeRouteUpdate, useRouter} from "vue-router";
-import { onMounted , onBeforeMount } from 'vue';
-import { useCookies } from '@vueuse/integrations/useCookies'
+import { useTabList } from '@/composables/useTabList.js';
 
-const route = useRoute();
-const router = useRouter();
-const activeTab = ref(route.path);
-const cookie = useCookies();
-
-const tabList = ref([
-  {
-    title: "后台首页",
-    path: "/",
-  },
-  {
-    title: "商城管理",
-    path: "/goods/list",
-  },
-]);
-
-const removeTab = (targetName) => {};
-
-const changTab = (t) => {
-  activeTab.value = t;
-  router.push(t);
-};
-
-onBeforeRouteUpdate((to, from) => {
-  activeTab.value = to.path;
-  addTab({
-    title: to.meta.title,
-    path: to.path,
-  });
-});
-
-//添加标签导航的方法
-const addTab = (tab) => {
-  let noTab = tabList.value.findIndex(t => t.path == tab.path) == -1;
-  if (noTab) {
-    tabList.value.push(tab);
-    cookie.set("tabList", tabList.value);
-  }
-};
-
-//初始化标签导航列表
-const initTabList = () => {
-  let tabs = cookie.get("tabList")
-  if(tabs){
-    tabList.value = tabs
-  }
-}
-
-initTabList()
-
+const { activeTab,tabList,changTab,removeTab,handleClose } =  useTabList()
 </script>
 
 <style lang="less" scoped>
