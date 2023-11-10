@@ -105,6 +105,7 @@ const handleCommand = (c) => {
 const handleRefresh = () => {
   window.location.reload();
 };
+
 </script>
 
 <style lang="less" scoped>
@@ -116,6 +117,7 @@ const handleRefresh = () => {
   left: 0;
   right: 0;
   align-items: center;
+  z-index:1000;
 
   .icon-btn {
     width: 42px;

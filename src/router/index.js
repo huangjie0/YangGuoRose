@@ -11,6 +11,7 @@ import CommentList from "@/pages/comment/List.vue";
 import ImageList from "@/pages/image/List.vue";
 import NoticeList from "@/pages/notice/List.vue";
 import CouponList from "@/pages/coupon/List.vue";
+import SettingList from "@/pages/setting/List.vue";
 
 //默认路由所有页面共享
 const routes = [
@@ -105,6 +106,14 @@ const asyncRoutes = [
     component: CouponList,
     meta: {
       title: "优惠券列表",
+    },
+  },
+  {
+    path: "/setting/list",
+    name: "/setting/list",
+    component: SettingList,
+    meta: {
+      title: "配置列表",
     },
   },
 ];

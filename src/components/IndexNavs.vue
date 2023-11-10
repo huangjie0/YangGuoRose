@@ -55,7 +55,7 @@ const navsList = [
         icon:'IceCreamRound',
         color:'#00bc12',
         title:'配置',
-        path:''
+        path:'/setting/list'
     },
     {
         icon:'Fries',
