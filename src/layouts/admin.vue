@@ -11,11 +11,7 @@
                 <!-- 标签导航部分 -->
                 <Ftaglist></Ftaglist>
                 <!-- 主要内容部分 -->
-                <router-view v-slot="{ Componment }">
-                    <keep-alive :max="10">
-                        <component :is="Componment"></component>
-                    </keep-alive>
-                </router-view>
+                <router-view></router-view>
             </el-main>
         </el-container>
     </el-container>
