@@ -69,7 +69,7 @@ const navsList = [
 .navs{
     margin-top: 30px;
     &-icon{
-        margin-top:25px;
+        margin-top:var(--common-split2);
     }
 } 
 </style>

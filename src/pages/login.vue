@@ -105,7 +105,7 @@ const onKeyUp = (e)=>{
 }
 
 .login-title {
-    margin: 25px 0;
+    margin: var(--common-split2) 0;
     color: var(--rose-g1);
     font-size: 15px;
 

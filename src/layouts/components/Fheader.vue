@@ -137,7 +137,7 @@ const handleRefresh = () => {
 
   .lft-auto {
     margin-left: auto;
-    padding-right: 20px;
+    padding-right: var(--common-split);
     &:hover{
       cursor: pointer;
     }

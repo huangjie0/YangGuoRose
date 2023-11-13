@@ -10,8 +10,7 @@
           </div>
         </div>
       </template>
-      <div id="chartId">
-      </div>
+      <div id="chartId" ref="chartRef"></div>
     </el-card>
   </div>
 </template>
@@ -66,6 +65,9 @@ function getData() {
         showBackground: true,
         backgroundStyle: {
             color: 'rgba(180, 180, 180, 0.2)'
+        },
+        itemStyle: {
+            color: '#a781ee'
         }
         }
     ]
@@ -84,23 +86,18 @@ onBeforeUnmount(()=>{
     if(myChart) echarts.dispose(myChart)
 })
 
-// useResizeObserver(el, (entries) => {
-//       const entry = entries[0]
-//       const { width, height } = entry.contentRect
-//       text.value = `width: ${width}, height: ${height}`
-// })
-
-
+const chartRef = ref(null)
+useResizeObserver(chartRef, (entries) => myChart.resize())
 
 </script>
 <style lang="less">
 .chart{
-    margin-top:20px;
+    margin-top:var(--common-split);
 }
 
 #chartId{
     width: 100%;
-    height: 300px;
+    height: 335px;
 }
 
 </style>
