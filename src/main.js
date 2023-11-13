@@ -8,9 +8,11 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "./style.less";
 import "./elementui.less"
 import 'nprogress/nprogress.css'
+import permission from '@/directives/permission.js'
 
 const app = createApp(App);
 
+app.use(permission)
 app.use(ElementPlus);
 app.use(router);
 app.use(store)

@@ -45,8 +45,10 @@ const onChange = (type)=>{
 var myChart = null
 onMounted(()=>{
     var chartDom = document.getElementById('chartId');
-    myChart = echarts.init(chartDom);
-    getData()
+    if(chartDom){
+      myChart = echarts.init(chartDom);
+      getData()
+    }
 })
 
 function getData() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" v-permission="['getStatistics1,GET']">
         <template v-if="panels.length == 0">
             <el-col :span="6" v-for="i in 4" :key="i">
                 <el-skeleton animated loading>
@@ -50,10 +50,10 @@
     <IndexNavs></IndexNavs>
     <el-row :gutter="20">
         <el-col :span="12">
-            <IndexChart></IndexChart>
+            <IndexChart v-permission="['getStatistics3,GET']"></IndexChart>
         </el-col>
-        <el-col :span="12">
-            <IndexCard title="店铺及商品提示" tip="店铺及商品提示" :btns="goods" ></IndexCard>
+        <el-col :span="12" v-permission="['getStatistics2,GET']">
+            <IndexCard title="店铺及商品提示" tip="店铺及商品提示" :btns="goods"></IndexCard>
             <IndexCard title="交易提示" tip="需要立即处理的交易订单" :btns="order"></IndexCard>
         </el-col>
     </el-row>

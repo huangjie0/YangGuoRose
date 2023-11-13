@@ -18,7 +18,7 @@
             </div>
           </el-card>
         </el-col>
-      </el-row>
+      </el-row> 
     </el-card>
   </div>
 </template>
