@@ -8,7 +8,7 @@
         </el-col>
         <el-col :lg="8" :md="12" class="rose-bg-w rose-f-c rose-f-column">
             <h2 class="rose-font-w2 rose-font-s1">欢迎回来</h2>
-            <div class="rose-f1 login-title">
+            <div class="rose-f1 login-title rose-font-s3">
                 <span class="line"></span>
                 <span>账号密码登录</span>
                 <span class="line"></span>
@@ -107,7 +107,6 @@ const onKeyUp = (e)=>{
 .login-title {
     margin: var(--common-split2) 0;
     color: var(--rose-g1);
-    font-size: 15px;
 
     .line {
         height: 1px;
