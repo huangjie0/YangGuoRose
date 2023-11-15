@@ -3,7 +3,7 @@
     <div class="top rose-p-a-0">
       <el-scrollbar>
         <el-row :gutter="10">
-          <el-col :span="6" v-for="(item,index) in list" :key="index">
+          <el-col :span="6" v-for="(item,index) in list" :key="index" class="image-col">
             <el-card shadow="always" :body-style="{ padding:0 }">
               <el-image :src="item.url" fit="cover" class="image"></el-image>
               <div class="rose-text-overflow image-title">{{ item.name }}</div>
@@ -86,12 +86,12 @@ defineExpose({
   height:150px;
 }
 
-.el-col{
-  margin-bottom:20px;
-}
-
 .image-title{
   text-align:center;
+}
+
+.image-col{
+  margin-bottom:15px;
 }
 
 </style>
