@@ -58,7 +58,7 @@ onBeforeRouteUpdate((to, from) => {
   bottom: 0;
   left: 0;
   position: fixed;
-  background: var(--rose-g2);
+  background: var(--rose-w);
 }
 
 </style>
