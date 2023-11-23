@@ -6,14 +6,15 @@
     <el-button text type="primary" size="small" @click.stop="$emit('edit')">
       <el-icon :size="12"><Edit /></el-icon>
     </el-button>
-
-    <el-popconfirm title="是否要删除改分类？" confirm-button-text="确认" cancel-button-text="取消" @confirm.stop="$emit('close')">
-        <template #reference>
-            <el-button text type="primary" size="small">
-                <el-icon :size="12"><Close /></el-icon>
-            </el-button>
-        </template>
-    </el-popconfirm>
+    <span @click.stop="()=>{}" class="stop">
+      <el-popconfirm title="是否要删除改分类？" confirm-button-text="确认" cancel-button-text="取消" @confirm="$emit('close')">
+          <template #reference>
+              <el-button text type="primary" size="small">
+                  <el-icon :size="12"><Close /></el-icon>
+              </el-button>
+          </template>
+      </el-popconfirm>
+    </span>
   </div>
 </template>
 <script setup>
@@ -35,6 +36,9 @@ defineEmits(['edit','close'])
   align-items: center;
   height:50px;
   padding: 0 var(--common-split);
+  .stop{
+    margin-left: var(--common-split);
+  }
   .span-title {
     width: 80%;
   }

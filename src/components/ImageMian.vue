@@ -31,19 +31,26 @@
       />
     </div>
   </el-main>
+  <!-- 上传图片 -->
+  <FormDrawer :showButton="false" title="上传图片" ref="formDrawer">
+    <UploadFile :data="{ imageClassId }" @success="uploadSuccess"></UploadFile>
+  </FormDrawer>
 </template>
 <script setup>
 import { getImageList , updateImage , deleteImage } from "@/api/image.js";
 import { onMounted , ref } from "vue";
 import { showPrompt, toast } from '@/composables/util.js';
+import UploadFile from "@/components/UploadFile.vue";
+import FormDrawer from "@/components/FormDrawer.vue";
 
 //分页
-const currentPage = ref(1);
+const currentPage = ref(1); 
 const total = ref(0);
 const limit = ref(10);
 const loading = ref(false);
 const list = ref([]);
 const imageClassId = ref(0);
+const formDrawer = ref(null);
 
 const getData = (page = null) => {
   if (typeof page == "number") {
@@ -68,8 +75,13 @@ const loadData = (id) => {
   getData()
 }
 
+const uploadSuccess = ()=>{
+  getData(1)
+}
+
 defineExpose({
-  loadData
+  loadData,
+  formDrawer
 })
 //修改图片
 const handleEdit = (item)=>{

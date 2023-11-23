@@ -12,7 +12,7 @@
             <slot></slot>
         </el-scrollbar>
     </div>
-    <div class="actions rose-f-row">
+    <div class="actions rose-f-row" v-if="showButton">
         <el-button type="primary" @click="submit" :loading="loading">{{ confirmText }}</el-button>
         <el-button type="default" @click="close">取消</el-button>
     </div>
@@ -54,6 +54,10 @@ const props = defineProps({
     confirmText:{
         type:String,
         default:"提交"
+    },
+    showButton:{
+        type:Boolean,
+        default:true
     }
 })
 

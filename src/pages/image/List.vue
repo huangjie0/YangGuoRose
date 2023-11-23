@@ -2,6 +2,7 @@
   <el-container class="rose-bg-w rose-br-s1" :style="{ height: h + 'px' }">
     <el-header class="image-header rose-f-row">
       <el-button type="primary" size="small" @click="handleOpenCreate">新增图片分类</el-button>
+      <el-button type="primary" size="small" @click="uploadImage">上传图片</el-button>
     </el-header>
     <el-container>
     <ImageAside ref="imageAsideRef" @change="handleChange"></ImageAside>
@@ -29,6 +30,10 @@ onMounted(() => {
 
 const handleChange = (id)=>{
   imageMainRef.value.loadData(id)
+}
+
+const uploadImage = ()=>{
+  imageMainRef.value.formDrawer.open()
 }
 
 </script>
