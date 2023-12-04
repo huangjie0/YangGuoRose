@@ -9,6 +9,7 @@ import "./style.less";
 import "./elementui.less"
 import 'nprogress/nprogress.css'
 import permission from '@/directives/permission.js'
+import "lib-flexible-computer";
 
 const app = createApp(App);
 

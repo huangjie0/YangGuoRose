@@ -9,7 +9,7 @@
         </el-button>
       </el-tooltip>
     </div>
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
       <el-table-column prop="title" label="公告标题" width="380" />
       <el-table-column prop="create_time" label="发布时间" width="380" />
       <el-table-column label="操作" with="380" align="center">
@@ -62,6 +62,11 @@ const formRef = ref()
 const editId = ref(0)
 const drawerTitle = computed(()=>
   editId.value ? '修改' : '新增'
+)
+
+const tableHeight = computed(()=>{
+  return (window.innerHeight - 270) + 'px';
+}
 )
 
 const form = reactive({
