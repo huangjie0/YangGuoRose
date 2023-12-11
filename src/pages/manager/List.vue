@@ -81,7 +81,7 @@
               <el-input v-model="form.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item label="头像" prop="avatar"> 
-              <!-- <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input> -->
+              <ChooseImage></ChooseImage>
             </el-form-item>
             <el-form-item label="所属角色" prop="role_id"> 
               <el-select v-model="form.role_id" placeholder="选择所属角色">
@@ -103,6 +103,7 @@
   <script setup>
   import { ref, onMounted, reactive, computed } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
+  import ChooseImage from '@/components/ChooseImage.vue'
   import { toast } from '@/composables/util.js';
   import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
   
