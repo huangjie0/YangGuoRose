@@ -8,7 +8,7 @@
               <el-image :src="item.url" fit="cover" class="image" :preview-src-list="[item.url]" :initial-index="0"></el-image>
               <div class="rose-text-overflow image-title">{{ item.name }}</div>
               <div class="rose-f-row rose-f-c">
-                <el-checkbox v-model="item.checked" @change="handleChooseChange(item)"/>
+                <el-checkbox v-model="item.checked" @change="handleChooseChange(item)" v-if="openChoose"/>
                 <el-button size="small" text @click="handleEdit(item)">重命名</el-button>
                 <el-popconfirm title="是否要删除改图片？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(item.id)">
                   <template #reference>
@@ -87,6 +87,13 @@ const uploadSuccess = ()=>{
 defineExpose({
   loadData,
   formDrawer
+})
+
+defineProps({
+  openChoose:{
+    type:Boolean,
+    default:false
+  }
 })
 //修改图片
 const handleEdit = (item)=>{

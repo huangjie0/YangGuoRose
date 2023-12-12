@@ -1,11 +1,16 @@
 <template>
   <div>
-    <div
-      class="choose-image-btn rose-br-s1 rose-f-row rose-f-c rose-cursor"
-      @click="openDialog"
-    >
-      <el-icon :size="25"><Plus /></el-icon>
-    </div>
+      <div class="rose-f-row">
+        <div v-if="modelValue">
+          <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList"></el-image>
+        </div>
+        <div
+          class="choose-image-btn rose-br-s1 rose-f-row rose-f-c rose-cursor"
+          @click="openDialog"
+        >
+          <el-icon :size="25"><Plus /></el-icon>
+        </div>
+      </div>
     <ChooseImageDialog ref="chooseImageRef" title="选择图片" top="3%" width="85%" @submit="handleSubmit">
       <template #content>
         <el-container
@@ -21,7 +26,7 @@
           </el-header>
           <el-container>
             <ImageAside ref="imageAsideRef" @change="handleChange"></ImageAside>
-            <ImageMian ref="imageMainRef" @choose="handleChoose"></ImageMian>
+            <ImageMian ref="imageMainRef" @choose="handleChoose" openChoose></ImageMian>
           </el-container>
         </el-container>
       </template>
@@ -32,7 +37,7 @@
 import ChooseImageDialog from "@/components/CommonDialog.vue";
 import ImageAside from '@/components/ImageAside.vue';
 import ImageMian from '@/components/ImageMian.vue';
-import { ref } from "vue";
+import { ref , computed } from "vue";
 
 const chooseImageRef = ref();
 const urls = ref([])
@@ -64,6 +69,8 @@ const props = defineProps({
   modelValue:[String,Array]
 })
 
+const srcList = computed( ()=> props.modelValue ? [props.modelValue] : [])
+
 const emit = defineEmits(['update:modelValue'])
 
 const handleChoose = (e)=>{
@@ -87,6 +94,7 @@ const handleSubmit = ()=>{
   width: 100px;
   height: 100px;
   background-color: var(--rose-g2);
+  margin-left:10px;
   &:hover {
     background-color: var(--rose-g3);
   }
@@ -95,4 +103,8 @@ const handleSubmit = ()=>{
   height:70vh;
 }
 
+.imageSize{
+  width:100px;
+  height:100px;
+}
 </style>
