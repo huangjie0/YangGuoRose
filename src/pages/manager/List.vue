@@ -81,7 +81,8 @@
               <el-input v-model="form.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item label="头像" prop="avatar"> 
-              <ChooseImage></ChooseImage>
+              {{ form.avatar }}
+              <ChooseImage v-model="form.avatar"></ChooseImage>
             </el-form-item>
             <el-form-item label="所属角色" prop="role_id"> 
               <el-select v-model="form.role_id" placeholder="选择所属角色">

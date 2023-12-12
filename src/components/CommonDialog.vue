@@ -9,7 +9,7 @@
     <slot name="content"></slot>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="Cancel">取消</el-button>
+        <el-button @click="close">取消</el-button>
         <el-button type="primary" @click="submit">确定</el-button>
       </span>
     </template>
@@ -39,12 +39,10 @@ defineProps({
     }
 })
 
-const Cancel = ()=>{
-    dialogVisible.value = false
-}
+const emit = defineEmits(['submit'])
 
 const submit = ()=>{
-
+  emit('submit')
 }
 
 //打开弹框方法
@@ -52,8 +50,14 @@ const open = ()=>{
     dialogVisible.value = true
 }
 
+//关闭弹框
+const close = () => { 
+  dialogVisible.value = false
+}
+
 defineExpose({
-    open
+    open,
+    close
 })
 
 </script>

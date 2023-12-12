@@ -8,6 +8,7 @@
               <el-image :src="item.url" fit="cover" class="image" :preview-src-list="[item.url]" :initial-index="0"></el-image>
               <div class="rose-text-overflow image-title">{{ item.name }}</div>
               <div class="rose-f-row rose-f-c">
+                <el-checkbox v-model="item.checked" @change="handleChooseChange(item)"/>
                 <el-button size="small" text @click="handleEdit(item)">重命名</el-button>
                 <el-popconfirm title="是否要删除改图片？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(item.id)">
                   <template #reference>
@@ -38,7 +39,7 @@
 </template>
 <script setup>
 import { getImageList , updateImage , deleteImage } from "@/api/image.js";
-import { onMounted , ref } from "vue";
+import { onMounted , ref , computed } from "vue";
 import { showPrompt, toast } from '@/composables/util.js';
 import UploadFile from "@/components/UploadFile.vue";
 import FormDrawer from "@/components/FormDrawer.vue";
@@ -61,7 +62,11 @@ const getData = (page = null) => {
   getImageList(imageClassId.value , currentPage.value)
     .then((res) => {
       total.value = res.totalCount;
-      list.value = res.list;
+      list.value = res.list.map(o => {
+        o.checked = false
+        return o
+      })
+
     })
     .finally(() => {
       loading.value = false;
@@ -104,6 +109,19 @@ const handleDelete = (id)=>{
   }).finally(()=>{
     loading.value = false
   })
+}
+
+//选中图片
+const checkImage = computed(()=> list.value.filter(o => o.checked))
+
+const emit = defineEmits(['choose'])
+
+const handleChooseChange = (item)=>{
+  if(item.checked && checkImage.value.length > 1){ 
+    item.checked = false
+    return toast('最多选择一张图片！','warning')
+  }
+  emit("choose",checkImage.value)
 }
 
 </script>

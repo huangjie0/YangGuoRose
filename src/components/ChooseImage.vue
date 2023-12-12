@@ -6,11 +6,10 @@
     >
       <el-icon :size="25"><Plus /></el-icon>
     </div>
-    <ChooseImageDialog ref="chooseImageRef" title="选择图片" top="3%" width="85%">
+    <ChooseImageDialog ref="chooseImageRef" title="选择图片" top="3%" width="85%" @submit="handleSubmit">
       <template #content>
         <el-container
           class="rose-bg-w rose-br-s1 rose-container"
-          style="height:70vh"
         >
           <el-header class="image-header rose-f-row">
             <el-button type="primary" size="small" @click="handleOpenCreate"
@@ -22,7 +21,7 @@
           </el-header>
           <el-container>
             <ImageAside ref="imageAsideRef" @change="handleChange"></ImageAside>
-            <ImageMian ref="imageMainRef"></ImageMian>
+            <ImageMian ref="imageMainRef" @choose="handleChoose"></ImageMian>
           </el-container>
         </el-container>
       </template>
@@ -36,10 +35,15 @@ import ImageMian from '@/components/ImageMian.vue';
 import { ref } from "vue";
 
 const chooseImageRef = ref();
+const urls = ref([])
 
 const openDialog = () => {
   chooseImageRef.value.open();
 };
+
+const closeDialog = () => {
+  chooseImageRef.value.close();
+}
 
 const imageAsideRef = ref(null);
 const imageMainRef = ref(null);
@@ -56,6 +60,26 @@ const uploadImage = ()=>{
   imageMainRef.value.formDrawer.open()
 }
 
+const props = defineProps({
+  modelValue:[String,Array]
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const handleChoose = (e)=>{
+  urls.value = e.map((o)=>{
+    return o.url
+  })
+}
+
+//点击确定所触发的事件
+const handleSubmit = ()=>{
+  if(urls.value.length){
+    emit('update:modelValue', urls.value[0])
+    chooseImageRef.value.close()
+  }
+}
+
 </script>
 <style lang="less">
 
@@ -70,7 +94,5 @@ const uploadImage = ()=>{
 .rose-container{
   height:70vh;
 }
-
-
 
 </style>
