@@ -106,13 +106,23 @@
   import ChooseImage from '@/components/ChooseImage.vue'
   import { toast } from '@/composables/util.js';
   import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
+  import {useInitTable} from '@/composables/useCommon.js'
   
-  const loading = ref(false);
-  //分页
-  const currentPage = ref(1);
-  const total = ref(0);
-  const limit = ref(10);
-  const tableData = ref([]);
+  const roles = ref([])
+  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData} = useInitTable({
+    getList:getManagerList,
+    onGetListSuccess:(res)=>{
+      tableData.value = res.list.map(o=>{
+        o.statusLoading = false
+        return o
+      })
+      total.value = res.totalCount
+      roles.value = res.roles
+    },
+    searchForm:{
+      keyword:''
+    }
+  })
   const formDrawerRef = ref()
   const formRef = ref()
   const editId = ref(0)
@@ -132,34 +142,8 @@ const tableHeight = computed(()=>{
     status:1,
     avatar:''
   })
-  
-  const searchForm = reactive({
-    keyword:''
-  })
 
   const rules = {}
-
-  const roles = ref([])
-  
-  const getData = (page = null) => {
-    if (typeof page == "number") {
-      currentPage.value = page;
-    }
-  
-    loading.value = true;
-    getManagerList(currentPage.value,searchForm)
-      .then((res) => {
-        tableData.value = res.list.map(o=>{
-          o.statusLoading = false
-          return o
-        })
-        total.value = res.totalCount
-        roles.value = res.roles
-      })
-      .finally(() => {
-        loading.value = false;
-      });
-  };
   
   onMounted(()=>{
     getData()
@@ -189,16 +173,11 @@ const tableHeight = computed(()=>{
         })
     })
   }
-  //重置表单
+  // //重置表单
   const resetForm = ()=>{
     if(formRef.value){
       formRef.value.clearValidate()
     }
-  }
-//重置功能
-  const reset = ()=>{
-    searchForm.keyword = ''
-    getData()
   }
 
   const handleChange = (value,row)=>{

@@ -37,7 +37,7 @@
           v-model="form.name"
           placeholder="请输入图库分类名称"
         ></el-input>
-      </el-form-item>
+      </el-form-item> 
       <el-form-item label="排序" prop="order">
         <el-input-number :min="0" :max="1000" v-model="form.order"></el-input-number>
       </el-form-item>
