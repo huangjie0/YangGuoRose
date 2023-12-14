@@ -101,16 +101,17 @@
     </el-card>
   </template>
   <script setup>
-  import { ref, onMounted, reactive, computed } from 'vue';
+  import { ref, computed } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
   import ChooseImage from '@/components/ChooseImage.vue'
-  import { toast } from '@/composables/util.js';
   import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
-  import {useInitTable} from '@/composables/useCommon.js'
+  import {useInitTable,useInitForm} from '@/composables/useCommon.js'
   
   const roles = ref([])
-  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData} = useInitTable({
+  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
     getList:getManagerList,
+    delete:deleteManager,
+    updateStatus:updateManagerStatus,
     onGetListSuccess:(res)=>{
       tableData.value = res.list.map(o=>{
         o.statusLoading = false
@@ -123,95 +124,24 @@
       keyword:''
     }
   })
-  const formDrawerRef = ref()
-  const formRef = ref()
-  const editId = ref(0)
-  const drawerTitle = computed(()=>
-    editId.value ? '修改' : '新增'
-  )
+
+const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,handleEdit } = useInitForm({
+  getData,
+  update:updateManager,
+  create:createManager,
+  form:{
+    username: "",
+    password: "",
+    role_id: null,
+    status: 1,
+    avatar: "",
+  }
+})
 
 const tableHeight = computed(()=>{
   return (window.innerHeight - 330) + 'px';
 }
 )
-  
-  const form = reactive({
-    username:'',
-    password:'',
-    role_id:null,
-    status:1,
-    avatar:''
-  })
-
-  const rules = {}
-  
-  onMounted(()=>{
-    getData()
-  })
-  
-  const handleDelete = (id)=>{
-    loading.value = true
-    deleteManager(id).then((res)=>{
-      toast('删除成功！')
-      getData()
-    }).finally(()=>{
-      loading.value = false
-    })
-  } 
-  
-  const handleSubmit = ()=>{
-    formRef.value.validate((valid)=>{
-      if(!valid) return
-        formDrawerRef.value.showLoading()
-        const fun = editId.value ? updateManager(editId.value,form) : createManager(form)
-        fun.then((res)=>{
-          toast(drawerTitle.value + '成功！')
-          getData(editId.vlaue ? false : 1)
-          formDrawerRef.value.close()
-        }).finally(()=>{
-          formDrawerRef.value.hideLoading()
-        })
-    })
-  }
-  // //重置表单
-  const resetForm = ()=>{
-    if(formRef.value){
-      formRef.value.clearValidate()
-    }
-  }
-
-  const handleChange = (value,row)=>{
-    row.statusLoading = true
-    updateManagerStatus(row.id,value).then((res)=>{
-      toast('修改状态成功')
-      row.status = value
-    }).finally(()=>{
-      row.statusLoading = false
-    })
-  }
-  
-  //新增
-  const handleCreate = ()=>{
-    editId.value = 0
-    resetForm()
-    form.username = ''
-    form.password = ''
-    form.role_id = null
-    form.status = 1
-    form.avatar = ''
-    formDrawerRef.value.open()
-  }
-  
-  //修改
-  const handleEdit = (row)=>{
-    resetForm()
-    for (const key in form) {
-        form[key] = row[key]
-    }
-  
-    editId.value = row.id
-    formDrawerRef.value.open()
-  }
   
   </script>
   <style lang="less">

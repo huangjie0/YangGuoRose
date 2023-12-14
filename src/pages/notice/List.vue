@@ -46,36 +46,26 @@
   </el-card>
 </template>
 <script setup>
-import { ref, onMounted, reactive, computed } from 'vue';
+import { computed } from 'vue';
 import { getNoticeList,createNotice,updateNotice,deleteNotice } from '@/api/notice.js'
 import FormDrawer from '@/components/FormDrawer.vue';
-import { toast } from '@/composables/util.js';
+import { useInitTable,useInitForm } from '@/composables/useCommon.js'
 
-const loading = ref(false);
-//分页
-const currentPage = ref(1);
-const total = ref(0);
-const limit = ref(10);
-const tableData = ref([]);
-const formDrawerRef = ref()
-const formRef = ref()
-const editId = ref(0)
-const drawerTitle = computed(()=>
-  editId.value ? '修改' : '新增'
-)
-
-const tableHeight = computed(()=>{
-  return (window.innerHeight - 270) + 'px';
-}
-)
-
-const form = reactive({
-  title:'',
-  content:''
+const { tableData,loading,currentPage,total,limit,getData,handleDelete} = useInitTable({
+  getList:getNoticeList,
+  delete:deleteNotice,
 })
 
-const rules = {
-  title:[{
+const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,handleEdit } = useInitForm({
+  getData,
+  update:updateNotice,
+  create:createNotice,
+  form:{
+    title:'',
+    content:''
+  },
+  rules:{
+    title:[{
         required: true,
         message: '公告标题不能为空！',
         trigger: 'blur'
@@ -85,79 +75,13 @@ const rules = {
         message: '公告内容不能为空！',
         trigger: 'blur'
     }]
-}
-
-const getData = (page = null) => {
-  if (typeof page == "number") {
-    currentPage.value = page;
   }
-
-  loading.value = true;
-  getNoticeList(currentPage.value)
-    .then((res) => {
-      tableData.value = res.list
-      total.value = res.totalCount
-    })
-    .finally(() => {
-      loading.value = false;
-    });
-};
-
-onMounted(()=>{
-  getData()
 })
 
-const handleDelete = (id)=>{
-  loading.value = true
-  deleteNotice(id).then((res)=>{
-    toast('删除成功！')
-    getData()
-  }).finally(()=>{
-    loading.value = false
-  })
-} 
-
-const handleSubmit = ()=>{
-  formRef.value.validate((valid)=>{
-    if(!valid) return
-      formDrawerRef.value.showLoading()
-      const fun = editId.value ? updateNotice(editId.value,form) : createNotice(form)
-      fun.then((res)=>{
-        toast(drawerTitle.value + '成功！')
-        getData(editId.vlaue ? false : 1)
-        formDrawerRef.value.close()
-      }).finally(()=>{
-        formDrawerRef.value.hideLoading()
-      })
-  })
+const tableHeight = computed(()=>{
+  return (window.innerHeight - 270) + 'px';
 }
-//重置表单
-const resetForm = ()=>{
-  if(formRef.value){
-    formRef.value.clearValidate()
-  }
-}
-
-//新增
-const handleCreate = ()=>{
-  editId.value = 0
-  resetForm()
-  for (const key in form) {
-      form[key] = ''
-  }
-  formDrawerRef.value.open()
-}
-
-//修改
-const handleEdit = (row)=>{
-  resetForm()
-  for (const key in form) {
-      form[key] = row[key]
-  }
-
-  editId.value = row.id
-  formDrawerRef.value.open()
-}
+)
 
 </script>
 <style lang="less">
