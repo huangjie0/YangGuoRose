@@ -13,6 +13,7 @@ import NoticeList from "@/pages/notice/List.vue";
 import CouponList from "@/pages/coupon/List.vue";
 import SettingList from "@/pages/setting/List.vue";
 import ManagerList from "@/pages/manager/List.vue";
+import AccessList from "@/pages/access/List.vue"
 
 //默认路由所有页面共享
 const routes = [
@@ -123,6 +124,14 @@ const asyncRoutes = [
     component: ManagerList,
     meta: {
       title: "管理员列表",
+    },
+  },
+  {
+    path: "/access/list",
+    name: "/access/list",
+    component: AccessList,
+    meta: {
+      title: "菜单权限管理"
     },
   },
 ];

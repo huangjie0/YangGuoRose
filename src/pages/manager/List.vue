@@ -15,15 +15,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <!-- 新增功能 -->
-      <div class="rose-f-row rose-f1">
-        <el-button type="primary" size="small" @click="handleCreate">新增</el-button>
-        <el-tooltip content="刷新" placement="top">
-          <el-button text @click="getData">
-            <el-icon :size="20"><Refresh /></el-icon>
-          </el-button>
-        </el-tooltip>
-      </div>
+      <ListHeader @create="handleCreate" @refresh="getData"/>
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
         <el-table-column label="管理员" width="200">
             <template #default="scope">
@@ -106,6 +98,7 @@
   import ChooseImage from '@/components/ChooseImage.vue'
   import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
   import {useInitTable,useInitForm} from '@/composables/useCommon.js'
+  import ListHeader from '@/components/ListHeader.vue'
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({

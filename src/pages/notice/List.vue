@@ -1,14 +1,6 @@
 <template>
   <el-card shadow="always">
-    <!-- 新增功能 -->
-    <div class="rose-f-row rose-f1">
-      <el-button type="primary" size="small" @click="handleCreate">新增</el-button>
-      <el-tooltip content="刷新" placement="top">
-        <el-button text @click="getData">
-          <el-icon :size="20"><Refresh /></el-icon>
-        </el-button>
-      </el-tooltip>
-    </div>
+    <ListHeader @create="handleCreate" @refresh="getData"/>
     <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
       <el-table-column prop="title" label="公告标题" width="380" />
       <el-table-column prop="create_time" label="发布时间" width="380" />
@@ -50,6 +42,7 @@ import { computed } from 'vue';
 import { getNoticeList,createNotice,updateNotice,deleteNotice } from '@/api/notice.js'
 import FormDrawer from '@/components/FormDrawer.vue';
 import { useInitTable,useInitForm } from '@/composables/useCommon.js'
+import ListHeader from '@/components/ListHeader.vue'
 
 const { tableData,loading,currentPage,total,limit,getData,handleDelete} = useInitTable({
   getList:getNoticeList,
