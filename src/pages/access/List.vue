@@ -12,7 +12,9 @@
                     </el-icon>
                     <span> {{ data.name }}</span>
                     <div class="rose-ml-a">
-                        <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr"></el-switch>
+                        <span @click.stop="()=>{}">
+                            <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr"></el-switch>
+                        </span>
                         <el-button size="small" @click.stop="handleEdit(data)">修改</el-button>
                         <el-button type="primary" size="small">添加</el-button>
                         <el-button type="danger" size="small">删除</el-button>
