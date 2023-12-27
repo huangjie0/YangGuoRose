@@ -11,7 +11,7 @@
         </el-table-column>
         <el-table-column label="操作" with="380" align="center">
           <template #default="scope"> 
-            <el-button size="small">配置权限</el-button>
+            <el-button size="small" @click="openStatus(scope.row)">配置权限</el-button>
             <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
             <el-popconfirm title="是否要删除改公告？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                 <template #reference>
@@ -46,16 +46,17 @@
       </FormDrawer>
       <!-- 权限配置 -->
       <FormDrawer ref="setRoleFormDrawerRef" title="权限配置" @submit="handleSetRoleSubmit"> 
-        123
+        <el-tree :data="ruleList" :props="{ label:'name',children:'child' }" show-checkbox/>
       </FormDrawer>
     </el-card>
   </template>
   <script setup>
-  import { computed } from 'vue';
-  import { getRoleList,createRole,updateRole,deleteRole,updateRoleStatus } from '@/api/role.js'
+  import { computed,ref } from 'vue';
+  import { getRoleList,createRole,updateRole,deleteRole,updateRoleStatus } from '@/api/role.js';
   import FormDrawer from '@/components/FormDrawer.vue';
-  import { useInitTable,useInitForm } from '@/composables/useCommon.js'
-  import ListHeader from '@/components/ListHeader.vue'
+  import { useInitTable,useInitForm } from '@/composables/useCommon.js';
+  import ListHeader from '@/components/ListHeader.vue';
+  import { getRuleList } from '@/api/rules.js';
   
   const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
     getList:getRoleList,
@@ -80,11 +81,27 @@
       }]
     }
   })
-  
+
+  const setRoleFormDrawerRef = ref(null)
+  const ruleList = ref([])
+  const ruleId = ref(0)
+   
   const tableHeight = computed(()=>{
     return (window.innerHeight - 270) + 'px';
   }
   )
+
+  const handleSetRoleSubmit = ()=>{
+    
+  }
+
+  const openStatus = (row) => {
+    ruleId.value = row.id
+    getRuleList(1).then(res => {
+        ruleList.value = res.list
+        setRoleFormDrawerRef.value.open()
+    })
+  }
   
   </script>
   <style lang="less">
