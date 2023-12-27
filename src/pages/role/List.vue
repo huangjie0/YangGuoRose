@@ -21,7 +21,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="rose-f-row pagination">
+      <div class="rose-f-c pagination">
         <el-pagination
           background
           layout="prev,pager,next"
@@ -48,7 +48,6 @@
       <FormDrawer ref="setRoleFormDrawerRef" title="权限配置" @submit="handleSetRoleSubmit"> 
         123
       </FormDrawer>
-
     </el-card>
   </template>
   <script setup>
@@ -58,7 +57,7 @@
   import { useInitTable,useInitForm } from '@/composables/useCommon.js'
   import ListHeader from '@/components/ListHeader.vue'
   
-  const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange} = useInitTable({
+  const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
     getList:getRoleList,
     delete:deleteRole,
     updateStatus:updateRoleStatus
@@ -90,8 +89,6 @@
   </script>
   <style lang="less">
   .pagination{
-    justify-content: center;
-    align-items: center;
     margin-top:20px;
   }
   </style>
