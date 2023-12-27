@@ -44,6 +44,11 @@
             </el-form-item>
           </el-form>
       </FormDrawer>
+      <!-- 权限配置 -->
+      <FormDrawer ref="setRoleFormDrawerRef" title="权限配置" @submit="handleSetRoleSubmit"> 
+        123
+      </FormDrawer>
+
     </el-card>
   </template>
   <script setup>
