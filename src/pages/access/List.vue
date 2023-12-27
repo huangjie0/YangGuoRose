@@ -13,11 +13,17 @@
                     <span> {{ data.name }}</span>
                     <div class="rose-ml-a">
                         <span @click.stop="()=>{}">
-                            <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr"></el-switch>
+                            <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr" @change="handleChange($event,data)"></el-switch>
                         </span>
                         <el-button size="small" @click.stop="handleEdit(data)">修改</el-button>
-                        <el-button type="primary" size="small">添加</el-button>
-                        <el-button type="danger" size="small">删除</el-button>
+                        <el-button type="primary" size="small" @click.stop="addChild(data.id)">添加</el-button>
+                        <span @click.stop="()=>{}" class="rose-ml-1">
+                            <el-popconfirm title="是否删除改条数据?" @confirm="handleDelete(data.id)" >
+                                <template #reference>
+                                    <el-button type="danger" size="small">删除</el-button>
+                                </template>
+                            </el-popconfirm>
+                        </span>
                     </div> 
                 </div>
             </template>
@@ -37,7 +43,7 @@
                     <el-input v-model="form.name" clearable class="nameInput"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标" prop="icon" v-if="form.menu == 1">
-                    <!-- <el-input v-model="form.icon" clearable></el-input> -->
+                    <IconSelect v-model="form.icon"></IconSelect>
                 </el-form-item>
                 <el-form-item label="前端路由" prop="frontpath" v-if="form.menu == 1 && form.rule_id > 0">
                     <el-input v-model="form.frontpath" clearable></el-input>
@@ -65,9 +71,10 @@
 <script setup>
 import { ref } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
-import { getRuleList,createRule,updateRule } from '@/api/rules.js'
+import { getRuleList,createRule,updateRule,updateRuleStatus,deleteRule } from '@/api/rules.js'
 import { useInitTable,useInitForm } from '@/composables/useCommon.js'
 import FormDrawer from '@/components/FormDrawer.vue'
+import IconSelect from '@/components/IconSelect.vue'
 
 const userRules = ref([])
 
@@ -76,14 +83,18 @@ const defaultKeys = ref([])
 let { 
     loading,
     tableData,
-    getData
+    getData,
+    handleDelete,
+    handleChange
  } = useInitTable({
     getList:getRuleList,
     onGetListSuccess:(res)=>{
         tableData = res.list
         defaultKeys.value = res.list.map( o => o.id)
         userRules.value = res.rules
-    }
+    },
+    delete:deleteRule,
+    updateStatus:updateRuleStatus
 })
 
 const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,handleEdit } = useInitForm({
@@ -114,6 +125,12 @@ const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,h
 //     }]
   }
 })
+
+const addChild = (id)=>{
+    handleCreate()
+    form.rule_id = id
+    form.status = 1
+}
 
 </script>
 <style lang="less">
