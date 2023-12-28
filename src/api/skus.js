@@ -13,6 +13,7 @@ export function updateSkus(id,data){
 }
 
 export function deleteSkus(ids){
+    ids = !Array.isArray(ids) ? [ids] : ids 
     return axios.post(`/admin/skus/delete_all`,{
         ids
     })
