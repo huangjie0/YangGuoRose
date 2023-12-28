@@ -46,7 +46,16 @@
       </FormDrawer>
       <!-- 权限配置 -->
       <FormDrawer ref="setRoleFormDrawerRef" title="权限配置" @submit="handleSetRoleSubmit"> 
-        <el-tree :data="ruleList" :props="{ label:'name',children:'child' }" show-checkbox/>
+        <el-tree node-key="id" :default-expanded-keys="defaultExpandedKeys" :data="ruleList" :props="{ label:'name',children:'child' }" show-checkbox>
+          <template #default="{ node, data }">
+            <div class="rose-f-row roleTag">
+                <el-tag :type="data.menu ? '' : 'info'" size="small">
+                  {{ data.menu ? '菜单' : '权限' }}
+                </el-tag>
+                <span class="rose-ml-1 rose-font-s3">{{ data.name }}</span>
+            </div>
+          </template>
+        </el-tree>
       </FormDrawer>
     </el-card>
   </template>
@@ -85,12 +94,13 @@
   const setRoleFormDrawerRef = ref(null)
   const ruleList = ref([])
   const ruleId = ref(0)
+  const defaultExpandedKeys = ref([])
    
   const tableHeight = computed(()=>{
     return (window.innerHeight - 270) + 'px';
   }
   )
-
+  
   const handleSetRoleSubmit = ()=>{
     
   }
@@ -107,6 +117,10 @@
   <style lang="less">
   .pagination{
     margin-top:20px;
+  }
+
+  .roleTag{
+    align-items: center;
   }
   </style>
   
