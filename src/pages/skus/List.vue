@@ -47,7 +47,7 @@
   </template>
   <script setup>
   import { computed,ref } from 'vue';
-  import { getRoleList,createRole,updateRole,deleteRole,updateRoleStatus,setRoleRules } from '@/api/role.js';
+  import { getSkusList,createSkus,updateSkus,deleteSkus,updateSkusStatus } from '@/api/role.js';
   import FormDrawer from '@/components/FormDrawer.vue';
   import { useInitTable,useInitForm } from '@/composables/useCommon.js';
   import ListHeader from '@/components/ListHeader.vue';
