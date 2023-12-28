@@ -46,7 +46,7 @@
       </FormDrawer>
       <!-- 权限配置 -->
       <FormDrawer ref="setRoleFormDrawerRef" title="权限配置" @submit="handleSetRoleSubmit"> 
-        <el-tree node-key="id" :default-expanded-keys="defaultExpandedKeys" :data="ruleList" :props="{ label:'name',children:'child' }" show-checkbox>
+        <el-tree :check-strictly="checkStrictly" node-key="id" @check="handleTreeCheck" ref="elTreeRef" :default-expanded-keys="defaultExpandedKeys" :data="ruleList" :props="{ label:'name',children:'child' }" show-checkbox>
           <template #default="{ node, data }">
             <div class="rose-f-row roleTag">
                 <el-tag :type="data.menu ? '' : 'info'" size="small">
@@ -61,11 +61,12 @@
   </template>
   <script setup>
   import { computed,ref } from 'vue';
-  import { getRoleList,createRole,updateRole,deleteRole,updateRoleStatus } from '@/api/role.js';
+  import { getRoleList,createRole,updateRole,deleteRole,updateRoleStatus,setRoleRules } from '@/api/role.js';
   import FormDrawer from '@/components/FormDrawer.vue';
   import { useInitTable,useInitForm } from '@/composables/useCommon.js';
   import ListHeader from '@/components/ListHeader.vue';
   import { getRuleList } from '@/api/rules.js';
+  import { toast } from "@/composables/util.js";
   
   const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
     getList:getRoleList,
@@ -92,25 +93,47 @@
   })
 
   const setRoleFormDrawerRef = ref(null)
+  const elTreeRef = ref(null)
   const ruleList = ref([])
   const ruleId = ref(0)
   const defaultExpandedKeys = ref([])
+  const ruleIds = ref([])
+  const checkStrictly = ref(false)
    
   const tableHeight = computed(()=>{
     return (window.innerHeight - 270) + 'px';
   }
   )
-  
+
   const handleSetRoleSubmit = ()=>{
-    
+    setRoleFormDrawerRef.value.showLoading()
+    setRoleRules(ruleId.value,ruleIds.value).then(res=>{
+      toast('配置成功！')
+      getData()
+      setRoleFormDrawerRef.value.close()
+    }).finally(()=>{
+      setRoleFormDrawerRef.value.hideLoading()
+    })
   }
 
   const openStatus = (row) => {
     ruleId.value = row.id
+    checkStrictly.value = true
     getRuleList(1).then(res => {
         ruleList.value = res.list
+        defaultExpandedKeys.value = res.list.map(o=>o.id)
         setRoleFormDrawerRef.value.open()
+        ruleIds.value = row.rules.map(o => o.id)
+        setTimeout(() => {
+          elTreeRef.value.setCheckedKeys(ruleIds.value)
+          checkStrictly.value = false 
+        }, 150);
     })
+  }
+
+  const handleTreeCheck = (...e)=>{
+    const { checkedKeys , halfCheckedKeys } = e[1]
+    ruleIds.value = [ ...checkedKeys , ...halfCheckedKeys]
   }
   
   </script>
