@@ -1,6 +1,6 @@
 <template>
     <el-card shadow="always">
-      <ListHeader @create="handleCreate" @refresh="getData"/>
+      <ListHeader @create="handleCreate" @refresh="getData" layout="create,delete,refresh"/>
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
         <el-table-column prop="name" label="规格名称" width="380" />
         <el-table-column prop="default" label="规格值" width="380" />
@@ -31,13 +31,12 @@
           @current-change="getData"
         />
       </div>
-      <FormDrawer ref="formDrawerRef" :title="drawerTitle" @submit="handleSubmit"> 
+      <FormDrawer ref="formDrawerRef" :title="drawerTitle" @submit="handleSubmit" destroyOnClose> 
           <el-form :model="form" ref="formRef" :rules="rules" label-width="80px" :inline="false">
             <el-form-item label="规格名称" prop="name"> 
               <el-input v-model="form.name" placeholder="请输入规格名称"></el-input>
             </el-form-item>
             <el-form-item label="规格值" prop="default"> 
-                {{ form.default }}
               <TagInput v-model="form.default"></TagInput>
             </el-form-item>
             <el-form-item label="状态" prop="status"> 

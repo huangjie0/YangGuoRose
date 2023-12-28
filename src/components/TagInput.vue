@@ -2,7 +2,7 @@
     <el-tag
         v-for="tag in dynamicTags"
         :key="tag"
-        class="mx-1"
+        class="rose-mr-1"
         closable
         :disable-transitions="false"
         @close="handleClose(tag)"
@@ -13,10 +13,10 @@
         v-if="inputVisible"
         ref="InputRef"
         v-model="inputValue"
-        class="ml-1 w-20"
+        class="tag-input"
         size="small"
         @keyup.enter="handleInputConfirm"
-        @blur="handleInputConfirm"
+        @blur="handleInputConfirm" 
     />
     <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
         添加值
@@ -39,6 +39,7 @@ const emits = defineEmits(["update:modelValue"])
 
 const handleClose = (tag) => {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+    emits("update:modelValue",dynamicTags.value.join(','))
 }
 
 const showInput = () => {
@@ -49,15 +50,17 @@ nextTick(() => {
 }
 
 const handleInputConfirm = () => {
-if (inputValue.value) {
-    dynamicTags.value.push(inputValue.value)
-    emits("update:modelValue",dynamicTags.value.join(','))
-}
-inputVisible.value = false
-inputValue.value = ''
+    if (inputValue.value) {
+        dynamicTags.value.push(inputValue.value)
+        emits("update:modelValue",dynamicTags.value.join(','))
+    }
+    inputVisible.value = false
+    inputValue.value = ''
 }
 
 </script>
-<style lang="less">
-    
+<style lang="less" scoped>
+.tag-input{
+    width:180px;
+}
 </style>
