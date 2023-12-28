@@ -87,6 +87,5 @@ const submit = ()=>{
         right:0;
         bottom:50px;
     }
-
 }
 </style>
