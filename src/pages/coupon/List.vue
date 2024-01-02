@@ -46,8 +46,8 @@
             </el-form-item>
             <el-form-item label="类型" prop="type"> 
                 <el-radio-group v-model="form.type">
-                    <el-radio :label="0">满减</el-radio>
-                    <el-radio :label="1">折扣</el-radio>
+                    <el-radio :label="0" border>满减</el-radio>
+                    <el-radio :label="1" border>折扣</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="面值" prop="value"> 
