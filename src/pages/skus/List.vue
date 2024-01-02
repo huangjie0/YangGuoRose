@@ -60,7 +60,7 @@
   import { getRuleList } from '@/api/rules.js';
   import { toast } from "@/composables/util.js";
   
-  const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
+  const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange,handleSelectionChange,moreDelete,tableRef} = useInitTable({
     getList:getSkusList,
     delete:deleteSkus,
     updateStatus:updateSkusStatus
@@ -90,31 +90,10 @@
     }
   })
 
-  const moreIds = ref([])
-  const tableRef = ref(null)
-
   const tableHeight = computed(()=>{
     return (window.innerHeight - 270) + 'px';
   }
   )
-
-  const handleSelectionChange = (e)=>{
-    moreIds.value = e.map(e => e.id)
-  }
-
-  const moreDelete = ()=>{
-    loading.value = true
-    deleteSkus(moreIds.value).then(res => {
-      toast('删除成功！')
-      if(tableRef.value){
-        tableRef.value.clearSelection()
-        getData()
-      }
-      getData()
-    }).finally(()=>{
-      loading.value = false
-    })
-  }
 
   </script>
   <style lang="less">

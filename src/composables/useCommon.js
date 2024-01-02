@@ -66,6 +66,27 @@ export function useInitTable(opt = {}) {
     getData()
   })
 
+  //批量删除
+  const moreIds = ref([])
+  const tableRef = ref(null)
+  const handleSelectionChange = (e)=>{
+    moreIds.value = e.map(e => e.id)
+  }
+
+  const moreDelete = ()=>{
+    loading.value = true
+    opt.delete(moreIds.value).then(res => {
+      toast('删除成功！')
+      if(tableRef.value){
+        tableRef.value.clearSelection()
+        getData()
+      }
+      getData()
+    }).finally(()=>{
+      loading.value = false
+    })
+  }
+
   return {
     searchForm,
     reset,
@@ -76,7 +97,10 @@ export function useInitTable(opt = {}) {
     limit,
     getData,
     handleDelete,
-    handleChange
+    handleChange,
+    handleSelectionChange,
+    moreDelete,
+    tableRef
   };
 }
 
