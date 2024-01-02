@@ -1,7 +1,8 @@
 <template>
     <el-card shadow="always">
-      <ListHeader @create="handleCreate" @refresh="getData" layout="create,delete,refresh"/>
-      <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
+      <ListHeader @create="handleCreate" @refresh="getData" layout="create,delete,refresh" @delete="moreDelete"/>
+      <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight" @selection-change="handleSelectionChange" ref="tableRef">
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="name" label="规格名称" width="380" />
         <el-table-column prop="default" label="规格值" width="380" />
         <el-table-column prop="order" label="排序" />
@@ -43,14 +44,14 @@
                 <el-switch active-color="#a781ee" v-model="form.status" :active-value="1" :inactive-value="0"/>
             </el-form-item>
             <el-form-item label="排序" prop="order"> 
-                <el-input-number v-model="form.order" placeholder="请输入排序" :min="0" :max="1000"></el-input-number>
+                <el-input-number v-model="form.order" placeholder="请输入" :min="0" :max="1000" :step="1" step-strictly></el-input-number>
             </el-form-item>
           </el-form>
       </FormDrawer>
     </el-card>
   </template>
   <script setup>
-  import { computed,ref } from 'vue';
+  import { computed,ref,onMounted } from 'vue';
   import { getSkusList,createSkus,updateSkus,deleteSkus,updateSkusStatus } from '@/api/skus.js';
   import FormDrawer from '@/components/FormDrawer.vue';
   import { useInitTable,useInitForm } from '@/composables/useCommon.js';
@@ -89,10 +90,32 @@
     }
   })
 
+  const moreIds = ref([])
+  const tableRef = ref(null)
+
   const tableHeight = computed(()=>{
     return (window.innerHeight - 270) + 'px';
   }
   )
+
+  const handleSelectionChange = (e)=>{
+    moreIds.value = e.map(e => e.id)
+  }
+
+  const moreDelete = ()=>{
+    loading.value = true
+    deleteSkus(moreIds.value).then(res => {
+      toast('删除成功！')
+      if(tableRef.value){
+        tableRef.value.clearSelection()
+        getData()
+      }
+      getData()
+    }).finally(()=>{
+      loading.value = false
+    })
+  }
+
   </script>
   <style lang="less">
   .pagination{

@@ -63,4 +63,5 @@ const handleInputConfirm = () => {
 .tag-input{
     width:180px;
 }
+
 </style>
