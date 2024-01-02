@@ -4,7 +4,7 @@
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
         <el-table-column label="优惠券名称" width="380">
             <template #default="{ row }">
-                <div class="couponBorder">
+                <div class="couponBorder" :class="row.statusText == '领取中' ? 'active' :'inactive'">
                     <h5 class="rose-font-w2 rose-font-s3">{{ row.name }}</h5>
                     <small>{{ row.start_time }} ~ {{ row.end_time }}</small>
                 </div>
@@ -61,6 +61,13 @@
   const { tableData,loading,currentPage,total,limit,getData,handleDelete} = useInitTable({
     getList:getCouponList,
     delete:deleteCoupon,
+    onGetListSuccess: (res)=>{
+        tableData.value = res.list.map(o => {
+        o.statusText = formatStatus(o)
+        return o
+    })
+    total.value = res.totalCount 
+    }
   })
   
   const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,handleEdit } = useInitForm({
@@ -89,17 +96,44 @@
     return (window.innerHeight - 270) + 'px';
   }
   )
+
+  const formatStatus = (row)=>{
+    let s = "领取中"
+    let start_time = (new Date(row.start_time)).getTime()
+    let now_time = (new Date()).getTime()
+    let end_time = (new Date(row.end_time)).getTime()
+    if(start_time > now_time){
+        s = '未开始'
+    }else if(end_time < now_time){
+        s = '已结束'
+    }else if(row.status == 0){
+        s = '已结束'
+    }
+    return s
+  }
   
   </script>
-  <style lang="less">
+  <style lang="less" scoped>
   .pagination{
     justify-content: center;
     align-items: center;
     margin-top:20px;
   }
-
+  
   .couponBorder{
-
+    width:380px;
+    border:var(--common-split4) solid red;
+    background-color:red;
+  }
+  .active{
+    border:1px solid var(--rose-r1);
+    background-color:var(--rose-r2);
+    color:red;
+  }
+  .inactive{
+    border:var(--common-split4) solid var(--rose-g3);
+    background-color:var(--rose2);
+    color:var(--rose-g5);
   }
   </style>
   
