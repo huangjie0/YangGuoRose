@@ -2,8 +2,22 @@
     <el-card shadow="always">
       <ListHeader @create="handleCreate" @refresh="getData"/>
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
-        <el-table-column prop="title" label="公告标题" width="380" />
-        <el-table-column prop="create_time" label="发布时间" width="380" />
+        <el-table-column label="优惠券名称" width="380">
+            <template #default="{ row }">
+                <div class="couponBorder">
+                    <h5 class="rose-font-w2 rose-font-s3">{{ row.name }}</h5>
+                    <small>{{ row.start_time }} ~ {{ row.end_time }}</small>
+                </div>
+            </template>
+        </el-table-column>
+        <el-table-column prop="statusText" label="状态" />
+        <el-table-column label="优惠" width="380">
+            <template #default="{ row }">
+                {{row.type ? "满减" : "折扣"}} {{ row.type ? ("￥" + row.value ) : (row.value + "折") }}
+            </template>
+        </el-table-column>
+        <el-table-column prop="total" label="发放数量"/>
+        <el-table-column prop="used" label="已使用" />
         <el-table-column label="操作" with="380" align="center">
           <template #default="scope"> 
             <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
@@ -45,14 +59,14 @@
   import ListHeader from '@/components/ListHeader.vue'
   
   const { tableData,loading,currentPage,total,limit,getData,handleDelete} = useInitTable({
-    getList:getNoticeList,
-    delete:deleteNotice,
+    getList:getCouponList,
+    delete:deleteCoupon,
   })
   
   const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,handleEdit } = useInitForm({
     getData,
-    update:updateNotice,
-    create:createNotice,
+    update:updateCoupon,
+    create:createCoupon,
     form:{
       title:'',
       content:''
@@ -82,6 +96,10 @@
     justify-content: center;
     align-items: center;
     margin-top:20px;
+  }
+
+  .couponBorder{
+
   }
   </style>
   
