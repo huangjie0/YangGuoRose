@@ -68,11 +68,13 @@
             </el-form-item>
             <el-form-item label="活动时间"> 
                 <el-date-picker
-                v-model="timerange"
-                type="datetime"
-                value-format="YYYY-MM-DD HH:mm:ss"
-                placeholder="请输入活动时间"
-            />
+                  v-model="timeRanger"
+                  type="datetimerange"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                />
             </el-form-item>
             <el-form-item label="描述" prop="desc"> 
               <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input>
@@ -104,6 +106,15 @@
     getData,
     update:updateCoupon,
     create:createCoupon,
+    beforeSubmit:(f)=>{
+      if(typeof f.start_time !== "number"){
+        f.start_time = (new Date(f.start_time)).getTime()
+      }
+      if(typeof f.end_time !== "number"){
+        f.end_time = (new Date(f.end_time)).getTime()
+      }
+      return f
+    },
     form:{
       name:'',
       type:0,
