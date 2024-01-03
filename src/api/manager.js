@@ -1,5 +1,5 @@
 import axios from "@/axios.js";
-import { queryParams } from '@/composables/util.js'
+import { queryParams } from '@/composables/util.js';
 
 export function login(username,password){
     return axios.post('/admin/login',{

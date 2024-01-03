@@ -135,7 +135,6 @@ const tableHeight = computed(()=>{
   return (window.innerHeight - 330) + 'px';
 }
 )
-  
   </script>
   <style lang="less" scoped>
   .search-form{
