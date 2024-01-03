@@ -20,14 +20,14 @@
         <el-table-column prop="used" label="已使用" />
         <el-table-column label="操作" with="380" align="center">
           <template #default="scope"> 
-            <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
-            <el-popconfirm title="是否要删除改优惠券？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+            <el-button size="small" @click="handleEdit(scope.row)" v-if="scope.row.statusText == '未开始'">修改</el-button>
+            <el-popconfirm v-if="scope.row.statusText !== '领取中'" title="是否要删除改优惠券？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                 <template #reference>
                     <el-button size="small" type="danger" >删除</el-button>
                 </template>
             </el-popconfirm>
 
-            <el-popconfirm title="是否要该优惠券失效？" confirm-button-text="失效" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+            <el-popconfirm v-if="scope.row.statusText == '领取中'" title="是否要该优惠券失效？" confirm-button-text="失效" cancel-button-text="取消" @confirm="handleChange(0,scope.row)">
                 <template #reference>
                     <el-button size="small" type="warning">失效</el-button>
                 </template>
@@ -98,14 +98,15 @@
   import { useInitTable,useInitForm } from '@/composables/useCommon.js'
   import ListHeader from '@/components/ListHeader.vue'
   
-  const { tableData,loading,currentPage,total,limit,getData,handleDelete} = useInitTable({
+  const { tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange} = useInitTable({
     getList:getCouponList,
     delete:deleteCoupon,
+    updateStatus:updateCouponStatus,
     onGetListSuccess: (res)=>{
         tableData.value = res.list.map(o => {
         o.statusText = formatStatus(o)
         return o
-    })
+    }),
     total.value = res.totalCount 
     }
   })
