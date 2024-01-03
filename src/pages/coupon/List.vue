@@ -81,7 +81,6 @@
                   range-separator="至"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
-                  class="date-value"
                 />
             </el-form-item>
             <el-form-item label="描述" prop="desc"> 
