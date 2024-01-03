@@ -117,9 +117,9 @@ export function useInitForm(opt = {}) {
       if (!valid) return;
       formDrawerRef.value.showLoading();
 
-      const body =  {}
+      let body =  {}
       if(opt.beforeSubmit && typeof opt.beforeSubmit == "function"){
-        body = opt.beforeSubmit({...form})
+        body = opt.beforeSubmit(form)
       }else{
         body = form
       }

@@ -21,9 +21,15 @@
         <el-table-column label="操作" with="380" align="center">
           <template #default="scope"> 
             <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
-            <el-popconfirm title="是否要删除改公告？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+            <el-popconfirm title="是否要删除改优惠券？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                 <template #reference>
                     <el-button size="small" type="danger" >删除</el-button>
+                </template>
+            </el-popconfirm>
+
+            <el-popconfirm title="是否要该优惠券失效？" confirm-button-text="失效" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+                <template #reference>
+                    <el-button size="small" type="warning">失效</el-button>
                 </template>
             </el-popconfirm>
           </template>
@@ -68,12 +74,14 @@
             </el-form-item>
             <el-form-item label="活动时间"> 
                 <el-date-picker
+                  :editable="false"
                   v-model="timeRanger"
                   type="datetimerange"
                   value-format="YYYY-MM-DD HH:mm:ss"
                   range-separator="至"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
+                  class="date-value"
                 />
             </el-form-item>
             <el-form-item label="描述" prop="desc"> 
@@ -181,7 +189,7 @@
     background-color:var(--rose2);
     color:var(--rose-g5);
   }
-  .value-input{
+  .value-input,{
     width:50%;
   }
   </style>
