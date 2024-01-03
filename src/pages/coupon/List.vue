@@ -71,7 +71,7 @@
                 v-model="timerange"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
-                placeholder="Select date and time"
+                placeholder="请输入活动时间"
             />
             </el-form-item>
             <el-form-item label="描述" prop="desc"> 
