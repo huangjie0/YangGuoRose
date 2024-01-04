@@ -95,16 +95,16 @@
   <script setup>
   import { ref, computed } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
-  import ChooseImage from '@/components/ChooseImage.vue'
-  import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
-  import {useInitTable,useInitForm} from '@/composables/useCommon.js'
-  import ListHeader from '@/components/ListHeader.vue'
+  import ChooseImage from '@/components/ChooseImage.vue';
+  import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods } from '@/api/goods.js';
+  import {useInitTable,useInitForm} from '@/composables/useCommon.js';
+  import ListHeader from '@/components/ListHeader.vue';
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
-    getList:getManagerList,
-    delete:deleteManager,
-    updateStatus:updateManagerStatus,
+    getList:getGoodsList,
+    delete:deleteGoods,
+    updateStatus:updateGoodsStatus,
     onGetListSuccess:(res)=>{
       tableData.value = res.list.map(o=>{
         o.statusLoading = false
@@ -114,14 +114,14 @@
       roles.value = res.roles
     },
     searchForm:{
-      keyword:''
+      title:''
     }
   })
 
 const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,handleEdit } = useInitForm({
   getData,
-  update:updateManager,
-  create:createManager,
+  update:updateGoods,
+  create:createGoods,
   form:{
     username: "",
     password: "",
