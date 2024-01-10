@@ -1,11 +1,8 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-    </el-tabs>
+    <el-tabs v-model="searchForm.tab" @tab-change="getData" type="card">
+        <el-tab-pane :label="item.name" :name="item.key" v-for="(item,index) in tabbars" :key="index"></el-tab-pane>
+    </el-tabs> 
 
     <el-card shadow="always">
       <el-form :model="searchForm" label-width="80px" class="search-form" size="small">
@@ -24,18 +21,19 @@
         </el-row>
       </el-form>
       <ListHeader @create="handleCreate" @refresh="getData"/>
+
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
-        <el-table-column label="管理员" width="200">
+        <el-table-column label="管理员" width="300">
             <template #default="scope">
-                <div class="manager rose-f-row"> 
-                    <el-avatar :size="40" :src="scope.row.avatar">
-                        <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-                    </el-avatar>
-                    <div class="manager-info">
-                        <h6>{{ scope.row.username }}</h6>
-                        <small>ID:{{ scope.row.id }}</small>
-                    </div>
+              <div class="rose-f-row">
+                <el-image :src="scope.row.cover" fit="fill" :lazy="true" class="smallImage"></el-image>
+              </div>
+              <div class="rose-f-1">
+                <p>{{ scope.row.title }}</p>
+                <div>
+                  
                 </div>
+              </div>
             </template>
         </el-table-column>
         <el-table-column label="所属角色" align="center">
@@ -124,8 +122,8 @@
     },
     searchForm:{
       title:'',
-      tab:'delete',
-      category_id:null,
+      tab:'all',
+      category_id:null
     }
   })
 
@@ -143,7 +141,7 @@ const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,h
 })
 
 const tableHeight = computed(()=>{
-    return (window.innerHeight - 330) + 'px';
+    return (window.innerHeight - 380) + 'px';
   }
 )
 
@@ -175,6 +173,11 @@ const tabbars = [
     &-info{
         margin-left:10px;
     }
+  }
+
+  .smallImage{
+    width:50px;
+    height:50px;
   }
 
   </style>
