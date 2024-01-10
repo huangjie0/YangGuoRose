@@ -26,12 +26,18 @@
         <el-table-column label="管理员" width="300">
             <template #default="scope">
               <div class="rose-f-row">
-                <el-image :src="scope.row.cover" fit="fill" :lazy="true" class="smallImage"></el-image>
-              </div>
-              <div class="rose-f-1">
-                <p>{{ scope.row.title }}</p>
-                <div>
-                  
+                <div class="rose-f-c rose-mr-1">
+                  <el-image :src="scope.row.cover" fit="cover" :lazy="true" class="smallImage"></el-image>
+                </div>
+                <div class="rose-f-1">
+                  <p>{{ scope.row.title }}</p>
+                  <div>
+                    <span class="rose-font-red">￥{{ scope.row.min_price }}</span>
+                    <el-divider direction="vertical"></el-divider>
+                    <span class="rose-bg">￥{{ scope.row.min_oprice }}</span>
+                  </div>
+                  <p>分类：{{ scope.row.category ? scope.row.category.name : "未分类" }}</p>
+                  <p>创建时间：{{ scope.row.create_time }}</p>
                 </div>
               </div>
             </template>
