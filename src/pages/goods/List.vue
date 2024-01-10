@@ -1,10 +1,18 @@
 <template>
+  <div>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+    </el-tabs>
+
     <el-card shadow="always">
       <el-form :model="searchForm" label-width="80px" class="search-form" size="small">
         <el-row :gutter="20">
           <el-col :span="8" :offset="0">
             <el-form-item label="关键词">
-              <el-input v-model="searchForm.keyword" placeholder="管理员名称" clearable></el-input>
+              <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="8">
@@ -91,6 +99,7 @@
           </el-form>
       </FormDrawer>
     </el-card>
+  </div>
   </template>
   <script setup>
   import { ref, computed } from 'vue';
@@ -114,7 +123,9 @@
       roles.value = res.roles
     },
     searchForm:{
-      title:''
+      title:'',
+      tab:'delete',
+      category_id:null,
     }
   })
 
@@ -132,9 +143,19 @@ const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,h
 })
 
 const tableHeight = computed(()=>{
-  return (window.innerHeight - 330) + 'px';
-}
+    return (window.innerHeight - 330) + 'px';
+  }
 )
+
+const tabbars = [
+  {key:'all',name:'全部'},
+  {key:'checking',name:'审核中'},
+  {key:'saling',name:'出售中'},
+  {key:'off',name:'已下架'},
+  {key:'min_stock',name:'库存预警'},
+  {key:'delete',name:'回收站'}
+]
+
   </script>
   <style lang="less" scoped>
   .search-form{
@@ -155,5 +176,6 @@ const tableHeight = computed(()=>{
         margin-left:10px;
     }
   }
+
   </style>
   
