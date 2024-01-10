@@ -40,29 +40,38 @@
                   <p>创建时间：{{ scope.row.create_time }}</p>
                 </div>
               </div>
-            </template>
+            </template> 
         </el-table-column>
-        <el-table-column label="所属角色" align="center">
+        <el-table-column label="实际销量" width="80" prop="sale_count">
+        </el-table-column>
+        <el-table-column label="商品状态" width="100">
             <template #default="scope">
-                {{ scope.row.role ?.name || ""}}
+              <el-tag :type="scope.row.status ? 'success' : 'danger'" size="small">{{ scope.row.status ? '上架' : '仓库' }}</el-tag>
             </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" width="120">
+        <el-table-column label="审核状态" width="200">
             <template #default="scope">
-              <el-switch :disabled = "scope.row.super == 1" :loading="scope.row.statusLoading" active-color="#a781ee" v-model="scope.row.status" :active-value="1" :inactive-value="0" @change="handleChange($event,scope.row)"/>
+              <div class="rose-f-row" v-if="scope.row.ischeck == 0 ">
+                <el-button type="success" size="small" plain>审核通过</el-button>
+                <el-button type="danger" size="small" plain>审核拒绝</el-button>
+              </div>
+              <span v-else>{{ scope.row.ischeck == 1 ? '通过' : '拒绝' }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="操作" with="380" align="center">
+        <el-table-column label="总库存" width="80" prop="stock"></el-table-column>
+        <el-table-column label="操作" with="350" align="center">
           <template #default="scope"> 
-            <small v-if="scope.row.super == 1">暂无操作</small>
-            <div v-else>    
+            <div>
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
-              <el-popconfirm title="是否要删除改管理员？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+              <el-button size="small">商品规格</el-button>
+              <el-button size="small">设置轮播图</el-button>
+              <el-button size="small">商品详情</el-button>
+              <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                       <el-button size="small" type="danger" >删除</el-button>
                   </template>
               </el-popconfirm>
-            </div>
+            </div>  
           </template>
         </el-table-column>
       </el-table>
