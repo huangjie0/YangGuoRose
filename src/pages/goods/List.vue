@@ -12,6 +12,13 @@
               <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="8" :offset="0">
+            <el-form-item label="商品分类" prop="category_id">
+              <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
+                <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="8" :offset="8">
               <div class="rose-f-row searchForm-flex">    
                 <el-button type="primary" @click="getData">搜索</el-button>
@@ -49,7 +56,7 @@
               <el-tag :type="scope.row.status ? 'success' : 'danger'" size="small">{{ scope.row.status ? '上架' : '仓库' }}</el-tag>
             </template>
         </el-table-column>
-        <el-table-column label="审核状态" width="200">
+        <el-table-column label="审核状态" width="200" v-if="searchForm.tab !== 'delete'">
             <template #default="scope">
               <div class="rose-f-row" v-if="scope.row.ischeck == 0 ">
                 <el-button type="success" size="small" plain>审核通过</el-button>
@@ -61,7 +68,7 @@
         <el-table-column label="总库存" width="80" prop="stock"></el-table-column>
         <el-table-column label="操作" with="350" align="center">
           <template #default="scope"> 
-            <div>
+            <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
               <el-button size="small">商品规格</el-button>
               <el-button size="small">设置轮播图</el-button>
@@ -72,6 +79,7 @@
                   </template>
               </el-popconfirm>
             </div>  
+            <span v-else>暂无操作</span>
           </template>
         </el-table-column>
       </el-table>
@@ -115,12 +123,13 @@
   </div>
   </template>
   <script setup>
-  import { ref, computed } from 'vue';
+  import { ref, computed , onMounted } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
   import ChooseImage from '@/components/ChooseImage.vue';
   import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods } from '@/api/goods.js';
   import {useInitTable,useInitForm} from '@/composables/useCommon.js';
   import ListHeader from '@/components/ListHeader.vue';
+  import { getCategoryList } from '@/api/category.js';
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
@@ -168,6 +177,16 @@ const tabbars = [
   {key:'min_stock',name:'库存预警'},
   {key:'delete',name:'回收站'}
 ]
+
+// 商品分类
+const category_list = ref([])
+
+onMounted(() => {
+  getCategoryList().then(res=>{
+    category_list.value = res
+  })
+})
+
 
   </script>
   <style lang="less" scoped>
