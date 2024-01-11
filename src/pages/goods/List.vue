@@ -5,33 +5,24 @@
     </el-tabs> 
 
     <el-card shadow="always">
-      <el-form :model="searchForm" label-width="80px" class="search-form" size="small">
-        <el-row :gutter="20">
+      <!-- 表单公共搜索区域 -->
+      <Search @search="getData" @reset="reset">
           <el-col :span="8" :offset="0">
             <el-form-item label="关键词">
               <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" v-if="showSearch">
-            <el-form-item label="商品分类" prop="category_id">
-              <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
-                <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="8">
-              <div class="rose-f-row searchForm-flex">    
-                <el-button type="primary" @click="getData">搜索</el-button>
-                <el-button @click="reset">重置</el-button>
-                <el-button text>{{ showSearch ? '收起' : '展开' }}</el-button>
-                <el-icon>
-                  <DArrowLeft />
-                  <DArrowRight />
-                </el-icon>
-              </div>
-          </el-col>
-        </el-row>
-      </el-form>
+          <template #show>
+            <el-col :span="8" :offset="0">
+              <el-form-item label="商品分类" prop="category_id">
+                <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
+                  <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </template>
+      </Search>
+      
       <ListHeader @create="handleCreate" @refresh="getData"/>
 
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
@@ -135,6 +126,7 @@
   import {useInitTable,useInitForm} from '@/composables/useCommon.js';
   import ListHeader from '@/components/ListHeader.vue';
   import { getCategoryList } from '@/api/category.js';
+  import Search from '@/components/Search.vue';
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
