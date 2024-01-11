@@ -1,20 +1,12 @@
 <template>
     <el-card shadow="always">
-      <el-form :model="searchForm" label-width="80px" class="search-form" size="small">
-        <el-row :gutter="20">
-          <el-col :span="8" :offset="0">
-            <el-form-item label="关键词">
-              <el-input v-model="searchForm.keyword" placeholder="管理员名称" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="8">
-              <div class="rose-f-row searchForm-flex">    
-                <el-button type="primary" @click="getData">搜索</el-button>
-                <el-button @click="reset">重置</el-button>
-              </div>
-          </el-col>
-        </el-row>
-      </el-form>
+      <!-- 表单公共搜索区域 -->
+      <Search @search="getData" @reset="reset" :model="searchForm">
+        <SearchItem label="关键词">
+          <el-input v-model="searchForm.keyword" placeholder="管理员名称" clearable></el-input>
+        </SearchItem>
+      </Search>
+
       <ListHeader @create="handleCreate" @refresh="getData"/>
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
         <el-table-column label="管理员" width="200">
@@ -99,6 +91,8 @@
   import { getManagerList,updateManagerStatus,createManager,updateManager,deleteManager } from '@/api/manager.js'
   import {useInitTable,useInitForm} from '@/composables/useCommon.js'
   import ListHeader from '@/components/ListHeader.vue'
+  import Search from '@/components/Search.vue';
+  import SearchItem from '@/components/SearchItem.vue'
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({

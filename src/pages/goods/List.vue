@@ -6,23 +6,19 @@
 
     <el-card shadow="always">
       <!-- 表单公共搜索区域 -->
-      <Search @search="getData" @reset="reset">
-          <el-col :span="8" :offset="0">
-            <el-form-item label="关键词">
-              <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
-            </el-form-item>
-          </el-col>
+      <Search @search="getData" @reset="reset" :model="searchForm">
+          <SearchItem label="关键词">
+            <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
+          </SearchItem>
           <template #show>
-            <el-col :span="8" :offset="0">
-              <el-form-item label="商品分类" prop="category_id">
-                <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
+            <SearchItem label="商品分类">
+              <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
                   <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id"/>
-                </el-select>
-              </el-form-item>
-            </el-col>
+              </el-select>
+            </SearchItem>
           </template>
       </Search>
-      
+
       <ListHeader @create="handleCreate" @refresh="getData"/>
 
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
@@ -127,6 +123,7 @@
   import ListHeader from '@/components/ListHeader.vue';
   import { getCategoryList } from '@/api/category.js';
   import Search from '@/components/Search.vue';
+  import SearchItem from '@/components/SearchItem.vue'
   
   const roles = ref([])
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleChange } = useInitTable({
