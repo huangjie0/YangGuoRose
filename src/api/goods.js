@@ -6,6 +6,7 @@ export function getGoodsList(page,query = {}){
     return axios.get(`/admin/goods/${page}${r}`)
 }
 
+//批量上架下架
 export function updateGoodsStatus(ids,status){
     return axios.post(`/admin/goods/changestatus`,{
         ids,

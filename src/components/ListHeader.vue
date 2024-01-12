@@ -7,6 +7,7 @@
               <el-button type="danger" size="small" v-if="btns.includes('delete')">批量删除</el-button>
             </template>
         </el-popconfirm>
+        <slot></slot>
       </div>
         <el-tooltip content="刷新" placement="top">
           <el-button text @click="$emit('refresh')" v-if="btns.includes('refresh')">

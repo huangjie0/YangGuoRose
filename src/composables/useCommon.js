@@ -87,6 +87,23 @@ export function useInitTable(opt = {}) {
     })
   }
 
+  //批量上架和下架
+  const moreUnmount = (status)=>{
+    loading.value = true
+    debugger;
+    console.log(moreIds.value);
+    opt.updateStatus(moreIds.value , status).then(res => {
+      toast('修改状态成功！')
+      if(tableRef.value){
+        tableRef.value.clearSelection()
+        getData()
+      }
+      getData()
+    }).finally(()=>{
+      loading.value = false
+    })
+  }
+
   return {
     searchForm,
     reset,
@@ -100,7 +117,8 @@ export function useInitTable(opt = {}) {
     handleChange,
     handleSelectionChange,
     moreDelete,
-    tableRef
+    tableRef,
+    moreUnmount
   };
 }
 
