@@ -20,8 +20,8 @@
       </Search>
 
       <ListHeader @create="handleCreate" @refresh="getData" layout="create,delete,refresh" @delete="moreDelete">
-        <el-button  size="small" @click="moreUnmount(1)">上架</el-button>
-        <el-button  size="small" @click="moreUnmount(0)">下架</el-button>
+        <el-button  size="small" @click="moreUnmount(1)" v-show="searchForm.tab == 'all' || searchForm.tab == 'off'">上架</el-button>
+        <el-button  size="small" @click="moreUnmount(0)" v-show="searchForm.tab == 'all' || searchForm.tab == 'saling'">下架</el-button>
       </ListHeader>
 
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight" @selection-change="handleSelectionChange" ref="tableRef">
@@ -148,8 +148,8 @@
   import Search from '@/components/Search.vue';
   import SearchItem from '@/components/SearchItem.vue'
   
-  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,
-    handleChange,moreDelete,moreUnmount} = useInitTable({
+  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
+    moreDelete,moreUnmount} = useInitTable({
     getList:getGoodsList,
     delete:deleteGoods,
     updateStatus:updateGoodsStatus,
@@ -203,7 +203,6 @@ const tabbars = [
 // 商品分类
 const category_list = ref([])
 const showSearch = ref(false)
-const tableRef = ref(null)
 
 onMounted(() => {
   getCategoryList().then(res=>{
