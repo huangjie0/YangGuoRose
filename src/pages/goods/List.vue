@@ -137,9 +137,9 @@
 
       <!-- 轮播图区域 -->
       <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit">
-        <el-form :model="form" ref="formRef" :rules="rules" label-width="85px" :inline="false">
+        <el-form :model="bannersForm" ref="formRef" :rules="rules" label-width="85px" :inline="false">
             <el-form-item label="轮播图"> 
-              <ChooseImage v-model="form.banners"></ChooseImage>
+              <ChooseImage v-model="bannersForm.banners"></ChooseImage>
             </el-form-item>
           </el-form>
       </FormDrawer>
@@ -147,7 +147,7 @@
   </div>
   </template>
   <script setup>
-  import { ref, computed , onMounted } from 'vue';
+  import { ref, computed, onMounted, reactive } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
   import ChooseImage from '@/components/ChooseImage.vue';
   import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner} from '@/api/goods.js';
@@ -201,6 +201,9 @@ const tableHeight = computed(()=>{
 )
 
 const bannersRef = ref(null)
+const bannersForm = reactive({
+  banners:[]
+})
 
 const tabbars = [
   {key:'all',name:'全部'},
@@ -229,10 +232,10 @@ const goodsId = ref(0)
 const setBanners = (val)=>{
   goodsId.value = val.id
   readGoods(goodsId.value).then(res=>{
-    console.log(res);
+    bannersForm.banners = res.goodsBanner.map(o => o.url)
+    console.log(bannersForm.banners);
     bannersRef.value.open()
   })
-
 }
 
   </script>
