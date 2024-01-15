@@ -67,7 +67,7 @@
             <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
               <el-button size="small">商品规格</el-button>
-              <el-button size="small">设置轮播图</el-button>
+              <el-button size="small" @click="setBanners(scope.row)">设置轮播图</el-button>
               <el-button size="small">商品详情</el-button>
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
@@ -134,6 +134,15 @@
             </el-form-item>
           </el-form>
       </FormDrawer>
+
+      <!-- 轮播图区域 -->
+      <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit">
+        <el-form :model="form" ref="formRef" :rules="rules" label-width="85px" :inline="false">
+            <el-form-item label="轮播图"> 
+              <ChooseImage v-model="form.banners"></ChooseImage>
+            </el-form-item>
+          </el-form>
+      </FormDrawer>
     </el-card>
   </div>
   </template>
@@ -141,12 +150,12 @@
   import { ref, computed , onMounted } from 'vue';
   import FormDrawer from '@/components/FormDrawer.vue';
   import ChooseImage from '@/components/ChooseImage.vue';
-  import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods } from '@/api/goods.js';
+  import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner} from '@/api/goods.js';
   import {useInitTable,useInitForm} from '@/composables/useCommon.js';
   import ListHeader from '@/components/ListHeader.vue';
   import { getCategoryList } from '@/api/category.js';
   import Search from '@/components/Search.vue';
-  import SearchItem from '@/components/SearchItem.vue'
+  import SearchItem from '@/components/SearchItem.vue';
   
   const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
     moreDelete,moreUnmount} = useInitTable({
@@ -191,6 +200,8 @@ const tableHeight = computed(()=>{
   }
 )
 
+const bannersRef = ref(null)
+
 const tabbars = [
   {key:'all',name:'全部'},
   {key:'checking',name:'审核中'},
@@ -202,7 +213,6 @@ const tabbars = [
 
 // 商品分类
 const category_list = ref([])
-const showSearch = ref(false)
 
 onMounted(() => {
   getCategoryList().then(res=>{
@@ -210,6 +220,20 @@ onMounted(() => {
   })
 })
 
+const handleBannersSubmit = ()=>{
+
+}
+
+//打开轮播图
+const goodsId = ref(0)
+const setBanners = (val)=>{
+  goodsId.value = val.id
+  readGoods(goodsId.value).then(res=>{
+    console.log(res);
+    bannersRef.value.open()
+  })
+
+}
 
   </script>
   <style lang="less" scoped>
