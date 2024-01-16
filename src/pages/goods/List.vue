@@ -233,7 +233,6 @@ const setBanners = (val)=>{
   goodsId.value = val.id
   readGoods(goodsId.value).then(res=>{
     bannersForm.banners = res.goodsBanner.map(o => o.url)
-    console.log(bannersForm.banners);
     bannersRef.value.open()
   })
 }
