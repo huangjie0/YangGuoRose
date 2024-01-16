@@ -2,7 +2,12 @@
   <div>
       <div class="rose-f-row">
         <div v-if="modelValue">
-          <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList"></el-image>
+          <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList" v-if="typeof modelValue == 'string'"></el-image>
+          <div v-else class="rose-f-row rose-f-w">
+            <div class="imageSize rose-mr-1" v-for="(url,index) in modelValue" :key="index">
+              <el-image :src="url" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList"></el-image>
+            </div>
+          </div>
         </div>
         <div
           class="choose-image-btn rose-br-s1 rose-f-row rose-f-c rose-cursor"
