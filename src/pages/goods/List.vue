@@ -246,6 +246,7 @@ const setBanners = (val)=>{
       justify-content: end;
     }
   }
+  
   .pagination{
     justify-content: center;
     align-items: center;
@@ -262,6 +263,6 @@ const setBanners = (val)=>{
     width:50px;
     height:50px;
   }
-  
+
   </style>
   
