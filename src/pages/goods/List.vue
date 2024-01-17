@@ -224,7 +224,6 @@ onMounted(() => {
 })
 
 const handleBannersSubmit = ()=>{
-
 }
 
 //打开轮播图
