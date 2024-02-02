@@ -66,7 +66,6 @@ const getData = (page = null) => {
         o.checked = false
         return o
       })
-
     })
     .finally(() => {
       loading.value = false;
@@ -89,8 +88,13 @@ defineExpose({
   formDrawer
 })
 
-defineProps({
+const props = defineProps({
   openChoose:{
+    type:Boolean,
+    default:false
+  },
+  //是否开启多选
+  multiple:{
     type:Boolean,
     default:false
   }
@@ -124,9 +128,12 @@ const checkImage = computed(()=> list.value.filter(o => o.checked))
 const emit = defineEmits(['choose'])
 
 const handleChooseChange = (item)=>{
-  if(item.checked && checkImage.value.length > 1){ 
-    item.checked = false
-    return toast('最多选择一张图片！','warning')
+  if(!props.multiple){
+    if(item.checked && checkImage.value.length > 1){
+      item.checked = false
+      return toast("最多选择一张图片！","warning")
+    }
+    emit("choose",checkImage.value)
   }
   emit("choose",checkImage.value)
 }

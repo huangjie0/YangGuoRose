@@ -167,6 +167,7 @@ export function useInitForm(opt = {}) {
     for (const key in opt.form) {
        form[key] = opt.form[key]
     }
+    debugger;
     formDrawerRef.value.open();
   };
 

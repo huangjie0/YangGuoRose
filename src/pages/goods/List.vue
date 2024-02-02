@@ -67,8 +67,8 @@
             <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
               <el-button size="small">商品规格</el-button>
-              <el-button size="small" @click="setBanners(scope.row)">设置轮播图</el-button>
-              <el-button size="small">商品详情</el-button>
+              <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'">设置轮播图</el-button>
+              <el-button size="small">商品详情</el-button> 
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                       <el-button size="small" type="danger" >删除</el-button>
@@ -139,42 +139,43 @@
       <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit">
         <el-form :model="bannersForm" ref="formRef" :rules="rules" label-width="85px" :inline="false">
             <el-form-item label="轮播图"> 
-              <ChooseImage v-model="bannersForm.banners"></ChooseImage>
+              <ChooseImage v-model="bannersForm.banners" multiple></ChooseImage>
             </el-form-item>
           </el-form>
       </FormDrawer>
     </el-card>
   </div>
-  </template>
-  <script setup>
-  import { ref, computed, onMounted, reactive } from 'vue';
-  import FormDrawer from '@/components/FormDrawer.vue';
-  import ChooseImage from '@/components/ChooseImage.vue';
-  import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner} from '@/api/goods.js';
-  import {useInitTable,useInitForm} from '@/composables/useCommon.js';
-  import ListHeader from '@/components/ListHeader.vue';
-  import { getCategoryList } from '@/api/category.js';
-  import Search from '@/components/Search.vue';
-  import SearchItem from '@/components/SearchItem.vue';
+</template>
+<script setup>
+import { ref, computed, onMounted, reactive } from 'vue';
+import FormDrawer from '@/components/FormDrawer.vue';
+import ChooseImage from '@/components/ChooseImage.vue';
+import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner} from '@/api/goods.js';
+import {useInitTable,useInitForm} from '@/composables/useCommon.js';
+import ListHeader from '@/components/ListHeader.vue';
+import { getCategoryList } from '@/api/category.js';
+import Search from '@/components/Search.vue';
+import SearchItem from '@/components/SearchItem.vue';
+import { toast } from '@/composables/util.js';
   
-  const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
-    moreDelete,moreUnmount} = useInitTable({
-    getList:getGoodsList,
-    delete:deleteGoods,
-    updateStatus:updateGoodsStatus,
-    onGetListSuccess:(res)=>{
-      tableData.value = res.list.map(o=>{
-        o.statusLoading = false
-        return o
-      })
-      total.value = res.totalCount
-    },
-    searchForm:{
-      title:'',
-      tab:'all',
-      category_id:null
-    }
-  })
+const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
+  moreDelete,moreUnmount} = useInitTable({
+  getList:getGoodsList,
+  delete:deleteGoods,
+  updateStatus:updateGoodsStatus,
+  onGetListSuccess:(res)=>{
+    tableData.value = res.list.map(o=>{
+      o.statusLoading = false
+      return o
+    })
+    total.value = res.totalCount
+  },
+  searchForm:{
+    title:'',
+    tab:'all',
+    category_id:null
+  }
+})
 
 const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,handleEdit } = useInitForm({
   getData,
@@ -183,7 +184,7 @@ const { formDrawerRef,formRef,form,rules,drawerTitle,handleSubmit,handleCreate,h
   form:{
     title:"",	 		
     category_id:null,
-    cover:null,
+    cover:"",
     desc:"", 
     unit:"件",
     stock:100,
@@ -224,6 +225,10 @@ onMounted(() => {
 })
 
 const handleBannersSubmit = ()=>{
+  setGoodsBanner(goodsId.value,bannersForm).then(res=>{
+    toast("设置轮播图成功")
+    bannersRef.value.close()
+  })
 }
 
 //打开轮播图
@@ -236,32 +241,31 @@ const setBanners = (val)=>{
   })
 }
 
-  </script>
-  <style lang="less" scoped>
-  .search-form{
-    margin-bottom:10px;
-    &-flex{
-      align-items: center;
-      justify-content: end;
-    }
-  }
-  
-  .pagination{
-    justify-content: center;
+</script>
+<style lang="less" scoped>
+.search-form{
+  margin-bottom:10px;
+  &-flex{
     align-items: center;
-    margin-top:20px;
+    justify-content: end;
   }
-  .manager{
-    align-items: center;
-    &-info{
-        margin-left:10px;
-    }
+}
+.pagination{
+  justify-content: center;
+  align-items: center;
+  margin-top:20px;
+}
+.manager{
+  align-items: center;
+  &-info{
+      margin-left:10px;
   }
+}
 
-  .smallImage{
-    width:50px;
-    height:50px;
-  }
+.smallImage{
+  width:50px;
+  height:50px;
+}
 
-  </style>
+</style>
   

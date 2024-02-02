@@ -1,19 +1,31 @@
 <template>
-  <div>
-      <div class="rose-f-row">
-        <div v-if="modelValue">
-          <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList" v-if="typeof modelValue == 'string'"></el-image>
-          <div v-else class="rose-f-row rose-f-w">
-            <div class="imageSize rose-mr-1" v-for="(url,index) in modelValue" :key="index">
-              <el-image :src="url" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList"></el-image>
+  <div class="rose-w-h-100">
+  <el-scrollbar height="115px">
+      <div class="rose-f-row rose-w-h-100">
+        <div>
+          <div class="imageSize rose-p-r">
+            <div v-if="!multiple"  class="rose-f-row image-container">
+              <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList" ></el-image>
+              <div
+                class="choose-image-btn rose-f-c rose-ml-1"
+                @click="openDialog"
+              >
+                <el-icon :size="25" class="imageSize"><Plus /></el-icon>
+              </div>
+            </div>
+            <div v-else class="rose-f-row">
+              <div class="imageSize rose-mr-1 rose-p-r" v-for="(url,index) in modelValue" :key="index">
+                <el-icon class="rose-p-a rose-z-index rose-bg-w rose-br-s1 rose-cursor" @click="closeImage(url)" v-if="multiple"><CloseBold /></el-icon>
+                <el-image :src="url" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList"></el-image>
+              </div>
+              <div
+                class="choose-image-btn rose-f-c"
+                @click="openDialog"
+              >
+                <el-icon :size="25" class="imageSize"><Plus /></el-icon>
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          class="choose-image-btn rose-br-s1 rose-f-row rose-f-c rose-cursor"
-          @click="openDialog"
-        >
-          <el-icon :size="25"><Plus /></el-icon>
         </div>
       </div>
     <ChooseImageDialog ref="chooseImageRef" title="选择图片" top="3%" width="85%" @submit="handleSubmit">
@@ -31,18 +43,19 @@
           </el-header>
           <el-container>
             <ImageAside ref="imageAsideRef" @change="handleChange"></ImageAside>
-            <ImageMian ref="imageMainRef" @choose="handleChoose" openChoose></ImageMian>
+            <ImageMian ref="imageMainRef" @choose="handleChoose" openChoose :multiple="multiple"></ImageMian>
           </el-container>
         </el-container>
       </template>
     </ChooseImageDialog>
+    </el-scrollbar>
   </div>
 </template>
 <script setup>
 import ChooseImageDialog from "@/components/CommonDialog.vue";
 import ImageAside from '@/components/ImageAside.vue';
 import ImageMian from '@/components/ImageMian.vue';
-import { ref , computed } from "vue";
+import { ref , computed  } from "vue";
 
 const chooseImageRef = ref();
 const urls = ref([])
@@ -71,7 +84,11 @@ const uploadImage = ()=>{
 }
 
 const props = defineProps({
-  modelValue:[String,Array]
+  modelValue:[String,Array],
+  multiple:{
+    type:Boolean,
+    default:false
+  }
 })
 
 const srcList = computed( ()=> props.modelValue ? [props.modelValue] : [])
@@ -86,24 +103,28 @@ const handleChoose = (e)=>{
 
 //点击确定所触发的事件
 const handleSubmit = ()=>{
-  if(urls.value.length){
-    emit('update:modelValue', urls.value[0])
-    chooseImageRef.value.close()
+  if(urls.value.length == 1){
+    urls.value = urls.value[0]
   }
+  emit('update:modelValue',urls.value)
+  closeDialog()
+}
+
+//关闭小图片
+const closeImage =(url)=>{
+  const uImage = props.modelValue.filter(u=>u !== url)
+  emit('update:modelValue', uImage)
 }
 
 </script>
 <style lang="less">
-
 .choose-image-btn {
-  width: 100px;
-  height: 100px;
   background-color: var(--rose-g2);
-  margin-left:10px;
   &:hover {
     background-color: var(--rose-g3);
   }
 }
+
 .rose-container{
   height:70vh;
 }
@@ -112,4 +133,9 @@ const handleSubmit = ()=>{
   width:100px;
   height:100px;
 }
+
+.image-container{
+  width: 210px;
+}
+
 </style>
