@@ -39,7 +39,7 @@
 </template>
 <script setup>
 import { getImageList , updateImage , deleteImage } from "@/api/image.js";
-import { onMounted , ref , computed } from "vue";
+import { ref , computed } from "vue";
 import { showPrompt, toast } from '@/composables/util.js';
 import UploadFile from "@/components/UploadFile.vue";
 import FormDrawer from "@/components/FormDrawer.vue";
