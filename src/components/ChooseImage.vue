@@ -4,6 +4,7 @@
       <div class="rose-f-row rose-w-h-100">
         <div>
           <div class="imageSize rose-p-r">
+            <!-- 单选部分 -->
             <div v-if="!multiple"  class="rose-f-row image-container">
               <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList" ></el-image>
               <div
@@ -13,6 +14,7 @@
                 <el-icon :size="25" class="imageSize"><Plus /></el-icon>
               </div>
             </div>
+            <!-- 多选部分 -->
             <div v-else class="rose-f-row">
               <div class="imageSize rose-mr-1 rose-p-r" v-for="(url,index) in modelValue" :key="index">
                 <el-icon class="rose-p-a rose-z-index rose-bg-w rose-br-s1 rose-cursor" @click="closeImage(url)" v-if="multiple"><CloseBold /></el-icon>
@@ -103,8 +105,11 @@ const handleChoose = (e)=>{
 
 //点击确定所触发的事件
 const handleSubmit = ()=>{
-  if(urls.value.length == 1){
+  console.log(urls.value);
+  console.log(props.modelValue);
+  if(urls.value.length == 1 && props.modelValue.length !== 1){
     urls.value = urls.value[0]
+
   }
   emit('update:modelValue',urls.value)
   closeDialog()

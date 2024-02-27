@@ -67,7 +67,7 @@
             <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
               <el-button size="small">商品规格</el-button>
-              <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'">设置轮播图</el-button>
+              <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'" :loading="scope.row.bannersLoading">设置轮播图</el-button>
               <el-button size="small">商品详情</el-button> 
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
@@ -165,7 +165,7 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handl
   updateStatus:updateGoodsStatus,
   onGetListSuccess:(res)=>{
     tableData.value = res.list.map(o=>{
-      o.statusLoading = false
+      o.bannersLoading = false
       return o
     })
     total.value = res.totalCount
@@ -228,6 +228,9 @@ const handleBannersSubmit = ()=>{
   setGoodsBanner(goodsId.value,bannersForm).then(res=>{
     toast("设置轮播图成功")
     bannersRef.value.close()
+    bannersRef.value.showLoading()
+  }).finally(()=>{
+    bannersRef.value.hideLoading()
   })
 }
 
@@ -235,9 +238,12 @@ const handleBannersSubmit = ()=>{
 const goodsId = ref(0)
 const setBanners = (val)=>{
   goodsId.value = val.id
+  val.bannersLoading = true
   readGoods(goodsId.value).then(res=>{
     bannersForm.banners = res.goodsBanner.map(o => o.url)
     bannersRef.value.open()
+  }).finally(()=>{
+    val.bannersLoading = false;
   })
 }
 
