@@ -68,7 +68,7 @@
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
               <el-button size="small">商品规格</el-button>
               <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'" :loading="scope.row.bannersLoading">设置轮播图</el-button>
-              <el-button size="small">商品详情</el-button> 
+              <el-button size="small" :type="!scope.row.content ? 'danger' : 'primary'" @click="setGoodsContent(scope.row)" :loading="scope.row.contentLoading">商品详情</el-button> 
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                       <el-button size="small" type="danger" >删除</el-button>
@@ -143,6 +143,11 @@
             </el-form-item>
           </el-form>
       </FormDrawer>
+
+      <!-- 商品详情区域 -->
+      <FormDrawer ref="contentRef" title="设置商品详情" @submit="handleContentSubmit">
+          <Editor></Editor>
+      </FormDrawer>
     </el-card>
   </div>
 </template>
@@ -157,6 +162,7 @@ import { getCategoryList } from '@/api/category.js';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import { toast } from '@/composables/util.js';
+import Editor from '@/components/Editor.vue';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
   moreDelete,moreUnmount} = useInitTable({
@@ -166,6 +172,7 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handl
   onGetListSuccess:(res)=>{
     tableData.value = res.list.map(o=>{
       o.bannersLoading = false
+      o.contentLoading = false
       return o
     })
     total.value = res.totalCount
@@ -202,6 +209,8 @@ const tableHeight = computed(()=>{
 )
 
 const bannersRef = ref(null)
+const contentRef = ref(null)
+
 const bannersForm = reactive({
   banners:[]
 })
@@ -235,17 +244,28 @@ const handleBannersSubmit = ()=>{
   })
 }
 
+//商品详情提交
+const handleContentSubmit = ()=>{
+  debugger;
+}
+
 //打开轮播图
 const goodsId = ref(0)
 const setBanners = (val)=>{
   goodsId.value = val.id
   val.bannersLoading = true
+  val.contentLoading = true
   readGoods(goodsId.value).then(res=>{
     bannersForm.banners = res.goodsBanner.map(o => o.url)
     bannersRef.value.open()
   }).finally(()=>{
     val.bannersLoading = false;
+    val.contentLoading = false;
   })
+}
+//设置商品详情
+const setGoodsContent = (val)=>{
+  contentRef.value.open()
 }
 
 </script>
