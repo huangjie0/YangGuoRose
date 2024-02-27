@@ -137,7 +137,7 @@
 
       <!-- 轮播图区域 -->
       <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit">
-        <el-form :model="bannersForm" ref="formRef" :rules="rules" label-width="85px" :inline="false">
+          <el-form :model="bannersForm" ref="formRef" :rules="rules" label-width="85px" :inline="false">
             <el-form-item label="轮播图"> 
               <ChooseImage v-model="bannersForm.banners" multiple></ChooseImage>
             </el-form-item>
@@ -229,6 +229,7 @@ const handleBannersSubmit = ()=>{
     toast("设置轮播图成功")
     bannersRef.value.close()
     bannersRef.value.showLoading()
+    getData()
   }).finally(()=>{
     bannersRef.value.hideLoading()
   })

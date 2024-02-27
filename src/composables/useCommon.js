@@ -43,7 +43,7 @@ export function useInitTable(opt = {}) {
 
   const handleDelete = (id)=>{
     loading.value = true
-    opt.delete(id).then((res)=>{
+    opt.delete([id]).then((res)=>{
       toast('删除成功！')
       getData()
     }).finally(()=>{
