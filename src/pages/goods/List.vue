@@ -254,18 +254,18 @@ const goodsId = ref(0)
 const setBanners = (val)=>{
   goodsId.value = val.id
   val.bannersLoading = true
-  val.contentLoading = true
   readGoods(goodsId.value).then(res=>{
     bannersForm.banners = res.goodsBanner.map(o => o.url)
     bannersRef.value.open()
   }).finally(()=>{
     val.bannersLoading = false;
-    val.contentLoading = false;
   })
 }
 //设置商品详情
 const setGoodsContent = (val)=>{
+  // val.contentLoading = true
   contentRef.value.open()
+  // val.contentLoading = false
 }
 
 </script>

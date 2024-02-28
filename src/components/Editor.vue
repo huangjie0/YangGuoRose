@@ -73,7 +73,7 @@ const content = ref(props.modelValue)
 watch(props, (newVal) => content.value = newVal.modelValue)
 watch(content, (newVal) => emit("update:modelValue", newVal))
 </script>
-<style>
+<style lang="less">
 .tox-tinymce-aux {
     z-index: 9999 !important;
 }

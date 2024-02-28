@@ -105,9 +105,6 @@ const handleChoose = (e)=>{
 
 //点击确定所触发的事件
 const handleSubmit = ()=>{
-  if(urls.value.length == 1 && props.modelValue.length !== 1 && props.modelValue.length){
-    urls.value = urls.value[0]
-  }
   emit('update:modelValue',urls.value)
   closeDialog()
 }
