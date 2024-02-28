@@ -136,7 +136,7 @@
       </FormDrawer>
 
       <!-- 轮播图区域 -->
-      <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit">
+      <FormDrawer ref="bannersRef" title="设置轮播图" @submit="handleBannersSubmit" destroy-on-close>
           <el-form :model="bannersForm" ref="formRef" :rules="rules" label-width="85px" :inline="false">
             <el-form-item label="轮播图"> 
               <ChooseImage v-model="bannersForm.banners" multiple></ChooseImage>
@@ -145,8 +145,12 @@
       </FormDrawer>
 
       <!-- 商品详情区域 -->
-      <FormDrawer ref="contentRef" title="设置商品详情" @submit="handleContentSubmit">
-          <Editor></Editor>
+      <FormDrawer ref="contentRef" title="设置商品详情" @submit="handleContentSubmit" destroy-on-close>
+        <el-form :model="goodsForm">
+          <el-form-item>
+            <Editor v-model="goodsForm.content"></Editor>
+          </el-form-item>
+        </el-form>
       </FormDrawer>
     </el-card>
   </div>
@@ -215,6 +219,10 @@ const bannersForm = reactive({
   banners:[]
 })
 
+const goodsForm = reactive({
+  content:""
+})
+
 const tabbars = [
   {key:'all',name:'全部'},
   {key:'checking',name:'审核中'},
@@ -246,7 +254,14 @@ const handleBannersSubmit = ()=>{
 
 //商品详情提交
 const handleContentSubmit = ()=>{
-  debugger;
+  updateGoods(goodsId.value,goodsForm).then(res=>{
+    toast("设置商品详情成功")
+    contentRef.value.close()
+    contentRef.value.showLoading()
+    getData()
+  }).finally(()=>{
+    contentRef.value.hideLoading()
+  })
 }
 
 //打开轮播图
@@ -263,9 +278,14 @@ const setBanners = (val)=>{
 }
 //设置商品详情
 const setGoodsContent = (val)=>{
-  // val.contentLoading = true
-  contentRef.value.open()
-  // val.contentLoading = false
+  goodsId.value = val.id
+  val.contentLoading = true
+  readGoods(goodsId.value).then(res=>{
+    goodsForm.content = res.content
+    contentRef.value.open()
+  }).finally(()=>{
+    val.contentLoading = false
+  })
 }
 
 </script>
