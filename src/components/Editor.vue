@@ -1,9 +1,11 @@
 <template>
     <editor v-model="content" tag-name="div" :init="init" />
+    <ChooseImage ref="chooseImageRef" :limit="9"></ChooseImage>
 </template>
 <script setup>
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
+import ChooseImage from "@/components/ChooseImage.vue";
 import { ref, watch } from "vue"
 import "tinymce/themes/silver/theme"; // 引用主题文件
 import "tinymce/icons/default"; // 引用图标文件
@@ -68,19 +70,18 @@ const init = {
     resize: false, // 禁止改变大小
     statusbar: false, // 隐藏底部状态栏
     setup:(editor)=>{
-        console.log(editor);
         editor.ui.registry.addButton("imageUpload",{
             tooltip:"插入图片",
             icon:"image",
             onAction(){
-                console.log("插入图片");
-                editor.insertContent(`<img src=""/>`)
+                chooseImageRef.value.openDialog()
             }
         })
     }
 }
 tinymce.init; // 初始化
 const content = ref(props.modelValue)
+const chooseImageRef = ref(null)
 watch(props, (newVal) => content.value = newVal.modelValue)
 watch(content, (newVal) => emit("update:modelValue", newVal))
 </script>

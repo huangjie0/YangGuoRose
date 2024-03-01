@@ -118,6 +118,10 @@ const closeImage =(url)=>{
   emit('update:modelValue', uImage)
 }
 
+defineExpose({
+  openDialog
+})
+
 </script>
 <style lang="less">
 .choose-image-btn {
