@@ -5,7 +5,7 @@
         <div>
           <div class="imageSize rose-p-r">
             <!-- 单选部分 -->
-            <div v-if="!multiple"  class="rose-f-row image-container">
+            <div v-if="!multiple && preview" class="rose-f-row image-container">
               <el-image :src="modelValue" fit="cover" class="imageSize rose-br-s1" :preview-src-list="srcList" ></el-image>
               <div
                 class="choose-image-btn rose-f-c rose-ml-1"
@@ -23,6 +23,7 @@
               <div
                 class="choose-image-btn rose-f-c"
                 @click="openDialog"
+                v-if="preview"
               >
                 <el-icon :size="25" class="imageSize"><Plus /></el-icon>
               </div>
@@ -90,6 +91,10 @@ const props = defineProps({
   multiple:{
     type:Boolean,
     default:false
+  },
+  preview:{
+    type:Boolean,
+    default:true
   }
 })
 
@@ -108,6 +113,7 @@ const handleSubmit = ()=>{
   if(!props.multiple){
     urls.value = urls.value[0]
   }
+  debugger;
   emit('update:modelValue',urls.value)
   closeDialog()
 }

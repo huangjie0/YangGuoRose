@@ -1,6 +1,6 @@
 <template>
     <editor v-model="content" tag-name="div" :init="init" />
-    <ChooseImage ref="chooseImageRef" :limit="9"></ChooseImage>
+    <ChooseImage ref="chooseImageRef" :preview="false" multiple></ChooseImage>
 </template>
 <script setup>
 import tinymce from "tinymce/tinymce";
