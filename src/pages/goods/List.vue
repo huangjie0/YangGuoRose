@@ -152,6 +152,16 @@
           </el-form-item>
         </el-form>
       </FormDrawer>
+      <!-- 商品规格 -->
+
+      <FormDrawer ref="skusRef" title="商品规格" @submit="handleContentSubmit" destroy-on-close>
+        <el-form :model="skusForm">
+          <el-form-item>
+
+          </el-form-item>
+        </el-form>
+      </FormDrawer>
+
     </el-card>
   </div>
 </template>
