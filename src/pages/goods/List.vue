@@ -159,7 +159,7 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
 import ChooseImage from '@/components/ChooseImage.vue';
-import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner} from '@/api/goods.js';
+import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner,updateGoodsSkus} from '@/api/goods.js';
 import {useInitTable,useInitForm} from '@/composables/useCommon.js';
 import ListHeader from '@/components/ListHeader.vue';
 import { getCategoryList } from '@/api/category.js';

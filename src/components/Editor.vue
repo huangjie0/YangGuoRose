@@ -1,6 +1,8 @@
 <template>
-    <editor v-model="content" tag-name="div" :init="init" />
-    <ChooseImage ref="chooseImageRef" :preview="false" multiple></ChooseImage>
+    <div>
+        <editor v-model="content" tag-name="div" :init="init" />
+        <ChooseImage ref="chooseImageRef" :preview="false" multiple></ChooseImage>
+    </div>
 </template>
 <script setup>
 import tinymce from "tinymce/tinymce";
@@ -74,7 +76,11 @@ const init = {
             tooltip:"插入图片",
             icon:"image",
             onAction(){
-                chooseImageRef.value.openDialog()
+                chooseImageRef.value.openDialog((data)=>{
+                    data.forEach(url => {
+                        editor.insertContent(`<img src="${url}" style="width:100%;"/>`)
+                    })
+                })
             }
         })
     }

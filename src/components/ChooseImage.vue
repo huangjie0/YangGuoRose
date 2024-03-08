@@ -63,7 +63,9 @@ import { ref , computed  } from "vue";
 const chooseImageRef = ref();
 const urls = ref([])
 
-const openDialog = () => {
+const callbackFunction = ref(null)
+const openDialog = (callback = null) => {
+  callbackFunction.value = callback
   chooseImageRef.value.open();
 };
 
@@ -113,8 +115,10 @@ const handleSubmit = ()=>{
   if(!props.multiple){
     urls.value = urls.value[0]
   }
-  debugger;
   emit('update:modelValue',urls.value)
+  if(!props.preview && typeof callbackFunction.value === "function"){
+    callbackFunction.value(urls.value)
+  }
   closeDialog()
 }
 
