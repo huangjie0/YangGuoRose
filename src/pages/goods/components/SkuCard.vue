@@ -1,5 +1,5 @@
 <template>
-    <el-form-item label="规格选项">
+    <el-form-item label="规格选项" v-loading="bodyLoading">
       <el-card class="specification-card" v-for="(item,index) in sku_card_list" :key="item.id" v-loading="item.loading">
         <template #header>
             <div class="rose-f-row specification-options">
@@ -8,15 +8,19 @@
                         <el-icon><more/></el-icon>
                     </template>
                 </el-input>
-                <el-button size="small" class="rose-ml-a">
+                <el-button size="small" class="rose-ml-a" @click="sortCard('up',index)" :disabled="index == 0">
                     <el-icon><Top /></el-icon>
                 </el-button>
-                <el-button size="small">
+                <el-button size="small" @click="sortCard('down',index)" :disabled="index == sku_card_list.length-1">
                     <el-icon><Bottom /></el-icon>
                 </el-button>
-                <el-button size="small">
-                    <el-icon><Delete /></el-icon>
-                </el-button>
+                <el-popconfirm title="是否要删除改规格选项？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(item)">
+                    <template #reference>
+                        <el-button size="small">
+                            <el-icon><Delete /></el-icon>
+                        </el-button>
+                    </template>
+                </el-popconfirm>
             </div>
         </template>
         <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
@@ -26,7 +30,7 @@
 </template>
 <script setup>
 import SkuCardItem from './SkuCardItem.vue';
-import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate } from '@/composables/useSku.js';
+import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelete , sortCard , bodyLoading } from '@/composables/useSku.js';
 
 </script>
 <style lang="less">
