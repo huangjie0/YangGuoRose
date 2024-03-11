@@ -220,7 +220,7 @@ import SearchItem from '@/components/SearchItem.vue';
 import { toast } from '@/composables/util.js';
 import Editor from '@/components/Editor.vue';
 import SkuCard from './components/SkuCard.vue'
-import { initSkuCardList,goods_id,sku_card_list } from '@/composables/useSku.js';
+import { initSkuCardList,goodsId,sku_card_list } from '@/composables/useSku.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
   moreDelete,moreUnmount} = useInitTable({
@@ -344,7 +344,6 @@ const handleGoodsSkusSubmit = ()=>{
 }
 
 //打开轮播图
-const goodsId = ref(0)
 const setBanners = (val)=>{
   goodsId.value = val.id
   val.bannersLoading = true
@@ -372,8 +371,6 @@ const setGoodsSkus = (val)=>{
   goodsId.value = val.id
   val.goodsSkusLoading = true
   readGoods(goodsId.value).then(res =>{
-    console.log(res);
-
     skusForm.sku_type = res.sku_type
     skusForm.sku_value = res.sku_value || {
       oprice:0,
@@ -382,6 +379,8 @@ const setGoodsSkus = (val)=>{
       weight:0,
       volume:0
     }
+    initSkuCardList(res)
+    
     skusRef.value.open()
   }).finally(()=>{
     val.goodsSkusLoading = false

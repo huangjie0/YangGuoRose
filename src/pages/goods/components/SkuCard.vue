@@ -25,7 +25,9 @@
     </el-form-item>
 </template>
 <script setup>
-import SkuCardItem from './SkuCardItem.vue'
+import SkuCardItem from './SkuCardItem.vue';
+import { sku_card_list } from '@/composables/useSku.js'
+
 </script>
 <style lang="less">
 .specification-card{
