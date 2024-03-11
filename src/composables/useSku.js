@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { createGoodsSkusCard,updateGoodsSkusCard } from '@/api/goods.js'
+import { createGoodsSkusCard,updateGoodsSkusCard } from '@/api/goods.js';
 
 //商品id
 export const goodsId = ref(0)
@@ -65,3 +65,5 @@ export function handleUpdate(item){
         item.loading = false
     })
 }
+
+
