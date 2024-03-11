@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { createGoodsSkusCard } from '@/api/goods.js'
 
 //商品id
 export const goodsId = ref(0)
@@ -16,5 +17,34 @@ export function initSkuCardList(d){
             return v
         })
         return item
+    })
+}
+
+//初始化规格值
+export function initSkusCardItem(id){
+    const item = sku_card_list.value.find(o=>o.id == id)
+    return {
+        item
+    }
+}
+
+//添加规格选项
+export const btnLoading = ref(false)
+export function addSkuCardEvent(){
+    btnLoading.value = true
+    createGoodsSkusCard({
+        goods_id: goodsId.value,
+        name:"规格选项",
+        order:50,
+        type:0
+    }).then(res=>{
+        sku_card_list.value.push({
+            ...res,
+            text:res.name,
+            loading:false,
+            goodsSkusCardValue:[]
+        })
+    }).finally(()=>{
+        btnLoading.value = false
     })
 }

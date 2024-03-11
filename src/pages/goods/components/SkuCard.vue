@@ -1,9 +1,9 @@
 <template>
     <el-form-item label="规格选项">
-      <el-card class="specification-card">
+      <el-card class="specification-card" v-for="(item,index) in sku_card_list" :key="item.id">
         <template #header>
             <div class="rose-f-row specification-options">
-                <el-input style="width: 200px" placeholder="规格名称">
+                <el-input v-model="item.text" style="width: 200px" placeholder="规格名称">
                     <template #append>
                         <el-icon><more/></el-icon>
                     </template>
@@ -19,14 +19,14 @@
                 </el-button>
             </div>
         </template>
-        <SkuCardItem></SkuCardItem>
+        <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
       </el-card>
-      <el-button type="success" size="small">添加规格</el-button>
+      <el-button type="success" size="small" :loading="btnLoading" @click="addSkuCardEvent">添加规格</el-button>
     </el-form-item>
 </template>
 <script setup>
 import SkuCardItem from './SkuCardItem.vue';
-import { sku_card_list } from '@/composables/useSku.js'
+import { sku_card_list, addSkuCardEvent , btnLoading } from '@/composables/useSku.js';
 
 </script>
 <style lang="less">
