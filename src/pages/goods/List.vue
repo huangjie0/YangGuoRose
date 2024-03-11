@@ -66,7 +66,7 @@
           <template #default="scope"> 
             <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
-              <el-button size="small">商品规格</el-button>
+              <el-button size="small" @click="setGoodsSkus(scope.row)" :loading="scope.row.goodsSkusLoading">商品规格</el-button>
               <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'" :loading="scope.row.bannersLoading">设置轮播图</el-button>
               <el-button size="small" :type="!scope.row.content ? 'danger' : 'primary'" @click="setGoodsContent(scope.row)" :loading="scope.row.contentLoading">商品详情</el-button> 
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
@@ -152,16 +152,58 @@
           </el-form-item>
         </el-form>
       </FormDrawer>
+
       <!-- 商品规格 -->
-
-      <FormDrawer ref="skusRef" title="商品规格" @submit="handleContentSubmit" destroy-on-close>
+      <FormDrawer ref="skusRef" title="商品规格" @submit="handleGoodsSkusSubmit" destroy-on-close size="70%">
         <el-form :model="skusForm">
-          <el-form-item>
-
+          <el-form-item label="规格类型">
+            <el-radio-group v-model="skusForm.sku_type">
+              <el-radio :label="0" border>单规格</el-radio>
+              <el-radio :label="1" border>多规格</el-radio>
+            </el-radio-group>
           </el-form-item>
+          <template v-if="skusForm.sku_type == 0">
+            <el-form-item label="市场价格">
+              <el-input v-model="skusForm.sku_value.oprice" style="width: 35%;">
+                <template #append>
+                  元
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="销售价格">
+              <el-input v-model="skusForm.sku_value.pprice" style="width: 35%;">
+                <template #append>
+                  元
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="成本价格">
+              <el-input v-model="skusForm.sku_value.cprice" style="width: 35%;">
+                <template #append>
+                  元
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="商品重量">
+              <el-input v-model="skusForm.sku_value.weight" style="width: 35%;">
+                <template #append>
+                  公斤
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="商品体积">
+              <el-input v-model="skusForm.sku_value.volume" style="width: 35%;">
+                <template #append>
+                  立方米
+                </template>
+              </el-input>
+            </el-form-item>
+          </template>
+          <template v-else>
+              多规则
+          </template>
         </el-form>
       </FormDrawer>
-
     </el-card>
   </div>
 </template>
@@ -187,6 +229,7 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handl
     tableData.value = res.list.map(o=>{
       o.bannersLoading = false
       o.contentLoading = false
+      o.goodsSkusLoading = false
       return o
     })
     total.value = res.totalCount
@@ -224,6 +267,7 @@ const tableHeight = computed(()=>{
 
 const bannersRef = ref(null)
 const contentRef = ref(null)
+const skusRef = ref(null)
 
 const bannersForm = reactive({
   banners:[]
@@ -231,6 +275,17 @@ const bannersForm = reactive({
 
 const goodsForm = reactive({
   content:""
+})
+
+const skusForm = reactive({
+  sku_type:0,
+  sku_value:{
+    oprice:0,
+    pprice:0,
+    cprice:0,
+    weight:0,
+    volume:0
+  }
 })
 
 const tabbars = [
@@ -274,6 +329,18 @@ const handleContentSubmit = ()=>{
   })
 }
 
+//商品规格提交
+const handleGoodsSkusSubmit = ()=>{
+  updateGoodsSkus(goodsId.value,skusForm).then(res=>{
+    toast("设置商品规格成功")
+    skusRef.value.close()
+    skusRef.value.showLoading()
+    getData()
+  }).finally(()=>{
+    skusRef.value.hideLoading()
+  })
+}
+
 //打开轮播图
 const goodsId = ref(0)
 const setBanners = (val)=>{
@@ -295,6 +362,25 @@ const setGoodsContent = (val)=>{
     contentRef.value.open()
   }).finally(()=>{
     val.contentLoading = false
+  })
+}
+
+//商品规格
+const setGoodsSkus = (val)=>{
+  goodsId.value = val.id
+  val.goodsSkusLoading = true
+  readGoods(goodsId.value).then(res =>{
+    skusForm.sku_type = res.sku_type
+    skusForm.sku_value = res.sku_value || {
+      oprice:0,
+      pprice:0,
+      cprice:0,
+      weight:0,
+      volume:0
+    }
+    skusRef.value.open()
+  }).finally(()=>{
+    val.goodsSkusLoading = false
   })
 }
 
