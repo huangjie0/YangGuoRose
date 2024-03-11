@@ -200,7 +200,7 @@
             </el-form-item>
           </template>
           <template v-else>
-              多规则
+            <SkuCard></SkuCard>
           </template>
         </el-form>
       </FormDrawer>
@@ -219,6 +219,8 @@ import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import { toast } from '@/composables/util.js';
 import Editor from '@/components/Editor.vue';
+import SkuCard from './components/SkuCard.vue'
+import { initSkuCardList,goods_id,sku_card_list } from '@/composables/useSku.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
   moreDelete,moreUnmount} = useInitTable({
@@ -370,6 +372,8 @@ const setGoodsSkus = (val)=>{
   goodsId.value = val.id
   val.goodsSkusLoading = true
   readGoods(goodsId.value).then(res =>{
+    console.log(res);
+
     skusForm.sku_type = res.sku_type
     skusForm.sku_value = res.sku_value || {
       oprice:0,
