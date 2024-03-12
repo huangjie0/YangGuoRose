@@ -1,5 +1,5 @@
 import { nextTick, ref } from 'vue';
-import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,createGoodsSkusCardValue } from '@/api/goods.js';
+import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,createGoodsSkusCardValue,updateGoodsSkusCardValue } from '@/api/goods.js';
 import { useArrayMoveUp,useArrayMoveDown } from '@/composables/util.js'
 
 //商品id
@@ -33,12 +33,29 @@ export function initSkusCardItem(id){
     const handleClose = (tag) => {
         dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
       }
+
+    const handleChange = (value,tag)=>{
+        loading.value = true;
+        updateGoodsSkusCardValue(id,{
+            goods_skus_card_id:Number(id),
+            name: item.name,
+            order: tag.order,
+            value: value
+        }).then(res=>{
+            tag.value = value
+        }).catch((err)=>{
+            tag.text = tag.value
+        })
+        .finally(()=>{
+            loading.value = false
+        })
+    }
       
     const showInput = () => {
-    inputVisible.value = true
-    nextTick(() => {
-        InputRef.value.input.focus()
-    })
+        inputVisible.value = true
+        nextTick(() => {
+            InputRef.value.input.focus()
+        })
     }
     
     const loading = ref(false);
@@ -74,7 +91,8 @@ export function initSkusCardItem(id){
         handleClose,
         showInput,
         handleInputConfirm,
-        loading
+        loading,
+        handleChange
     }
 }
 

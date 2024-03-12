@@ -3,7 +3,7 @@
       <el-card class="specification-card" v-for="(item,index) in sku_card_list" :key="item.id" v-loading="item.loading">
         <template #header>
             <div class="rose-f-row specification-options">
-                <el-input v-model="item.text" style="width: 200px" placeholder="规格名称" @change="handleUpdate(item)">
+                <el-input v-model="item.text" style="width: 200px" placeholder="规格名称" @change="handleUpdate(item)" size="small">
                     <template #append>
                         <el-icon><more/></el-icon>
                     </template>
