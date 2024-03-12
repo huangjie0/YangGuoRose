@@ -8,9 +8,8 @@ export function useInitTable(opt = {}) {
   if (opt.searchForm) {
     searchForm = reactive({ ...opt.searchForm });
     reset = () => {
-      for (const key in opt.searchForm) {
-        searchForm.value[key] = opt.searchForm[key];
-      }
+      searchForm.title = ""
+      searchForm.category_id = null
       getData();
     };
   }
