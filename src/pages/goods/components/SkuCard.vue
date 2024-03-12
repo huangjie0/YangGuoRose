@@ -5,7 +5,7 @@
             <div class="rose-f-row specification-options">
                 <el-input v-model="item.text" style="width: 200px" placeholder="规格名称" @change="handleUpdate(item)" size="small">
                     <template #append>
-                        <el-icon><more/></el-icon>
+                        <el-icon class="rose-cursor" @click="handleChooseSku"><more/></el-icon>
                     </template>
                 </el-input>
                 <el-button size="small" class="rose-ml-a" @click="sortCard('up',index)" :disabled="index == 0">
@@ -26,12 +26,20 @@
         <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
       </el-card>
       <el-button type="success" size="small" :loading="btnLoading" @click="addSkuCardEvent">添加规格</el-button>
+      <ChooseSku ref="chooseSkuRef"></ChooseSku>
     </el-form-item>
 </template>
 <script setup>
+import { ref } from 'vue';
 import SkuCardItem from './SkuCardItem.vue';
+import ChooseSku from '@/components/ChooseSku.vue';
 import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelete , sortCard , bodyLoading } from '@/composables/useSku.js';
 
+const chooseSkuRef = ref(null)
+
+const handleChooseSku = ()=>{
+    chooseSkuRef.value.skuDialogRef.open()
+}
 </script>
 <style lang="less">
 .specification-card{
