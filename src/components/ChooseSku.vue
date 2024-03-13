@@ -3,22 +3,20 @@
         <template #content>
             <el-container>
                 <el-aside width="220px" class="image-aside rose-p-r" v-loading="loading">
-                    <!-- top部分 -->
                     <div class="top rose-p-a-0">
                         <el-scrollbar>
                             <AsideList
                             v-for="(item, index) in tableData"
                             :key="index"
                             :active="activeId == item.id"
-                            @edit="handleEdit(item)"
-                            @close="handleClose(item.id)"
                             @click="handleChangeActiveId(item.id)"
+                            :showEdit="false"
+                            :showClose="false"
                             >
                             {{ item.name }}
                             </AsideList>
                         </el-scrollbar>
                     </div>
-                    <!-- bottom部分 -->
                     <div class="bottom rose-f-row rose-f-c">
                         <el-pagination
                             background
@@ -31,14 +29,16 @@
                     </div>
                 </el-aside>
                 <el-main>
-                    内容
+                    <el-checkbox-group v-model="form.list">
+                        <el-checkbox v-for="item in list" :key="item" :label="item" border>{{ item }}</el-checkbox>
+                    </el-checkbox-group>
                 </el-main>
             </el-container>
         </template>
     </ChooseSkuDialog>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,reactive,watch } from 'vue';
 import ChooseSkuDialog from './CommonDialog.vue';
 import AsideList from "@/components/AsideList.vue";
 import FormDrawer from "@/components/FormDrawer.vue";
@@ -49,12 +49,16 @@ const handleSkusSubmit = ()=>{
 
 const skuDialogRef = ref(null);
 const activeId = ref(0);
+const list = ref([]);
+const form = reactive({
+    list:[]
+})
 
 defineExpose({
     skuDialogRef
 })
 
-defineProps({
+const props = defineProps({
     total:{
         default:0,
         type:Number
@@ -75,22 +79,21 @@ defineProps({
     tableData:{
         default:[],
         type:Array
-    }              
+    },
+    firstActiveId:[Number,String]          
 })
 
-//修改
-const handleEdit = ()=>{
-
+const handleChangeActiveId = (id)=>{
+    activeId.value = id
+    list.value = []
+    let item = props.tableData.find(o => o.id == id)
+    if(item){
+        list.value = item.default.split(",")
+    }
 }
-
-//删除
-const handleClose = ()=>{
-
-}
-
-const handleChangeActiveId = ()=>{
-
-}
+watch(()=>props.firstActiveId,()=>{
+    handleChangeActiveId(props.firstActiveId)
+})
 
 </script>
 <style lang="less" scoped>

@@ -3,10 +3,10 @@
     <span class="rose-text-overflow span-title">
         <slot></slot>
     </span>
-    <el-button text type="primary" size="small" @click.stop="$emit('edit')">
+    <el-button text type="primary" size="small" @click.stop="$emit('edit')" v-if="showEdit">
       <el-icon :size="12"><Edit /></el-icon>
     </el-button>
-    <span @click.stop="()=>{}" class="stop">
+    <span @click.stop="()=>{}" class="stop" v-if="showClose">
       <el-popconfirm title="是否要删除改分类？" confirm-button-text="确认" cancel-button-text="取消" @confirm="$emit('close')">
           <template #reference>
               <el-button text type="primary" size="small">
@@ -23,6 +23,14 @@ defineProps({
     active:{
         type:Boolean,
         default:false
+    },
+    showEdit:{
+      type:Boolean,
+      default:true
+    },
+    showClose:{
+      type:Boolean,
+      default:true
     }
 })
 

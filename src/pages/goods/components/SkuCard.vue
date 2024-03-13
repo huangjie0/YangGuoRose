@@ -26,7 +26,7 @@
         <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
       </el-card>
       <el-button type="success" size="small" :loading="btnLoading" @click="addSkuCardEvent">添加规格</el-button>
-      <ChooseSku ref="chooseSkuRef" :get-data="getData" :limit="limit" :current-page="currentPage" :total="total" :loading="loading" :table-data="tableData"></ChooseSku>
+      <ChooseSku ref="chooseSkuRef" :first-active-id="firstActiveId" :get-data="getData" :limit="limit" :current-page="currentPage" :total="total" :loading="loading" :table-data="tableData"></ChooseSku>
     </el-form-item>
 </template>
 <script setup>
@@ -37,7 +37,8 @@ import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelet
 import { getSkusList } from '@/api/skus.js';
 import { useInitTable } from '@/composables/useCommon.js';
 
-const chooseSkuRef = ref(null)
+const chooseSkuRef = ref(null);
+const firstActiveId = ref(null);
 
 const {  
     loading,
@@ -47,7 +48,14 @@ const {
     tableData,
     getData
  } = useInitTable({
-    getList:getSkusList
+    getList:getSkusList,
+    onGetListSuccess:(res)=>{
+        total.value = res.totalCount;
+        tableData.value = res.list;
+        if(tableData.value.length > 0){
+           firstActiveId.value =  tableData.value[0].id
+        }
+    }
  });
 
 const handleChooseSku = ()=>{
