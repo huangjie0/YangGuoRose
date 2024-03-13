@@ -5,7 +5,7 @@
             <div class="rose-f-row specification-options">
                 <el-input v-model="item.text" style="width: 200px" placeholder="规格名称" @change="handleUpdate(item)" size="small">
                     <template #append>
-                        <el-icon class="rose-cursor" @click="handleChooseSku"><more/></el-icon>
+                        <el-icon class="rose-cursor" @click="handleChooseSku(item)"><more/></el-icon>
                     </template>
                 </el-input>
                 <el-button size="small" class="rose-ml-a" @click="sortCard('up',index)" :disabled="index == 0">
@@ -26,19 +26,21 @@
         <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
       </el-card>
       <el-button type="success" size="small" :loading="btnLoading" @click="addSkuCardEvent">添加规格</el-button>
-      <ChooseSku ref="chooseSkuRef" :first-active-id="firstActiveId" :get-data="getData" :limit="limit" :current-page="currentPage" :total="total" :loading="loading" :table-data="tableData"></ChooseSku>
+      <ChooseSku ref="chooseSkuRef" :first-active-id="firstActiveId" :get-data="getData" :limit="limit" :current-page="currentPage"
+       :total="total" :loading="loading" :table-data="tableData" @handle-skus-form="handleSkusForm"></ChooseSku>
     </el-form-item>
 </template>
 <script setup>
 import { ref } from 'vue';
 import SkuCardItem from './SkuCardItem.vue';
 import ChooseSku from '@/components/ChooseSku.vue';
-import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelete , sortCard , bodyLoading } from '@/composables/useSku.js';
+import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelete , sortCard , bodyLoading, handleChooseSetGoodsSkusCard } from '@/composables/useSku.js';
 import { getSkusList } from '@/api/skus.js';
 import { useInitTable } from '@/composables/useCommon.js';
 
 const chooseSkuRef = ref(null);
 const firstActiveId = ref(null);
+const itemId = ref(null);
 
 const {  
     loading,
@@ -58,9 +60,17 @@ const {
     }
  });
 
-const handleChooseSku = ()=>{
+const handleChooseSku = (item)=>{
     getData(1)
+    itemId.value = item.id
     chooseSkuRef.value.skuDialogRef.open()
+}
+
+const handleSkusForm = (value) => {
+    handleChooseSetGoodsSkusCard(itemId.value,{
+        name:value.name,
+        value:value.list
+    })
 }
 </script>
 <style lang="less">

@@ -41,18 +41,21 @@
 import { ref,reactive,watch } from 'vue';
 import ChooseSkuDialog from './CommonDialog.vue';
 import AsideList from "@/components/AsideList.vue";
-import FormDrawer from "@/components/FormDrawer.vue";
  
 const handleSkusSubmit = ()=>{
-
+    emits('handleSkusForm',form)
+    skuDialogRef.value.close();
 }
 
 const skuDialogRef = ref(null);
 const activeId = ref(0);
 const list = ref([]);
 const form = reactive({
+    name:'',
     list:[]
 })
+
+const emits = defineEmits(['handleSkusForm'])
 
 defineExpose({
     skuDialogRef
@@ -89,6 +92,7 @@ const handleChangeActiveId = (id)=>{
     let item = props.tableData.find(o => o.id == id)
     if(item){
         list.value = item.default.split(",")
+        form.name = item.name
     }
 }
 watch(()=>props.firstActiveId,()=>{

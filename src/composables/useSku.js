@@ -1,5 +1,6 @@
 import { nextTick, ref } from 'vue';
-import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,createGoodsSkusCardValue,updateGoodsSkusCardValue,deleteGoodsSkusCardValue } from '@/api/goods.js';
+import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,
+    createGoodsSkusCardValue,updateGoodsSkusCardValue,deleteGoodsSkusCardValue,chooseAndSetGoodsSkusCard } from '@/api/goods.js';
 import { useArrayMoveUp,useArrayMoveDown } from '@/composables/util.js'
 
 //商品id
@@ -101,6 +102,15 @@ export function initSkusCardItem(id){
         handleChange
     }
 }
+
+//选择设置规格
+export function handleChooseSetGoodsSkusCard(id,data){
+    chooseAndSetGoodsSkusCard(id,data).then(res=>{
+        console.log(res);
+    }).finally(()=>{
+
+    })
+}   
 
 //添加规格选项
 export const btnLoading = ref(false)
