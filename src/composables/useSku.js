@@ -219,3 +219,10 @@ export function initSkuTable(){
     }
 }
 
+//获取规格表格属性
+function getTableData(){
+    if(sku_card_list.value.length === 0) return []
+    let list = []
+    
+
+}
