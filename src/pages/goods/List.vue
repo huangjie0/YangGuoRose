@@ -201,6 +201,7 @@
           </template>
           <template v-else>
             <SkuCard></SkuCard>
+            <SkuTable></SkuTable>
           </template>
         </el-form>
       </FormDrawer>
@@ -219,7 +220,8 @@ import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import { toast } from '@/composables/util.js';
 import Editor from '@/components/Editor.vue';
-import SkuCard from './components/SkuCard.vue'
+import SkuCard from './components/SkuCard.vue';
+import SkuTable from './components/SkuTable.vue';
 import { initSkuCardList,goodsId,sku_card_list } from '@/composables/useSku.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,

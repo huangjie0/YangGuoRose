@@ -1,4 +1,4 @@
-import { nextTick, ref } from 'vue';
+import { nextTick, ref , computed} from 'vue';
 import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,
     createGoodsSkusCardValue,updateGoodsSkusCardValue,deleteGoodsSkusCardValue,chooseAndSetGoodsSkusCard } from '@/api/goods.js';
 import { useArrayMoveUp,useArrayMoveDown } from '@/composables/util.js'
@@ -8,6 +8,8 @@ export const goodsId = ref(0)
 
 //规格选项列表
 export const sku_card_list = ref([])
+
+export const sku_list = ref([])
 
 //初始化列表
 export function initSkuCardList(d){
@@ -20,6 +22,7 @@ export function initSkuCardList(d){
         })
         return item
     })
+    sku_list.value = d.goodsSkus
 }
 
 //初始化规格值
@@ -190,5 +193,29 @@ export function sortCard(action,index){
     }).finally(()=>{
         bodyLoading.value = false
     })
+}
+
+//初始化表格
+export function initSkuTable(){
+    const skuLables = computed(()=>sku_card_list.value.filter(v=>v.goodsSkusCardValue.length > 0))
+    //获取表头数据
+    const tableThs = computed(()=>{
+        let length = skuLables.value.length
+        return [
+            {name:"商品规格",colspan:length,width:"",rowspan:length > 0 ? 1 : 2 },
+            {name:"销售价",width:"100",rowspan:2},
+            {name:"市场价",width:"100",rowspan:2},
+            {name:"成本价",width:"100",rowspan:2},
+            {name:"库存",width:"100",rowspan:2},
+            {name:"体积",width:"100",rowspan:2},
+            {name:"重量",width:"100",rowspan:2},
+            {name:"编码",width:"100",rowspan:2}
+        ]
+    })
+    return {
+        skuLables,
+        tableThs,
+        sku_list
+    }
 }
 
