@@ -202,7 +202,7 @@ export function initSkuTable(){
     const tableThs = computed(()=>{
         let length = skuLables.value.length
         return [
-            {name:"商品规格",colspan:length,width:"",rowspan:length > 0 ? 1 : 2 },
+            {name:"商品规格",colspan:length,width:"200",rowspan:length > 0 ? 1 : 2 },
             {name:"销售价",width:"100",rowspan:2},
             {name:"市场价",width:"100",rowspan:2},
             {name:"成本价",width:"100",rowspan:2},
