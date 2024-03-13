@@ -26,7 +26,7 @@
         <SkuCardItem :sku-card-id="item.id"></SkuCardItem>
       </el-card>
       <el-button type="success" size="small" :loading="btnLoading" @click="addSkuCardEvent">添加规格</el-button>
-      <ChooseSku ref="chooseSkuRef"></ChooseSku>
+      <ChooseSku ref="chooseSkuRef" :get-data="getData" :limit="limit" :current-page="currentPage" :total="total" :loading="loading" :table-data="tableData"></ChooseSku>
     </el-form-item>
 </template>
 <script setup>
@@ -34,10 +34,24 @@ import { ref } from 'vue';
 import SkuCardItem from './SkuCardItem.vue';
 import ChooseSku from '@/components/ChooseSku.vue';
 import { sku_card_list, addSkuCardEvent , btnLoading, handleUpdate , handleDelete , sortCard , bodyLoading } from '@/composables/useSku.js';
+import { getSkusList } from '@/api/skus.js';
+import { useInitTable } from '@/composables/useCommon.js';
 
 const chooseSkuRef = ref(null)
 
+const {  
+    loading,
+    currentPage,
+    limit,
+    total,
+    tableData,
+    getData
+ } = useInitTable({
+    getList:getSkusList
+ });
+
 const handleChooseSku = ()=>{
+    getData(1)
     chooseSkuRef.value.skuDialogRef.open()
 }
 </script>
