@@ -25,7 +25,3 @@ export function updateSkusStatus(id,status){
     })
 }
 
-export function chooseAndSetGoodsSkusCard(id,data){
-    return axios.post(`/admin/goods_skus_card/${id}/set`,data)
-}
-
