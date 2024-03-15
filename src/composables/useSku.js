@@ -1,7 +1,7 @@
 import { nextTick, ref , computed} from 'vue';
 import { createGoodsSkusCard,updateGoodsSkusCard,deleteGoodsSkusCard,sortGoodsSkusCard,
     createGoodsSkusCardValue,updateGoodsSkusCardValue,deleteGoodsSkusCardValue,chooseAndSetGoodsSkusCard } from '@/api/goods.js';
-import { useArrayMoveUp,useArrayMoveDown } from '@/composables/util.js'
+import { useArrayMoveUp,useArrayMoveDown,cartesianProductOf } from '@/composables/util.js';
 
 //商品id
 export const goodsId = ref(0)
@@ -167,6 +167,7 @@ export function handleDelete(item){
         if(i !== -1){
             sku_card_list.value.splice(i,1)
         }
+        getTableData()
     }).finally(()=>{
         item.loading = false
     })
@@ -223,6 +224,15 @@ export function initSkuTable(){
 function getTableData(){
     if(sku_card_list.value.length === 0) return []
     let list = []
+    sku_card_list.value.forEach(o=>{
+       if(o.goodsSkusCardValue && o.goodsSkusCardValue.length > 0){
+        list.push(o.goodsSkusCardValue)
+       } 
+    })
+    if(list.length == 0){
+        return []
+    }
     
-
+    let arr = cartesianProductOf(...list)
+    console.log(arr);
 }

@@ -37,7 +37,7 @@
                     <td>
                         <el-input v-model="item.code" size="small"></el-input>
                     </td> 
-                </tr>
+                </tr> 
             </tbody>
         </table>
     </el-form-item>
