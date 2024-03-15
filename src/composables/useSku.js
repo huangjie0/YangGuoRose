@@ -40,6 +40,7 @@ export function initSkusCardItem(id){
             if(i !==-1){
                 item.goodsSkusCardValue.splice(i,1)
             }
+            getTableData()
         }).finally(()=>{
             loading.value = false;
         })
@@ -54,6 +55,7 @@ export function initSkusCardItem(id){
             value: value
         }).then(res=>{
             tag.value = value
+            getTableData()
         }).catch((err)=>{
             tag.text = tag.value
         })
@@ -86,6 +88,7 @@ export function initSkusCardItem(id){
                 ...res,
                 text:res.value
             })
+            getTableData()
         }).finally(()=>{
             loading.value = false;
             inputVisible.value = false
@@ -116,6 +119,7 @@ export function handleChooseSetGoodsSkusCard(id,data){
             o.text = o.value || "属性值"
             return o
         })
+        getTableData()
     }).finally(()=>{
         item.loading = false
     })
@@ -191,6 +195,7 @@ export function sortCard(action,index){
         sortdata:sortData
     }).then(res=>{
         func(sku_card_list.value,index)
+        getTableData()
     }).finally(()=>{
         bodyLoading.value = false
     })
@@ -222,17 +227,34 @@ export function initSkuTable(){
 
 //获取规格表格属性
 function getTableData(){
-    if(sku_card_list.value.length === 0) return []
-    let list = []
-    sku_card_list.value.forEach(o=>{
-       if(o.goodsSkusCardValue && o.goodsSkusCardValue.length > 0){
-        list.push(o.goodsSkusCardValue)
-       } 
-    })
-    if(list.length == 0){
-        return []
-    }
-    
-    let arr = cartesianProductOf(...list)
-    console.log(arr);
+    setTimeout(()=>{
+        if(sku_card_list.value.length === 0) return []
+        let list = []
+        sku_card_list.value.forEach(o=>{
+        if(o.goodsSkusCardValue && o.goodsSkusCardValue.length > 0){
+            list.push(o.goodsSkusCardValue)
+        } 
+        })
+        if(list.length == 0){
+            return []
+        }
+        
+        let arr = cartesianProductOf(...list)
+        
+        sku_list.value = []
+        sku_list.value = arr.map(o=>{
+            return { 
+                code:"",
+                cprice:"0.00",
+                goods_id:goodsId.value,
+                image:"",
+                oprice:"0.00",
+                pprice:"0.00",
+                skus: o,
+                stock:0,
+                volume:0,
+                weight:0
+            }
+        }) 
+    },200)
 }
