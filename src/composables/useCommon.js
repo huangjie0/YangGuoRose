@@ -50,7 +50,6 @@ export function useInitTable(opt = {}) {
     })
   } 
 
-
   const handleChange = (value,row)=>{
     row.statusLoading = true
     opt.updateStatus(row.id,value).then((res)=>{
@@ -86,6 +85,20 @@ export function useInitTable(opt = {}) {
     })
   }
 
+  const cleanOut = ()=>{
+    loading.value = true
+    opt.thoroughlyDelete(moreIds.value).then(res => {
+      toast('彻底删除成功！')
+      if(tableRef.value){
+        tableRef.value.clearSelection()
+        getData()
+      }
+      getData()
+    }).finally(()=>{
+      loading.value = false
+    })
+  }
+
   //批量上架和下架
   const moreUnmount = (status)=>{
     loading.value = true
@@ -99,6 +112,21 @@ export function useInitTable(opt = {}) {
     }).finally(()=>{
       loading.value = false
     })
+  }
+
+  //恢复商品
+  const moreRecover = ()=>{
+    loading.value = true
+      opt.recover(moreIds.value).then(res=>{
+        toast('恢复商品成功')
+        if(tableRef.value){
+          tableRef.value.clearSelection()
+          getData()
+        }
+        getData()
+      }).finally(()=>{
+        loading.value = false
+      })
   }
 
   return {
@@ -115,7 +143,9 @@ export function useInitTable(opt = {}) {
     handleSelectionChange,
     moreDelete,
     tableRef,
-    moreUnmount
+    moreUnmount,
+    moreRecover,
+    cleanOut
   };
 }
 

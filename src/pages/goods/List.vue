@@ -19,7 +19,14 @@
           </template>
       </Search>
 
-      <ListHeader @create="handleCreate" @refresh="getData" layout="create,delete,refresh" @delete="moreDelete">
+      <ListHeader @create="handleCreate" @refresh="getData" layout="create,refresh">
+        <el-button  size="small" @click="moreDelete" v-if="searchForm.tab !== 'delete'" type="danger">批量删除</el-button>
+        <el-button  size="small" @click="moreRecover" v-else type="warning">恢复商品</el-button>
+        <el-popconfirm title="是否要彻底删除改商品？" v-if="searchForm.tab == 'delete'" confirm-button-text="确认" cancel-button-text="取消" @confirm="cleanOut">
+            <template #reference>
+              <el-button size="small" type="danger">彻底删除</el-button>
+            </template>
+        </el-popconfirm>
         <el-button  size="small" @click="moreUnmount(1)" v-show="searchForm.tab == 'all' || searchForm.tab == 'off'">上架</el-button>
         <el-button  size="small" @click="moreUnmount(0)" v-show="searchForm.tab == 'all' || searchForm.tab == 'saling'">下架</el-button>
       </ListHeader>
@@ -213,7 +220,7 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
 import ChooseImage from '@/components/ChooseImage.vue';
-import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner,updateGoodsSkus} from '@/api/goods.js';
+import { getGoodsList,updateGoodsStatus,createGoods,updateGoods,deleteGoods,readGoods,setGoodsBanner,updateGoodsSkus,restoreGoods,destroyGoods } from '@/api/goods.js';
 import {useInitTable,useInitForm} from '@/composables/useCommon.js';
 import ListHeader from '@/components/ListHeader.vue';
 import { getCategoryList } from '@/api/category.js';
@@ -223,13 +230,15 @@ import { toast } from '@/composables/util.js';
 import Editor from '@/components/Editor.vue';
 import SkuCard from './components/SkuCard.vue';
 import SkuTable from './components/SkuTable.vue';
-import { initSkuCardList,goodsId,sku_card_list,sku_list } from '@/composables/useSku.js';
+import { initSkuCardList,goodsId,sku_list } from '@/composables/useSku.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
-  moreDelete,moreUnmount} = useInitTable({
+  moreDelete,moreUnmount,moreRecover,cleanOut} = useInitTable({
   getList:getGoodsList,
   delete:deleteGoods,
+  recover:restoreGoods,
   updateStatus:updateGoodsStatus,
+  thoroughlyDelete:destroyGoods,
   onGetListSuccess:(res)=>{
     tableData.value = res.list.map(o=>{
       o.bannersLoading = false
