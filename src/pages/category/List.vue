@@ -75,7 +75,7 @@ const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,h
 
 function goodsCallBack(data){
     console.log(data);
-    getCategoryGoods(data.category_id).then(res=>{
+    getCategoryGoods(data.id).then(res=>{
         console.log(res);
     }).finally(()=>{
 
