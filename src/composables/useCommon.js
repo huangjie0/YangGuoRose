@@ -196,7 +196,6 @@ export function useInitForm(opt = {}) {
     for (const key in opt.form) {
        form[key] = opt.form[key]
     }
-    debugger;
     formDrawerRef.value.open();
   };
 
@@ -211,6 +210,11 @@ export function useInitForm(opt = {}) {
     formDrawerRef.value.open();
   };
 
+  //添加商品
+  const recommendedGoods = (f)=>{
+    f.formDrawer.open()
+  }
+
   return {
     formDrawerRef,
     formRef,
@@ -220,5 +224,6 @@ export function useInitForm(opt = {}) {
     handleSubmit,
     handleCreate,
     handleEdit,
+    recommendedGoods,
   };
 }

@@ -28,7 +28,7 @@
                 </div>
             </template>
         </el-tree>
-        <FormDrawer ref="formDrawerRef" @submit="handleSubmit">
+        <FormDrawer ref="formDrawerRef" @submit="handleSubmit" :title="drawerTitle">
             <el-form :model="form" label-width="100px" ref="formRef" :rules="rules" :inline="false">
                 <el-form-item label="上级菜单" prop="rule_id">
                     <el-cascader v-model="form.rule_id" :options="userRules" :props="{ value:'id', label:'name',children:'child',checkStrictly:true, emitPath:false }" placeholder="请选择上级菜单" />
