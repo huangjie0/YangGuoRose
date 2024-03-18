@@ -66,7 +66,8 @@
           <template #default="scope"> 
             <div v-if="searchForm.tab !== 'delete'">
               <el-button size="small" @click="handleEdit(scope.row)">修改</el-button>
-              <el-button size="small" @click="setGoodsSkus(scope.row)" :loading="scope.row.goodsSkusLoading">商品规格</el-button>
+              <el-button size="small" @click="setGoodsSkus(scope.row)" :loading="scope.row.goodsSkusLoading" :type="(scope.row.sku_type == 0 && !scope.row.sku_value) || 
+              (!scope.row.goods_skus.length && scope.row.sku_type == 1) ? 'danger' : 'primary'">商品规格</el-button>
               <el-button size="small" @click="setBanners(scope.row)" :type="!scope.row.goods_banner.length ? 'danger' : 'primary'" :loading="scope.row.bannersLoading">设置轮播图</el-button>
               <el-button size="small" :type="!scope.row.content ? 'danger' : 'primary'" @click="setGoodsContent(scope.row)" :loading="scope.row.contentLoading">商品详情</el-button> 
               <el-popconfirm title="是否要删除改商品？" confirm-button-text="确认" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
@@ -222,7 +223,7 @@ import { toast } from '@/composables/util.js';
 import Editor from '@/components/Editor.vue';
 import SkuCard from './components/SkuCard.vue';
 import SkuTable from './components/SkuTable.vue';
-import { initSkuCardList,goodsId,sku_card_list } from '@/composables/useSku.js';
+import { initSkuCardList,goodsId,sku_card_list,sku_list } from '@/composables/useSku.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleDelete,handleSelectionChange,tableRef,
   moreDelete,moreUnmount} = useInitTable({
@@ -335,7 +336,17 @@ const handleContentSubmit = ()=>{
 
 //商品规格提交
 const handleGoodsSkusSubmit = ()=>{
-  updateGoodsSkus(goodsId.value,skusForm).then(res=>{
+  // 单规格
+  let data = {
+    sku_type:skusForm.sku_type,
+    sku_value:skusForm.sku_value,
+  }
+  //多规格
+  if(skusForm.sku_type == 1){
+    data.goodsSkus = sku_list.value
+  }
+
+  updateGoodsSkus(goodsId.value,data).then(res=>{
     toast("设置商品规格成功")
     skusRef.value.close()
     skusRef.value.showLoading()
