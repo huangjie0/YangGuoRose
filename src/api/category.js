@@ -23,5 +23,5 @@ export function deleteCategory(id){
 }
 
 export function getCategoryGoods(id){
-    return axios.post(`/admin/app_category_item/list?category_id=${id}`)
+    return axios.get(`/admin/app_category_item/list?category_id=${id}`)
 }
