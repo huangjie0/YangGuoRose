@@ -9,7 +9,7 @@
                     </el-icon>
                     <span> {{ data.name }}</span>
                     <div class="rose-ml-a">
-                        <el-button type="primary" :loading="data.goodsCategoryLoading" size="small" @click="recommendedGoods(goodsDrawerRef,goodsCallBack(data),data)">推荐商品</el-button>
+                        <el-button type="primary" :loading="data.goodsCategoryLoading" size="small" @click="recommendedGoods(goodsDrawerRef,goodsCallBack(data,data.id),data)">推荐商品</el-button>
 
                         <span @click.stop="()=>{}">
                             <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr" @change="handleChange($event,data)"></el-switch>
@@ -35,7 +35,7 @@
             </el-form>
         </FormDrawer>
         <!-- 推荐商品弹框 -->
-        <GoodsDrawer ref="goodsDrawerRef" :goods-table-data="goodsTableData"></GoodsDrawer>
+        <GoodsDrawer ref="goodsDrawerRef" :goods-table-data="goodsTableData" @get-data="getGoodsData"></GoodsDrawer>
     </el-card>
 </template>
 <script setup>
@@ -78,13 +78,17 @@ const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,h
 
 const goodsTableData = ref([])
 
-function goodsCallBack(data){
-    getCategoryGoods(data.id).then(res=>{
+function goodsCallBack(data,id){
+    getCategoryGoods(id).then(res=>{
         goodsTableData.value = res
     }).finally(()=>{
         data.goodsCategoryLoading = false
     })
 }
+
+const getGoodsData = (id)=>{
+    goodsCallBack({},id)
+}   
 
 </script>
 <style lang="less">
