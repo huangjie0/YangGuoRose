@@ -211,7 +211,8 @@ export function useInitForm(opt = {}) {
   };
 
   //添加商品
-  const recommendedGoods = (f)=>{
+  const recommendedGoods = (f,c,d)=>{
+    d.goodsCategoryLoading = true
     f.formDrawer.open()
   }
 

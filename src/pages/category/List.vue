@@ -9,7 +9,7 @@
                     </el-icon>
                     <span> {{ data.name }}</span>
                     <div class="rose-ml-a">
-                        <el-button type="primary" size="small" @click="recommendedGoods(goodsDrawerRef,goodsCallBack(data))">推荐商品</el-button>
+                        <el-button type="primary" :loading="data.goodsCategoryLoading" size="small" @click="recommendedGoods(goodsDrawerRef,goodsCallBack(data),data)">推荐商品</el-button>
 
                         <span @click.stop="()=>{}">
                             <el-switch v-model="data.status" :active-value="1" :inactive-value="0" class="switch-mr" @change="handleChange($event,data)"></el-switch>
@@ -55,7 +55,10 @@ let {
  } = useInitTable({
     getList:getCategoryList,
     onGetListSuccess:(res)=>{
-        tableData = res
+        tableData = res.map(o=>{
+            o.goodsCategoryLoading = false
+            return o
+        })
     },
     delete:deleteCategory,
     updateStatus:updateCategoryStatus
@@ -79,7 +82,7 @@ function goodsCallBack(data){
     getCategoryGoods(data.id).then(res=>{
         goodsTableData.value = res
     }).finally(()=>{
-
+        data.goodsCategoryLoading = false
     })
 }
 
@@ -94,15 +97,16 @@ function goodsCallBack(data){
     align-items: center;
     padding-right: 8px;
     .icon-ml{
-        margin-left:10px;
+        margin-left:var(--common-split5);
     }
     .switch-mr{
-        margin-right:10px;
+        margin-right:var(--common-split5);
+        margin-left: var(--common-split5);
     }
 }
 
 .el-tree-node__content{
-    padding:20px 0;
+    padding:var(--common-split) 0;
 }
 
 </style>
