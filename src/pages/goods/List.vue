@@ -33,7 +33,7 @@
 
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight" @selection-change="handleSelectionChange" ref="tableRef">
         <el-table-column type="selection" width="55" />
-        <el-table-column label="管理员" width="300">
+        <el-table-column label="商品" width="300">
             <template #default="scope">
               <div class="rose-f-row">
                 <div class="rose-f-c rose-mr-1">
