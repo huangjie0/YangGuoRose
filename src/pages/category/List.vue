@@ -35,7 +35,7 @@
             </el-form>
         </FormDrawer>
         <!-- 推荐商品弹框 -->
-        <GoodsDrawer ref="goodsDrawerRef" :goods-table-data="goodsTableData" @get-data="getGoodsData"></GoodsDrawer>
+        <GoodsDrawer ref="goodsDrawerRef" :goods-table-data="goodsTableData" @get-data="getGoodsData" :get-goods-table="getGoodsData" :category-id="categoryId"></GoodsDrawer>
     </el-card>
 </template>
 <script setup>
@@ -77,8 +77,10 @@ const { formDrawerRef,formRef,form,drawerTitle,rules,handleSubmit,handleCreate,h
 })
 
 const goodsTableData = ref([])
+const categoryId = ref(null);
 
 function goodsCallBack(data,id){
+    categoryId.value = id
     getCategoryGoods(id).then(res=>{
         goodsTableData.value = res
     }).finally(()=>{

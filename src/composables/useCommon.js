@@ -145,7 +145,8 @@ export function useInitTable(opt = {}) {
     tableRef,
     moreUnmount,
     moreRecover,
-    cleanOut
+    cleanOut,
+    moreIds
   };
 }
 

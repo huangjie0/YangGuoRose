@@ -18,7 +18,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <ChooseGoods ref="chooseGoodsRef"></ChooseGoods>
+        <ChooseGoods ref="chooseGoodsRef" :categoryId="categoryId" :get-goods-table="getGoodsTable"></ChooseGoods>
     </FormDrawer>
 </template>
 <script setup>
@@ -49,7 +49,9 @@ const submit = ()=>{
 }
 
 defineProps({
-    goodsTableData:Array
+    goodsTableData:Array,
+    categoryId:Number,
+    getGoodsTable:Function
 })
 </script>
 <style lang="less">
