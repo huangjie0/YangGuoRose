@@ -1,5 +1,5 @@
 <template>
-    <FormDrawer ref="formDrawer" title="推荐商品">
+    <FormDrawer ref="formDrawer" title="推荐商品" @submit="submit" confirmText="关联">
         <el-table :data="goodsTableData" style="width: 100%" border>
             <el-table-column prop="goods_id" label="ID" width="180"> </el-table-column>
             <el-table-column prop="name" label="商品名称" width="180"> </el-table-column>
@@ -18,6 +18,7 @@
                 </template>
             </el-table-column>
         </el-table>
+        <ChooseGoods ref="chooseGoodsRef"></ChooseGoods>
     </FormDrawer>
 </template>
 <script setup>
@@ -25,8 +26,10 @@ import { ref } from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
 import { deleteCategoryGoods } from '@/api/category.js';
 import { toast } from '@/composables/util.js';
+import ChooseGoods from '@/components/ChooseGoods.vue';
 
 const formDrawer = ref(null);
+const chooseGoodsRef = ref(null);
 
 const deleteGoods = (id,goodId)=>{
     deleteCategoryGoods(id).then((res)=>{
@@ -40,6 +43,10 @@ defineExpose({
 })
 
 const emits = defineEmits(['getData'])
+
+const submit = ()=>{
+    chooseGoodsRef.value.commonDialogRef.open()
+}
 
 defineProps({
     goodsTableData:Array

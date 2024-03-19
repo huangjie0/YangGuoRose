@@ -42,7 +42,7 @@
 import { ref } from 'vue';
 import ListHeader from '@/components/ListHeader.vue'
 import { getCategoryList,createCategory,updateCategory,updateCategoryStatus,deleteCategory,getCategoryGoods} from '@/api/category.js'
-import { useInitTable,useInitForm } from '@/composables/useCommon.js'
+import { useInitTable,useInitForm } from '@/composables/useCommon.js';
 import FormDrawer from '@/components/FormDrawer.vue';
 import GoodsDrawer from './components/GoodsDrawer.vue';
 
