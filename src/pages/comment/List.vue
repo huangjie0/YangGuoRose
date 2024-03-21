@@ -96,7 +96,7 @@ import { getGoodsCommentList,updateGoodsCommentStatus,reviewGoodsComment} from '
 import {useInitTable} from '@/composables/useCommon.js'
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
-import { toast } from '@/composablesf/util.js';
+import { toast } from '@/composables/util.js';
   
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleChange } = useInitTable({
 getList:getGoodsCommentList,
