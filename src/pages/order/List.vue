@@ -10,13 +10,20 @@
             <SearchItem label="订单编号">
               <el-input v-model="searchForm.no" placeholder="订单编号" clearable></el-input>
             </SearchItem>
-            <!-- <template #show>
-              <SearchItem label="商品分类">
-                <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" size="small" clearable>
-                    <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id"/>
-                </el-select>
+            <template #show>
+              <SearchItem label="收货人">
+                <el-input v-model="searchForm.name" placeholder="收货人" clearable></el-input>
               </SearchItem>
-            </template> -->
+              <SearchItem label="手机号">
+                <el-input v-model="searchForm.phone" type="number" placeholder="手机号" clearable></el-input>
+              </SearchItem>
+              <SearchItem label="开始时间">
+                <el-date-picker v-model="searchForm.starttime" type="date" placeholder="开始时间" value-format="YYYY-MM-DD"></el-date-picker>
+              </SearchItem>
+              <SearchItem label="结束时间">
+                <el-date-picker v-model="searchForm.endtime" type="date" placeholder="结束时间" value-format="YYYY-MM-DD"></el-date-picker>
+              </SearchItem>
+            </template>
         </Search>
   
         <ListHeader @create="handleCreate" @refresh="getData" layout="refresh">
@@ -79,7 +86,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="rose-f-row pagination">
+        <div class="rose-f-c pagination">
           <el-pagination
             background
             layout="prev,pager,next"
@@ -93,11 +100,10 @@
     </div>
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { getOrderList, deleteOrder } from '@/api/order.js';
 import {useInitTable} from '@/composables/useCommon.js';
 import ListHeader from '@/components/ListHeader.vue';
-// import { getCategoryList } from '@/api/category.js';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 
@@ -106,12 +112,7 @@ moreDelete} = useInitTable({
 getList:getOrderList,
 delete:deleteOrder,
 onGetListSuccess:(res)=>{
-    tableData.value = res.list.map(o=>{
-    o.bannersLoading = false
-    o.contentLoading = false
-    o.goodsSkusLoading = false
-    return o
-    })
+    tableData.value = res.list
     total.value = res.totalCount
 },
 searchForm:{
@@ -125,8 +126,8 @@ searchForm:{
 })
 
 const tableHeight = computed(()=>{
-    return (window.innerHeight - 380) + 'px';
-}
+        return (window.innerHeight - 420) + 'px';
+    }
 )
 
 const tabbars = [
@@ -140,20 +141,9 @@ const tabbars = [
     {key:'refunding',name:'退款中'}
 ]
 
-// 商品分类
-// const category_list = ref([])
-
-// onMounted(() => {
-// getCategoryList().then(res=>{
-//     category_list.value = res
-// })
-// })
-
 </script>
 <style lang="less" scoped>
 .pagination{
-    justify-content: center;
-    align-items: center;
     margin-top:20px;
 }
 
