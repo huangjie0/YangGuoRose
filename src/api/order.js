@@ -12,6 +12,13 @@ export function deleteOrder(ids){
     })
 }
 
+export function exportOrder(query={}){
+    let r = queryParams(query)
+    return axios.post(`/admin/order/excelexport${r}`,{},{
+        responseType:"blob"
+    })
+}
+
 
 
 

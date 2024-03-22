@@ -87,7 +87,7 @@
           </el-table-column>
         </el-table>
         
-        <ExportExcel ref="exportExcelRef"></ExportExcel>
+        <ExportExcel ref="exportExcelRef" :tabs="tabbars"></ExportExcel>
 
         <div class="rose-f-c pagination">
           <el-pagination

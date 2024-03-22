@@ -23,7 +23,7 @@ service.interceptors.request.use(
 // 添加响应拦截器
 service.interceptors.response.use(
   function (response) {
-    return response.data.data;
+    return response.request.responseType == 'blob' ?  response.data : response.data.data;
   },
   function (error) {
     toast(error.response.data.msg || "请求失败",'error')

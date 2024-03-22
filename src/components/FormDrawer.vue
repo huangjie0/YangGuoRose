@@ -20,7 +20,7 @@
   </el-drawer>
 </template>
 <script setup>
-import { ref,reactive } from 'vue'
+import { ref } from 'vue'
 
 const showDrawer = ref(false)
 const loading = ref(false)
