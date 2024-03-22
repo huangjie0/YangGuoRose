@@ -26,7 +26,7 @@
             </template>
         </Search>
   
-        <ListHeader @create="handleCreate" @refresh="getData" layout="refresh">
+        <ListHeader @refresh="getData" layout="refresh,derive">
           <el-button  size="small" @click="moreDelete" type="danger">批量删除</el-button>
         </ListHeader>
   
@@ -109,20 +109,20 @@ import SearchItem from '@/components/SearchItem.vue';
 
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleSelectionChange,tableRef,
 moreDelete} = useInitTable({
-getList:getOrderList,
-delete:deleteOrder,
-onGetListSuccess:(res)=>{
-    tableData.value = res.list
-    total.value = res.totalCount
-},
-searchForm:{
-    no:'',
-    tab:'all',
-    starttime:'',
-    endtime:'',
-    name:'',
-    phone:''
-}
+    getList:getOrderList,
+    delete:deleteOrder,
+    onGetListSuccess:(res)=>{
+        tableData.value = res.list
+        total.value = res.totalCount
+    },
+    searchForm:{
+        no:'',
+        tab:'all',
+        starttime:'',
+        endtime:'',
+        name:'',
+        phone:''
+    }
 })
 
 const tableHeight = computed(()=>{

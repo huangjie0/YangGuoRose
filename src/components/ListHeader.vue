@@ -10,8 +10,13 @@
         <slot></slot>
       </div>
         <el-tooltip content="刷新" placement="top">
-          <el-button text @click="$emit('refresh')" v-if="btns.includes('refresh')">
-            <el-icon :size="20"><Refresh /></el-icon>
+          <el-button text @click="$emit('refresh')" v-if="btns.includes('refresh')" size="small">
+            <el-icon :size="15"><Refresh /></el-icon>
+          </el-button>
+        </el-tooltip>
+        <el-tooltip content="导出" placement="top">
+          <el-button text @click="$emit('derive')" v-if="btns.includes('derive')" size="small">
+            <el-icon :size="15"><Refresh /></el-icon>
           </el-button>
         </el-tooltip>
     </div>
@@ -21,7 +26,7 @@ import { computed } from 'vue'
 
 const btns = computed(()=> props.layout.split(','))
 
-defineEmits(["create","refresh","delete"])
+defineEmits(["create","refresh","delete","derive"])
 
 const props = defineProps({
   layout:{
@@ -32,5 +37,4 @@ const props = defineProps({
 
 </script>
 <style lang="less">
-    
 </style>
