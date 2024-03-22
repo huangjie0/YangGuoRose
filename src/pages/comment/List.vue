@@ -7,7 +7,7 @@
             </SearchItem>
         </Search>
 
-        <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight">
+        <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" :height="tableHeight" default-expand-all>
             <el-table-column type="expand">
                 <template #default="{ row }">
                     <div class="rose-f-row"> 
@@ -107,7 +107,6 @@ onGetListSuccess:(res)=>{
         o.textareaEdit = false
         return o
     })
-    console.log(res);
     total.value = res.totalCount
     },
     searchForm:{
