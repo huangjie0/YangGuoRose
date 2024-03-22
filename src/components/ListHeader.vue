@@ -9,6 +9,7 @@
         </el-popconfirm>
         <slot></slot>
       </div>
+      <div>
         <el-tooltip content="刷新" placement="top">
           <el-button text @click="$emit('refresh')" v-if="btns.includes('refresh')" size="small">
             <el-icon :size="15"><Refresh /></el-icon>
@@ -16,9 +17,10 @@
         </el-tooltip>
         <el-tooltip content="导出" placement="top">
           <el-button text @click="$emit('derive')" v-if="btns.includes('derive')" size="small">
-            <el-icon :size="15"><Refresh /></el-icon>
+            <el-icon :size="15"><Download /></el-icon>
           </el-button>
         </el-tooltip>
+      </div>
     </div>
 </template>
 <script setup>

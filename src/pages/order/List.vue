@@ -26,7 +26,7 @@
             </template>
         </Search>
   
-        <ListHeader @refresh="getData" layout="refresh,derive">
+        <ListHeader @refresh="getData" @derive="derive" layout="refresh,derive">
           <el-button  size="small" @click="moreDelete" type="danger">批量删除</el-button>
         </ListHeader>
   
@@ -86,6 +86,9 @@
             </template>
           </el-table-column>
         </el-table>
+        
+        <ExportExcel ref="exportExcelRef"></ExportExcel>
+
         <div class="rose-f-c pagination">
           <el-pagination
             background
@@ -100,12 +103,13 @@
     </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import { getOrderList, deleteOrder } from '@/api/order.js';
 import {useInitTable} from '@/composables/useCommon.js';
 import ListHeader from '@/components/ListHeader.vue';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
+import ExportExcel from './components/ExportExcel.vue';
 
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleSelectionChange,tableRef,
 moreDelete} = useInitTable({
@@ -125,10 +129,16 @@ moreDelete} = useInitTable({
     }
 })
 
+const exportExcelRef = ref(null)
 const tableHeight = computed(()=>{
         return (window.innerHeight - 420) + 'px';
     }
 )
+
+//导出
+const derive = ()=>{
+    exportExcelRef.value.formDrawerRef.open()
+}
 
 const tabbars = [
     {key:'all',name:'全部'},
