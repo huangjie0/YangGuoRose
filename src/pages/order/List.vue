@@ -79,15 +79,17 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="scope"> 
-                <el-button size="small" @click="handleEdit(scope.row)">订单详情</el-button>
+                <el-button size="small" @click="handleOrderDetails(scope.row)">订单详情</el-button>
                 <el-button size="small" v-show="searchForm.tab == 'noship'" @click="handleEdit(scope.row)">订单发货</el-button>
                 <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleEdit(scope.row)">同意退款</el-button>
                 <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleEdit(scope.row)">拒绝退款</el-button>
             </template>
           </el-table-column>
         </el-table>
-        
+        <!-- 导出 -->
         <ExportExcel ref="exportExcelRef" :tabs="tabbars"></ExportExcel>
+        <!-- 订单详情 -->
+        <OrderDetails ref="orderDetailsRef" :info="info"></OrderDetails>
 
         <div class="rose-f-c pagination">
           <el-pagination
@@ -110,6 +112,7 @@ import ListHeader from '@/components/ListHeader.vue';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import ExportExcel from './components/ExportExcel.vue';
+import OrderDetails from './components/OrderDetails.vue';
 
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleSelectionChange,tableRef,
 moreDelete} = useInitTable({
@@ -130,9 +133,17 @@ moreDelete} = useInitTable({
 })
 
 const exportExcelRef = ref(null)
+const orderDetailsRef = ref(null)
+const info = ref(null); 
+
+const handleOrderDetails = (row)=>{
+  info.value = row;
+  orderDetailsRef.value.formDrawerRef.open()
+}
+
 const tableHeight = computed(()=>{
         return (window.innerHeight - 420) + 'px';
-    }
+  }
 )
 
 //导出
