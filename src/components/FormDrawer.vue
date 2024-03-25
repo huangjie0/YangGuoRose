@@ -5,6 +5,7 @@
     :close-on-click-modal="false"
     :title="title"
     :destroy-on-close="destroyOnClose"
+    @closed="closed"
   >
   <div class="form-drawer rose-w-h-100 rose-f-column">
     <div class="body rose-f-1">
@@ -61,11 +62,15 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(["submit"])
+const emits = defineEmits(["submit","closed"])
 
 //提交
 const submit = ()=>{
     emits("submit")
+}
+
+const closed = ()=>{
+    emits("closed")
 }
 
 </script>

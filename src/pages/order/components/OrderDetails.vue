@@ -89,7 +89,7 @@
                 </el-form-item>
             </el-form>
         </el-card>
-        <LogisticsInformation ref="logisticsInformationRef" :order-id="orderId">
+        <LogisticsInformation ref="logisticsInformationRef" :order-id="orderId" @closed="closed">
         </LogisticsInformation>
     </FormDrawer>
 </template>
@@ -100,8 +100,8 @@ import { useDateFormat } from '@vueuse/core';
 import LogisticsInformation from './LogisticsInformation.vue';
 
 const formDrawerRef = ref(null);
-const logisticsInformationRef = ref(null);
-const orderId = ref(null);
+const logisticsInformationRef = ref();
+const orderId = ref(0);
 const ship_time = computed(()=>{
     if(props.info.ship_data){
        const s = useDateFormat(props.info.ship_data.express_time * 1000,'YYYY-MM-DD')
@@ -126,6 +126,10 @@ const openMaterialFlow = (id)=>{
     logisticsInformationRef.value.formDrawerRef.open()
 }
 
+const closed = ()=>{
+    orderId.value = null;
+}
+
 defineExpose({
     formDrawerRef
 })
@@ -133,10 +137,6 @@ defineExpose({
 const props = defineProps({
     info:Object
 })
-
-
-
-
 
 </script>
 <style scoped lang="less">
