@@ -81,8 +81,8 @@
             <template #default="scope"> 
                 <el-button size="small" @click="handleOrderDetails(scope.row)">订单详情</el-button>
                 <el-button size="small" v-show="searchForm.tab == 'noship'" @click="handleEdit(scope.row)">订单发货</el-button>
-                <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleEdit(scope.row)">同意退款</el-button>
-                <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleEdit(scope.row)">拒绝退款</el-button>
+                <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleRefund(scope.row.id,1)">同意退款</el-button>
+                <el-button size="small" v-show="searchForm.tab == 'refunding'" @click="handleRefund(scope.row.id,0)">拒绝退款</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -106,13 +106,14 @@
 </template>
 <script setup>
 import { computed,ref } from 'vue';
-import { getOrderList, deleteOrder } from '@/api/order.js';
+import { getOrderList, deleteOrder , refundOrder  } from '@/api/order.js';
 import {useInitTable} from '@/composables/useCommon.js';
 import ListHeader from '@/components/ListHeader.vue';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import ExportExcel from './components/ExportExcel.vue';
 import OrderDetails from './components/OrderDetails.vue';
+import { showModal, showPrompt, toast } from '@/composables/util.js';
 
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData,handleSelectionChange,tableRef,
 moreDelete} = useInitTable({
@@ -153,8 +154,21 @@ const handleOrderDetails = (row)=>{
   orderDetailsRef.value.formDrawerRef.open()
 }
 
+const handleRefund = (id,flag)=>{
+    (flag == 1 ? showModal("是否同意改订单退款？") : showPrompt("请输入拒绝理由！")).then(({ value })=>{
+      let data = { agree:flag }
+      if(!flag){
+        data.disagree_reason = value
+      }
+    refundOrder(id,data).then(res=>{
+      getData()
+      toast("操作成功")
+    })
+  })
+}
+
 const tableHeight = computed(()=>{
-        return (window.innerHeight - 420) + 'px';
+    return (window.innerHeight - 420) + 'px';
   }
 )
 
