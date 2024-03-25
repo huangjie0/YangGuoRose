@@ -25,6 +25,18 @@
             </template>
             <div class="rose-f-row" v-for="(item,index) in info.order_items" :key="index"> 
                 <el-image class="smallImage" :lazy="true" :src="item.goods_item?.cover ?? ''" fit="fill"></el-image>
+                <div>
+                    <p>{{ item.goods_item?.title ?? '商品已被删除' }}</p>
+                    <p v-if="item.sku_type == 1 && item.goods_skus">
+                        <el-tag size="small" type="info">
+                            {{ (item.goods_skus.map(o => o.value)).join(",")  }}
+                        </el-tag>
+                    </p>
+                    <p>
+                        <b>￥{{ item.price }}</b>
+                        <span>x{{ item.num }}</span>
+                    </p>
+                </div>
             </div>
         </el-card>
         <el-card shadow="never" v-if="info.address">
