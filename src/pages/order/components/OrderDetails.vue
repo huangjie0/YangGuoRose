@@ -81,6 +81,17 @@
                 </el-form-item>
             </el-form>
         </el-card>
+        <el-card shadow="never" v-if="info.refund_status !== 'pending'">
+            <template #header>
+                <b>退款信息</b>
+                <el-button disabled class="rose-ml-1">{{ refund_status }}</el-button>
+            </template>
+            <el-form label-width="80px">
+                <el-form-item label="退款理由">
+                    {{ info.extra.refund_reason }}
+                </el-form-item>
+            </el-form>
+        </el-card>
     </FormDrawer>
 </template>
 <script setup>
@@ -95,6 +106,17 @@ const ship_time = computed(()=>{
        return s.value
     }
     return ""
+})
+
+const refund_status = computed(()=>{
+    const opt = {
+        pending:"未退款",
+        applied:"已申请,等待审核",
+        processing:"退款中",
+        success:"退款成功",
+        failed:"退款失败"
+    }
+    return props.info.refund_status ? opt[props.info.refund_status] : ""
 })
 
 defineExpose({
