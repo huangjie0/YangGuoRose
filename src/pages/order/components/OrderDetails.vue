@@ -6,7 +6,8 @@
             </template>
             <el-form label-width="80px">
                 <el-form-item label="订单号">
-                    {{ info.no }}
+                    <span> {{ info.no }}</span>
+                    <span class="rose-ml-1 rose-bg3 rose-cursor" @click="openMaterialFlow(info.id)">物流信息</span>
                 </el-form-item>
                 <el-form-item label="付款方式">
                     {{ info.payment_method }}
@@ -88,14 +89,19 @@
                 </el-form-item>
             </el-form>
         </el-card>
+        <LogisticsInformation ref="logisticsInformationRef" :order-id="orderId">
+        </LogisticsInformation>
     </FormDrawer>
 </template>
 <script setup>
-import { ref , computed} from 'vue';
+import { ref , computed } from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
 import { useDateFormat } from '@vueuse/core';
+import LogisticsInformation from './LogisticsInformation.vue';
 
 const formDrawerRef = ref(null);
+const logisticsInformationRef = ref(null);
+const orderId = ref(null);
 const ship_time = computed(()=>{
     if(props.info.ship_data){
        const s = useDateFormat(props.info.ship_data.express_time * 1000,'YYYY-MM-DD')
@@ -115,6 +121,11 @@ const refund_status = computed(()=>{
     return props.info.refund_status ? opt[props.info.refund_status] : ""
 })
 
+const openMaterialFlow = (id)=>{
+    orderId.value = id;
+    logisticsInformationRef.value.formDrawerRef.open()
+}
+
 defineExpose({
     formDrawerRef
 })
@@ -122,6 +133,10 @@ defineExpose({
 const props = defineProps({
     info:Object
 })
+
+
+
+
 
 </script>
 <style scoped lang="less">

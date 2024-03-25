@@ -19,6 +19,10 @@ export function exportOrder(query={}){
     })
 }
 
+export function getShipInfo(id){
+    return axios.get(`/admin/order/${id}/get_ship_info`)
+}
+
 
 
 

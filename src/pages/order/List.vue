@@ -149,6 +149,7 @@ const handleOrderDetails = (row)=>{
     }
     return o
   })
+  
   orderDetailsRef.value.formDrawerRef.open()
 }
 
