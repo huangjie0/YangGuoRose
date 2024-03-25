@@ -36,10 +36,6 @@
                 </el-form-item>
             </el-form>
         </el-card>
-
-
-
-
         <el-card shadow="never">
             <template #header>
                 <b>商品信息</b>
