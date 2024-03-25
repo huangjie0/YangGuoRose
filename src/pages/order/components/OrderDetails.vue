@@ -19,25 +19,51 @@
                 </el-form-item>
             </el-form>
         </el-card>
+
+        <el-card shadow="never" v-if="info.ship_data">
+            <template #header>
+                <b>发货信息</b>
+            </template>
+            <el-form label-width="80px">
+                <el-form-item label="物流公司">
+                    {{ info.ship_data.express_company }}
+                </el-form-item>
+                <el-form-item label="运单号">
+                    {{ info.ship_data.express_no }}
+                </el-form-item>
+                <el-form-item label="发货时间">
+                    {{ ship_time }}
+                </el-form-item>
+            </el-form>
+        </el-card>
+
+
+
+
         <el-card shadow="never">
             <template #header>
                 <b>商品信息</b>
             </template>
             <div class="rose-f-row" v-for="(item,index) in info.order_items" :key="index"> 
                 <el-image class="smallImage" :lazy="true" :src="item.goods_item?.cover ?? ''" fit="fill"></el-image>
-                <div>
+                <div class="rose-ml-1">
                     <p>{{ item.goods_item?.title ?? '商品已被删除' }}</p>
-                    <p v-if="item.sku_type == 1 && item.goods_skus">
+                    <p v-if="item.sku">
                         <el-tag size="small" type="info">
-                            {{ (item.goods_skus.map(o => o.value)).join(",")  }}
+                            {{ item.sku }}
                         </el-tag>
                     </p>
                     <p>
-                        <b>￥{{ item.price }}</b>
+                        <b class="rose-font-red">￥{{ item.price }}</b>
                         <span>x{{ item.num }}</span>
                     </p>
                 </div>
             </div>
+            <el-form label-width="80px">
+                <el-form-item label="成交价">
+                    <span class="rose-font-red">￥{{ info.total_price }}</span> 
+                </el-form-item>
+            </el-form>
         </el-card>
         <el-card shadow="never" v-if="info.address">
             <template #header>
@@ -58,16 +84,24 @@
     </FormDrawer>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref , computed} from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
+import { useDateFormat } from '@vueuse/core';
 
 const formDrawerRef = ref(null);
+const ship_time = computed(()=>{
+    if(props.info.ship_data){
+       const s = useDateFormat(props.info.ship_data.express_time * 1000,'YYYY-MM-DD')
+       return s.value
+    }
+    return ""
+})
 
 defineExpose({
     formDrawerRef
 })
 
-defineProps({
+const props = defineProps({
     info:Object
 })
 

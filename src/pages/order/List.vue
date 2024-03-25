@@ -138,6 +138,17 @@ const info = ref(null);
 
 const handleOrderDetails = (row)=>{
   info.value = row;
+  console.log(row.order_items);
+  row.order_items = row.order_items.map(o=>{
+    if(o.skus_type == 1 && o.goods_skus){
+      let s = []
+      for (const k in o.goods_skus.skus) {
+          s.push( o.goods_skus.skus[k].value)
+      }
+      o.sku =  s.join(',')
+    }
+    return o
+  })
   orderDetailsRef.value.formDrawerRef.open()
 }
 
