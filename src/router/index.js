@@ -17,7 +17,10 @@ import AccessList from "@/pages/access/List.vue";
 import RoleList from "@/pages/role/List.vue";
 import SkusList from '@/pages/skus/List.vue';
 import LevelList from '@/pages/level/List.vue';
-import Buy from '@/pages/setting/Buy.vue'
+import Buy from '@/pages/setting/Buy.vue';
+import Ship from '@/pages/setting/Ship.vue';
+import DistributionManager from '@/pages/distribution/DistributionManager.vue';
+import DistributionSetup from '@/pages/distribution/DistributionSetup.vue';
 
 //默认路由所有页面共享
 const routes = [
@@ -131,6 +134,14 @@ const asyncRoutes = [
     },
   },
   {
+    path:"/setting/ship",
+    name: "/setting/ship",
+    component: Ship,
+    meta: {
+      title: "物流设置",
+    },
+  },
+  {
     path: "/manager/list",
     name: "/manager/list",
     component: ManagerList,
@@ -168,6 +179,22 @@ const asyncRoutes = [
     component: LevelList,
     meta: {
       title: "会员等级"
+    },
+  },
+  {
+    path: "/distribution/index",
+    name: "/distribution/index",
+    component: DistributionManager,
+    meta: {
+      title: "分销管理员"
+    },
+  },
+  {
+    path: "/distribution/setting",
+    name: "/distribution/setting",
+    component: DistributionSetup,
+    meta: {
+      title: "分销设置"
     },
   }
 ];
