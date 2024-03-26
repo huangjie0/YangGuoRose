@@ -114,8 +114,8 @@ const asyncRoutes = [
     },
   },
   {
-    path: "/setting/list",
-    name: "/setting/list",
+    path: "/setting/base",
+    name: "/setting/base",
     component: SettingList,
     meta: {
       title: "配置列表",
