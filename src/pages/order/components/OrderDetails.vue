@@ -1,5 +1,5 @@
 <template>
-    <FormDrawer title="订单详情" ref="formDrawerRef">
+    <FormDrawer title="订单详情" ref="formDrawerRef" confirmText="确定" @submit="submit">
         <el-card shadow="never">
             <template #header>
                 <b>订单详情</b>
@@ -128,6 +128,10 @@ const openMaterialFlow = (id)=>{
 
 const closed = ()=>{
     orderId.value = null;
+}
+
+const submit = ()=>{
+    formDrawerRef.value.close()
 }
 
 defineExpose({

@@ -1,5 +1,5 @@
 <template>
-    <FormDrawer ref="formDrawerRef" title="物流信息" :destroy-on-close="true" @closed="closed">
+    <FormDrawer ref="formDrawerRef" title="物流信息" :destroy-on-close="true" @closed="closed" confirmText="确定" @submit="submit">
         <el-card shadow="never">
             <div class="rose-f-row">
                 <el-image :src="info.logo" fit="fill" :lazy="true" class="smallImage rose-br-s1"></el-image>
@@ -50,6 +50,10 @@ const emits = defineEmits(["closed"])
 
 const closed = ()=>{
     emits("closed")
+}
+
+const submit = ()=>{
+    formDrawerRef.value.close()
 }
 
 </script>
