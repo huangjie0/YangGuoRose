@@ -20,10 +20,10 @@
                     </el-form-item>
                     <el-form-item label="强度密码复杂度">
                         <el-checkbox-group v-model="form.password_encrypt">
-                            <el-checkbox :label="0" border>数字</el-checkbox>
-                            <el-checkbox :label="1" border>小写字母</el-checkbox>
-                            <el-checkbox :label="2" border>大写字母</el-checkbox>
-                            <el-checkbox :label="3" border>符号</el-checkbox>
+                            <el-checkbox label="0" border>数字</el-checkbox>
+                            <el-checkbox label="1" border>小写字母</el-checkbox>
+                            <el-checkbox label="2" border>大写字母</el-checkbox>
+                            <el-checkbox label="3" border>符号</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                 </el-tab-pane>
@@ -77,7 +77,10 @@ const loading = ref(false);
 const getData = ()=>{
     loading.value = true
     getSysconfig().then(res=>{
-        console.log(res);
+        for (const k in form) {
+            form[k] = res[k]
+        }
+        form.password_encrypt = res.password_encrypt.split(',')
     }).finally(()=>{
         loading.value = false
     })
