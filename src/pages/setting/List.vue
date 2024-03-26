@@ -27,8 +27,41 @@
                         </el-checkbox-group>
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="上传设置" name="second">配置管理</el-tab-pane>
-                <el-tab-pane label="Api安全" name="third">Api安全</el-tab-pane>
+                <el-tab-pane label="上传设置" name="second">
+                    <el-form-item label="默认上传方式">
+                        <el-radio-group v-model="form.upload_method">
+                            <el-radio label="oss" border>对象存储</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="Bucket">
+                        <el-input v-model="form.upload_config.Bucket" style="width: 300px;" placeholder="Bucket"></el-input>
+                    </el-form-item>
+                    <el-form-item label="ACCESS_KEY">
+                        <el-input v-model="form.upload_config.ACCESS_KEY" style="width: 300px;" placeholder="ACCESS_KEY"></el-input>
+                    </el-form-item>
+                    <el-form-item label="SECRET_KEY">
+                        <el-input v-model="form.upload_config.SECRET_KEY" style="width: 300px;" placeholder="SECRET_KEY"></el-input>
+                    </el-form-item>
+                    <el-form-item label="空间域名">
+                        <el-input v-model="form.upload_config.http" style="width: 300px;" placeholder="请输入空间域名"></el-input>
+                        <small class="rose-ml-1 rose-bg2">请补全http：//或https</small>
+                    </el-form-item>
+                </el-tab-pane>
+                <el-tab-pane label="Api安全" name="third">
+                    <el-form-item label="是否开启Api安全">
+                        <el-radio-group v-model="form.api_safe">
+                            <el-radio :label="0" border>关闭</el-radio>
+                            <el-radio :label="1" border>开启</el-radio>
+                        </el-radio-group>
+                        <small class="rose-ml-1 rose-bg2">api安全功能开启之后调用前端api需要传输签名串</small>
+                    </el-form-item>
+                    <el-form-item label="秘钥">
+                        <el-input v-model="form.api_secret" style="width: 300px;" placeholder="请输入秘钥"></el-input>
+                        <small class="rose-ml-1 rose-bg2">秘钥设置关系系统中api调用传输签名串的编码规则，以及会员token解析，
+                            注意设置之后对应会员要求重新登录获取token
+                        </small>
+                    </el-form-item>
+                </el-tab-pane>
             </el-tabs>
             <el-form-item>
                 <el-button type="primary">保存</el-button>
@@ -61,11 +94,11 @@ const form = reactive({
     upload_config: {
         Bucket: "",
         http: "",
-        ACCESS_KEY: "****************",
-        SECRET_KEY: "****************"
+        ACCESS_KEY: "",
+        SECRET_KEY: ""
     },
     api_safe: 1,
-    api_secret: "...",
+    api_secret: "",
 
 })
 
