@@ -17,6 +17,7 @@ import AccessList from "@/pages/access/List.vue";
 import RoleList from "@/pages/role/List.vue";
 import SkusList from '@/pages/skus/List.vue';
 import LevelList from '@/pages/level/List.vue';
+import Buy from '@/pages/setting/Buy.vue'
 
 //默认路由所有页面共享
 const routes = [
@@ -119,6 +120,14 @@ const asyncRoutes = [
     component: SettingList,
     meta: {
       title: "配置列表",
+    },
+  },
+  {
+    path:"/setting/buy",
+    name: "/setting/buy",
+    component: Buy,
+    meta: {
+      title: "交易设置",
     },
   },
   {

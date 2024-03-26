@@ -64,12 +64,13 @@
                 </el-tab-pane>
             </el-tabs>
             <el-form-item>
-                <el-button type="primary">保存</el-button>
+                <el-button type="primary" @click="submit">保存</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 <script setup>
+import { toast } from '@/composables/util.js';
 import { ref, reactive } from 'vue';
 import { getSysconfig,setSysconfig } from '@/api/sysconfig.js';
 
@@ -105,8 +106,19 @@ const form = reactive({
 
 })
 
+const submit = ()=>{
+    loading.value = true;
+    form.password_encrypt = form.password_encrypt.join(',')
+    setSysconfig(form).then(res=>{
+        toast("修改成功！")
+        getData()
+    }).finally(()=>{
+        loading.value = false;
+    })
+}
+
 getData()
+
 </script>
 <style lang="less">
-    
 </style>
