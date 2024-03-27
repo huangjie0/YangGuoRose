@@ -189,7 +189,7 @@
     background-color:var(--rose2);
     color:var(--rose-g5);
   }
-  .value-input,{
+  .value-input{
     width:50%;
   }
   </style>
