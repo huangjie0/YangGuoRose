@@ -22,7 +22,6 @@
   </el-upload>
 </template>
 <script setup>
-import { ref } from "vue";
 import { UPLOADIMAGEACTION } from "@/api/image.js";
 import { getToken } from "@/composables/auth.js";
 import { toast } from "@/composables/util.js";

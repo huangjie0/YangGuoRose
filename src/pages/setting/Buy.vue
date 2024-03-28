@@ -23,24 +23,30 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="购物设置" name="second">
-                    <!-- <el-form-item label="默认上传方式">
-                        <el-radio-group v-model="form.upload_method">
-                            <el-radio label="oss" border>对象存储</el-radio>
-                        </el-radio-group>
+                    <el-form-item label="未支付订单">
+                        <el-input v-model="form.close_order_minute" style="width: 300px;" placeholder="未支付订单" type="number">
+                            <template #append>
+                                分钟后自动关闭
+                            </template>
+                        </el-input>
+                        <small class="rose-ml-1 rose-bg2">订单下单未付款，n分钟后自动关闭，设置0不自动关闭</small>
                     </el-form-item>
-                    <el-form-item label="Bucket">
-                        <el-input v-model="form.upload_config.Bucket" style="width: 300px;" placeholder="Bucket"></el-input>
+                    <el-form-item label="已发货订单">
+                        <el-input v-model="form.auto_received_day" style="width: 300px;" placeholder="已发货订单" type="number">
+                            <template #append>
+                                天后自动确定收货
+                            </template>
+                        </el-input>
+                        <small class="rose-ml-1 rose-bg2">如果在期间未确认收货，系统自动完成收货，设置0不自动收货</small>
                     </el-form-item>
-                    <el-form-item label="ACCESS_KEY">
-                        <el-input v-model="form.upload_config.ACCESS_KEY" style="width: 300px;" placeholder="ACCESS_KEY"></el-input>
+                    <el-form-item label="已完成订单">
+                        <el-input v-model="form.after_sale_day" style="width: 300px;" placeholder="已完成订单" type="number">
+                            <template #append>
+                               天内允许申请售后
+                            </template>
+                        </el-input>
+                        <small class="rose-ml-1 rose-bg2">订单完成后，用户在n天内可以发起售后申请，设置0不允许申请售后</small>
                     </el-form-item>
-                    <el-form-item label="SECRET_KEY">
-                        <el-input v-model="form.upload_config.SECRET_KEY" style="width: 300px;" placeholder="SECRET_KEY"></el-input>
-                    </el-form-item>
-                    <el-form-item label="空间域名">
-                        <el-input v-model="form.upload_config.http" style="width: 300px;" placeholder="请输入空间域名"></el-input>
-                        <small class="rose-ml-1 rose-bg2">请补全http：//或https</small>
-                    </el-form-item> -->
                     <el-form-item>
                         <el-button type="primary" @click="submit">保存</el-button>
                     </el-form-item>
@@ -48,7 +54,7 @@
             </el-tabs>
         </el-form>
 
-        <FormDrawer title="配置" ref="formDrawerRef" @submit="submitDisposition">
+        <FormDrawer title="配置" ref="formDrawerRef" @submit="submit">
             <el-form :model="form" label-width="120" v-if="drawerType == 'alipay'">
                 <el-form-item label="app_id">
                     <el-input v-model="form.alipay.app_id" placeholder="app_id" type="textarea" rows="4"></el-input>
@@ -61,29 +67,57 @@
                 </el-form-item>
             </el-form>
             <el-form :model="form" label-width="120" v-else>
-                <el-form-item label="app_id">
+                <el-form-item label="公众号 app_id">
                     <el-input v-model="form.wxpay.app_id" placeholder="app_id" type="textarea" rows="4"></el-input>
                 </el-form-item>
-                <el-form-item label="miniapp_id">
+                <el-form-item label="小程序 app_id">
                     <el-input v-model="form.wxpay.miniapp_id" placeholder="miniapp_id" type="textarea" rows="4"></el-input>
                 </el-form-item>
-                <el-form-item label="secret">
+                <el-form-item label="小程序 secret">
                     <el-input v-model="form.wxpay.secret" placeholder="secret" type="textarea" rows="4"></el-input>
                 </el-form-item>
                 <el-form-item label="appid">
                     <el-input v-model="form.wxpay.appid" placeholder="appid" type="textarea" rows="4"></el-input>
                 </el-form-item>
-                <el-form-item label="mch_id">
+                <el-form-item label="商户号">
                     <el-input v-model="form.wxpay.mch_id" placeholder="mch_id" type="textarea" rows="4"></el-input>
                 </el-form-item>
-                <el-form-item label="key">
+                <el-form-item label="api密钥">
                     <el-input v-model="form.wxpay.key" placeholder="key" type="textarea" rows="4"></el-input>
                 </el-form-item>
                 <el-form-item label="cert_client">
-                    <el-input v-model="form.wxpay.cert_client" placeholder="cert_client" type="textarea" rows="4"></el-input>
+                    <el-upload
+                    :action="uploadAction"
+                    :headers="{ token }"
+                    :limit="1"
+                    accept=".pem"
+                    :on-success="uploadClientSuccess"
+                    >
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <template #tip>
+                            <p class="rose-font-red">
+                                {{ form.wxpay.cert_client ? form.wxpay.cert_client : "还未配置"}}
+                            </p>
+                            <div class="el-upload__tip">例如：apiclient_cert.pem </div>
+                        </template>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item label="cert_key">
-                    <el-input v-model="form.wxpay.cert_key" placeholder="cert_key" type="textarea" rows="4"></el-input>
+                    <el-upload
+                    :action="uploadAction"
+                    :headers="{ token }"
+                    :limit="1"
+                    accept=".pem"
+                    :on-success="uploadKeySuccess"
+                    >
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <template #tip>
+                            <p class="rose-font-red">
+                                {{ form.wxpay.cert_key ? form.wxpay.cert_key : "还未配置"}}
+                            </p>
+                            <div class="el-upload__tip">例如：apiclient_key.pem </div>
+                        </template>
+                    </el-upload>
                 </el-form-item>
             </el-form>
         </FormDrawer>
@@ -92,12 +126,15 @@
 <script setup>
 import { toast } from '@/composables/util.js';
 import { ref, reactive } from 'vue';
-import { getSysconfig,setSysconfig } from '@/api/sysconfig.js';
+import { getSysconfig,setSysconfig, uploadAction} from '@/api/sysconfig.js';
 import FormDrawer from '@/components/FormDrawer.vue';
+import { getToken } from "@/composables/auth.js";
 
 const loading = ref(false);
 const formDrawerRef = ref(null);
 const drawerType = ref("alipay");
+const token = getToken();
+
 const getData = ()=>{
     loading.value = true
     getSysconfig().then(res=>{
@@ -115,9 +152,12 @@ const disposition = (row)=>{
     formDrawerRef.value.open()
 }
 
-const submitDisposition = ()=>{
-    
+const uploadClientSuccess = (response, file, fileList)=>{
+    form.wxpay.cert_client = response.data
+}
 
+const uploadKeySuccess = (response, file, fileList)=>{
+    form.wxpay.cert_key = response.data
 }
 
 const activeName = ref("first");
