@@ -10,7 +10,7 @@
                         <dessert style="color:#fff143" v-if="index == 3"/>
                     </el-icon>
                     <div class="rose-ml-1">
-                        <h2>{{ item.value }}</h2>
+                        <h2 class="rose-font-s2">{{ item.value }}</h2>
                         <small class="rose-bg">{{ item.label }}</small>
                     </div>
                 </div>
