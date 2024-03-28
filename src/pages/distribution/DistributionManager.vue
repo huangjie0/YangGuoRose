@@ -1,9 +1,10 @@
 <template>
     <div>
-        分销管理员
+        <Panel></Panel>
     </div>
 </template>
 <script setup>
+import Panel from './components/Panel.vue';
 
 </script>
 <style lang="less" scoped>
