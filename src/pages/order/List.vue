@@ -138,8 +138,8 @@ const orderDetailsRef = ref(null)
 const info = ref(null); 
 
 const handleOrderDetails = (row)=>{
+  console.log(row);
   info.value = row;
-  console.log(row.order_items);
   row.order_items = row.order_items.map(o=>{
     if(o.skus_type == 1 && o.goods_skus){
       let s = []

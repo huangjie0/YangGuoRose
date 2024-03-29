@@ -68,7 +68,7 @@
                 @current-change="getData"
                 />
             </div>
-            <PromoterDrawer ref="promoterDrawerRef" :promoterId="promoterId" @closed="closed"></PromoterDrawer>
+            <PromoterDrawer ref="promoterDrawerRef" :promoterId="promoterId"></PromoterDrawer>
             <PromotionOrderDrawer ref="promotionOrderDrawerRef" :promotionOrderId="promotionOrderId"></PromotionOrderDrawer>
         </el-card>
     </div>
@@ -109,10 +109,6 @@ const tableHeight = computed(()=>{
 const handlePromoter = (id)=>{
     promoterId.value = id
     promoterDrawerRef.value.formDrawer.open()
-}
-
-const closed = ()=>{
-    promoterId.value = null;
 }
 
 const handlePromotionOrder = (id)=>{

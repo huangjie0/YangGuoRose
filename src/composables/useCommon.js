@@ -62,7 +62,6 @@ export function useInitTable(opt = {}) {
   }
 
   onMounted(()=>{
-    debugger;
     getData()
   })
 

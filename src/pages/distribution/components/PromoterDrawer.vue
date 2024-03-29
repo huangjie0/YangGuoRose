@@ -1,5 +1,5 @@
 <template>
-   <FormDrawer title="推广人" ref="formDrawer" confirmText="确定" @submit="submit" @closed="closed">
+   <FormDrawer title="推广人" ref="formDrawer" confirmText="确定" @submit="submit">
     <el-form :model="searchForm" size="small">
         <el-form-item label="时间选择">
             <el-radio-group v-model="searchForm.type">
@@ -55,7 +55,7 @@
    </FormDrawer>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,watch } from 'vue';
 import FormDrawer from '@/components/FormDrawer.vue';
 import { getAgentList } from '@/api/distribution.js';
 import {useInitTable} from '@/composables/useCommon.js';
@@ -71,8 +71,13 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = u
     starttime:null,
     endtime:null,
     level:0,
-    user_id:props.promoterId
+    user_id:null
 }
+})
+
+watch(()=>props.promoterId,()=>{
+    searchForm.user_id = props.promoterId
+    getData()
 })
 
 const formDrawer = ref(null);
@@ -86,12 +91,6 @@ const submit = ()=>{
 }
 
 const emits = defineEmits(['closed'])
-
-const closed = ()=>{
-    emits('closed')
-}
-
-console.log(props.promoterId + '111');
 
 defineExpose({
     formDrawer
