@@ -4,15 +4,24 @@
         <el-card shadow="always" class="rose-mt-1">
             <!-- 表单公共搜索区域 -->
             <Search @search="getData" @reset="reset" :model="searchForm">
-                <SearchItem label="关键词">
-                <el-input v-model="searchForm.keyword" placeholder="手机号/邮箱/会员呢称" clearable></el-input>
+                <SearchItem label="时间选择">
+                    <el-radio-group v-model="searchForm.type">
+                        <el-radio label="all" border>全部</el-radio>
+                        <el-radio label="toady" border>今天</el-radio>
+                        <el-radio label="yesterday" border>昨天</el-radio>
+                        <el-radio label="last7days" border>最近7天</el-radio>
+                    </el-radio-group>
                 </SearchItem>
                 <template #show> 
-                    <!-- <SearchItem label="会员等级">
-                        <el-select v-model="searchForm.user_level_id" placeholder="请输入会员等级" clearable> 
-                            <el-option v-for="item in user_level" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </SearchItem> -->
+                    <SearchItem label="开始时间">
+                        <el-date-picker v-model="searchForm.starttime" type="date" placeholder="开始时间" value-format="YYYY-MM-DD"></el-date-picker>
+                    </SearchItem>
+                    <SearchItem label="结束时间">
+                        <el-date-picker v-model="searchForm.endtime" type="date" placeholder="结束时间" value-format="YYYY-MM-DD"></el-date-picker>
+                    </SearchItem>
+                    <SearchItem label="关键词">
+                        <el-input v-model="searchForm.keyword" placeholder="关键词" clearable></el-input>
+                    </SearchItem>
                 </template>
             </Search>
 
@@ -42,7 +51,7 @@
                 <el-table-column label="已提现金额" align="center" prop="cash_out_price"></el-table-column>
                 <el-table-column label="提现次数" align="center" prop="cash_out_time"></el-table-column>
                 <el-table-column label="未提现金额" align="center" prop="no_cash_out_price"></el-table-column>
-                <el-table-column label="操作" align="center" width="200">
+                <el-table-column label="操作" align="center" width="200" fixed="right">
                     <template #default="{row}"> 
                         <el-button type="primary" size="small">推广人</el-button>
                         <el-button type="primary" size="small">推广订单</el-button>
@@ -85,7 +94,7 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = u
 })
 
 const tableHeight = computed(()=>{
-    return (window.innerHeight - 400) + 'px';
+    return (window.innerHeight - 430) + 'px';
 }
 )
 </script>
