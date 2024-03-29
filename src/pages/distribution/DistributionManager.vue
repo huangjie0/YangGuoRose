@@ -53,8 +53,8 @@
                 <el-table-column label="未提现金额" align="center" prop="no_cash_out_price"></el-table-column>
                 <el-table-column label="操作" align="center" width="200" fixed="right">
                     <template #default="{row}"> 
-                        <el-button type="primary" size="small">推广人</el-button>
-                        <el-button type="primary" size="small">推广订单</el-button>
+                        <el-button type="primary" size="small" @click="handlePromoter">推广人</el-button>
+                        <el-button type="primary" size="small" @click="handlePromotionOrder">推广订单</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -68,16 +68,20 @@
                 @current-change="getData"
                 />
             </div>
+            <PromoterDrawer ref="promoterDrawerRef"></PromoterDrawer>
+            <PromotionOrderDrawer ref="promotionOrderDrawerRef"></PromotionOrderDrawer>
         </el-card>
     </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import { getAgentList } from '@/api/distribution.js';
 import {useInitTable} from '@/composables/useCommon.js';
 import Search from '@/components/Search.vue';
 import SearchItem from '@/components/SearchItem.vue';
 import Panel from './components/Panel.vue';
+import PromoterDrawer from './components/PromoterDrawer.vue';
+import PromotionOrderDrawer from './components/PromotionOrderDrawer.vue'
 
 const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = useInitTable({
   getList:getAgentList,
@@ -92,11 +96,22 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = u
     endtime:null
 }
 })
+const promoterDrawerRef = ref(null);
+const promotionOrderDrawerRef = ref(null);
 
 const tableHeight = computed(()=>{
     return (window.innerHeight - 430) + 'px';
 }
 )
+
+const handlePromoter = ()=>{
+    promoterDrawerRef.value.formDrawer.open()
+}
+
+const handlePromotionOrder = ()=>{
+    promotionOrderDrawerRef.value.formDrawer.open()
+}
+
 </script>
 <style lang="less" scoped>
 </style>
