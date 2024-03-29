@@ -161,8 +161,8 @@ const tableHeight = computed(()=>{
 }
 )
   
-  </script>
-  <style lang="less">
+</script>
+<style lang="less">
   .search-form{
     margin-bottom:10px;
     &-flex{
@@ -181,5 +181,5 @@ const tableHeight = computed(()=>{
         margin-left:10px;
     }
   }
-  </style>
+</style>
   
