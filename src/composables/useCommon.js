@@ -13,6 +13,7 @@ export function useInitTable(opt = {}) {
       getData();
     };
   }
+
   const tableData = ref([]);
   const loading = ref(false);
   const total = ref(0);
@@ -61,6 +62,7 @@ export function useInitTable(opt = {}) {
   }
 
   onMounted(()=>{
+    debugger;
     getData()
   })
 

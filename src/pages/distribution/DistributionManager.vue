@@ -68,8 +68,8 @@
                 @current-change="getData"
                 />
             </div>
-            <PromoterDrawer ref="promoterDrawerRef" :promoterId="promoterId"></PromoterDrawer>
-            <PromotionOrderDrawer ref="promotionOrderDrawerRef"></PromotionOrderDrawer>
+            <PromoterDrawer ref="promoterDrawerRef" :promoterId="promoterId" @closed="closed"></PromoterDrawer>
+            <PromotionOrderDrawer ref="promotionOrderDrawerRef" :promotionOrderId="promotionOrderId"></PromotionOrderDrawer>
         </el-card>
     </div>
 </template>
@@ -98,7 +98,8 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = u
 })
 const promoterDrawerRef = ref(null);
 const promotionOrderDrawerRef = ref(null);
-const promoterId = ref(null)
+const promoterId = ref(null);
+const promotionOrderId = ref(null);
 
 const tableHeight = computed(()=>{
     return (window.innerHeight - 430) + 'px';
@@ -110,7 +111,12 @@ const handlePromoter = (id)=>{
     promoterDrawerRef.value.formDrawer.open()
 }
 
-const handlePromotionOrder = ()=>{
+const closed = ()=>{
+    promoterId.value = null;
+}
+
+const handlePromotionOrder = (id)=>{
+    promotionOrderId.value = id;
     promotionOrderDrawerRef.value.formDrawer.open()
 }
 
