@@ -53,7 +53,7 @@
                 <el-table-column label="未提现金额" align="center" prop="no_cash_out_price"></el-table-column>
                 <el-table-column label="操作" align="center" width="200" fixed="right">
                     <template #default="{row}"> 
-                        <el-button type="primary" size="small" @click="handlePromoter">推广人</el-button>
+                        <el-button type="primary" size="small" @click="handlePromoter(row.id)">推广人</el-button>
                         <el-button type="primary" size="small" @click="handlePromotionOrder">推广订单</el-button>
                     </template>
                 </el-table-column>
@@ -68,7 +68,7 @@
                 @current-change="getData"
                 />
             </div>
-            <PromoterDrawer ref="promoterDrawerRef"></PromoterDrawer>
+            <PromoterDrawer ref="promoterDrawerRef" :promoterId="promoterId"></PromoterDrawer>
             <PromotionOrderDrawer ref="promotionOrderDrawerRef"></PromotionOrderDrawer>
         </el-card>
     </div>
@@ -98,13 +98,15 @@ const { searchForm,reset,tableData,loading,currentPage,total,limit,getData } = u
 })
 const promoterDrawerRef = ref(null);
 const promotionOrderDrawerRef = ref(null);
+const promoterId = ref(null)
 
 const tableHeight = computed(()=>{
     return (window.innerHeight - 430) + 'px';
 }
 )
 
-const handlePromoter = ()=>{
+const handlePromoter = (id)=>{
+    promoterId.value = id
     promoterDrawerRef.value.formDrawer.open()
 }
 
