@@ -9,9 +9,8 @@
                     <el-radio :label="1" border>开启</el-radio>
                 </el-radio-group>
             </el-form-item>
-            
             <el-form-item label="分销海报图">
-                
+                <ChooseImage v-model="form.spread_banners"></ChooseImage>
             </el-form-item>
 
 
@@ -65,6 +64,7 @@
 import { toast } from '@/composables/util.js';
 import { ref, reactive } from 'vue';
 import { getConfig,setConfig } from '@/api/distribution.js';
+import ChooseImage from '@/components/ChooseImage.vue';
 
 const loading = ref(false);
 const getData = ()=>{
