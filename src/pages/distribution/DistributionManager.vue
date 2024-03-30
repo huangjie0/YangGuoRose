@@ -54,7 +54,7 @@
                 <el-table-column label="操作" align="center" width="200" fixed="right">
                     <template #default="{row}"> 
                         <el-button type="primary" size="small" @click="handlePromoter(row.id)">推广人</el-button>
-                        <el-button type="primary" size="small" @click="handlePromotionOrder">推广订单</el-button>
+                        <el-button type="primary" size="small" @click="handlePromotionOrder(row.id)">推广订单</el-button>
                     </template>
                 </el-table-column>
             </el-table>
