@@ -10,6 +10,14 @@ export function useInitTable(opt = {}) {
     reset = () => {
       searchForm.title = ""
       searchForm.category_id = null
+      searchForm.type = 'all'
+      searchForm.starttime = null
+      searchForm.endtime = null
+      searchForm.keyword = null
+      searchForm.no = ''
+      searchForm.name = ''
+      searchForm.phone = ''
+      searchForm.user_level_id = null
       getData();
     };
   }

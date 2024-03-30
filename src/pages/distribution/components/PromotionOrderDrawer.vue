@@ -34,33 +34,18 @@
                     {{ scope.row.order.no }}
                  </template>
              </el-table-column>
-
              <el-table-column label="用户名|昵称|手机" align="center">
                 <template #default="scope">
                     <div v-if="!scope.row.order.user">
                         改用户已被删除
                     </div>
-
                     <div v-else>
-                        {{ scope.row.order.user.username }}
+                        {{ scope.row.order.user.username}} | {{  scope.row.order.user.nickname }} | {{ scope.row.order.user.phone }}
                     </div>
                  </template>
              </el-table-column>
-
-
-
-
-             <!-- <el-table-column label="头像" width="65">
-                 <template #default="scope">
-                     <el-avatar :size="40" :src="scope.row.avatar">
-                         <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-                     </el-avatar>
-                 </template>
-             </el-table-column>
-             <el-table-column label="用户信息" prop="username"></el-table-column>
-             <el-table-column label="推广数" align="center" prop="share_num"></el-table-column>
-             <el-table-column label="推广订单数量" align="center" prop="share_order_num"></el-table-column>
-             <el-table-column label="绑定时间" align="center" prop="create_time"></el-table-column> -->
+             <el-table-column label="时间" align="center" prop="create_time"/>
+             <el-table-column label="返佣金额" align="center" prop="commission"/>
          </el-table>
          <div class="rose-f-row pagination">
              <el-pagination
